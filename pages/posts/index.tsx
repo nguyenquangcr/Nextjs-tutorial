@@ -25,7 +25,9 @@ export default function PostsPage({ posts }: PostsProps) {
       <div>Posts List Page</div>
       <ul>
         {posts.map((post) => (
-          <li key={post.id}>{post.title}</li>
+          <li key={post.id}>
+            <Link href={`/posts/${post.id}`}>{post.title}</Link>
+          </li>
         ))}
       </ul>
       <button
