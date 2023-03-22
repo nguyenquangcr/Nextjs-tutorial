@@ -5,28 +5,28 @@
         "id": 1,
         "title": "Photography",
         "body": "Bootstrap Carousel Example",
-        "imageUrl": "https://res.cloudinary.com/kizmelvin/image/upload/v1586799813/kizmelvin/persons_pigeon_nurkq2.jpg",
+        "imageUrl": "https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/1600x400/filters:quality(100):fill(white)/https://nhathuoclongchau.com.vn/upload/slide/1678849856-VRaS-hang-nhat-t3.png",
         "docs": "https://getbootstrap.com/docs/4.0/components/carousel/"
       },
       {
         "id": 2,
         "title": "City Views",
         "body": "Bootstrap Carousel Example",
-        "imageUrl": "https://res.cloudinary.com/kizmelvin/image/upload/v1587785064/kizmelvin/michael-BcgEo2CNeYA-unsplash_cdaruk.jpg",
+        "imageUrl": "https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/1600x400/filters:quality(100):fill(white)/https://nhathuoclongchau.com.vn/upload/slide/1678849994-9Ilx-fmcg-t3-2023.jpg",
         "docs": "https://getbootstrap.com/docs/4.0/components/carousel/"
       },
       {
         "id": 3,
         "title": "Wild Life",
         "body": "Bootstrap Carousel Example",
-        "imageUrl": "https://res.cloudinary.com/kizmelvin/image/upload/v1586799827/kizmelvin/brownlion_qm8hah.jpg",
+        "imageUrl": "https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/1600x400/filters:quality(100):fill(white)/https://nhathuoclongchau.com.vn/upload/slide/1679467148-87n5-tien-phong-tra-gop-0.jpg",
         "docs": "https://getbootstrap.com/docs/4.0/components/carousel/"
       },
       {
         "id": 4,
         "title": "Foods and Culture",
         "body": "Bootstrap Carousel Example",
-        "imageUrl": "https://res.cloudinary.com/kizmelvin/image/upload/v1587870308/kizmelvin/edvin-johansson-5AylXcpJn1I-unsplash_lbhgod.jpg",
+        "imageUrl": "https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/1600x400/filters:quality(100):fill(white)/https://nhathuoclongchau.com.vn/upload/slide/1678847543-Y1Nu-thiet-bi-y-te-2023.png",
         "docs": "https://getbootstrap.com/docs/4.0/components/carousel/"
       }
     ],

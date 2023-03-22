@@ -7,6 +7,7 @@ import { Layout, Space, Image } from 'antd';
 import notification from './notification-bar.png'
 import HeaderComponent from '@/components/common/Header/header';
 import BootstrapCarousel from '@/components/common/Carousel';
+import SearchComponent from '@/components/common/SearchComponent';
 
 const { Header, Footer, Sider, Content } = Layout;
 export interface HomePageProps {
@@ -36,6 +37,7 @@ export default function HomePage({ post }: HomePageProps) {
       <Layout>
         <HeaderComponent />
         <BootstrapCarousel />
+        <SearchComponent />
         <Content style={contentStyle}>Content</Content>
         <Footer style={footerStyle}>Footer</Footer>
       </Layout>

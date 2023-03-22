@@ -1,0 +1,9 @@
+.box-search{
+    padding: 24px 80px;
+    border-radius: 16px;
+    background-color: #fff;
+    margin-top: -50px;
+    position: relative;
+    z-index: 1059;
+    box-shadow: 0 1px 4px rgba(10,10,10,.15);
+}
