@@ -1,0 +1,11 @@
+.classheader{
+    background-color: #072d94;
+    position: relative;
+    z-index: 1062;
+}
+
+.classheaderchild{
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0;
+}
