@@ -21,7 +21,7 @@ export default function SearchComponent(props: SearchProps) {
     return <div className='box-search' style={classContainer}>
         <Typography.Title level={2} style={{ color: '#000', marginBottom: '15px' }}>Tra Cứu Thuốc, TPCN, Bệnh Lý... </Typography.Title>
         <Search
-            placeholder="input search text"
+            placeholder="Nhập từ khóa..."
             allowClear
             enterButton="Search"
             size="large"

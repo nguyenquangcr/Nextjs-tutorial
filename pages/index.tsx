@@ -9,6 +9,7 @@ import HeaderComponent from '@/components/common/Header/header';
 import BootstrapCarousel from '@/components/common/Carousel';
 import SearchComponent from '@/components/common/SearchComponent';
 import HighProductComponent from '@/components/common/HighProducts';
+import ProductComponent from '@/components/common/Products';
 
 const { Header, Footer, Sider, Content } = Layout;
 export interface HomePageProps {
@@ -41,6 +42,8 @@ export default function HomePage({ post }: HomePageProps) {
         <SearchComponent />
         {/* high product */}
         <HighProductComponent />
+        {/* product */}
+        <ProductComponent />
         <Footer style={footerStyle}>Footer</Footer>
       </Layout>
     </Space>

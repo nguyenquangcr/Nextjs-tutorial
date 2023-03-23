@@ -1,6 +1,6 @@
 import React from 'react';
-import { Typography, Card, Col, Row } from 'antd';
-import { HighlightFilled, BulbFilled } from '@ant-design/icons';
+import { Typography, Card, Col, Row, Button } from 'antd';
+import { DownOutlined, BulbFilled } from '@ant-design/icons';
 import './index.css'
 
 export interface HeaderProps { }
@@ -23,30 +23,16 @@ const styleCol: React.CSSProperties = {
     marginTop: '16px'
 };
 
-export default function HighProductComponent(props: HeaderProps) {
+export default function ProductComponent(props: HeaderProps) {
     return <div>
-        <div className='banner-high-product'>
-            <div style={{
-                width: ' 100%',
-                maxWidth: ' 1200px',
-                marginRight: ' auto',
-                marginLeft: ' auto',
-                display: 'flex',
-                alignItems: 'center'
-            }}>
-                <HighlightFilled style={{ fontSize: '20px', color: 'rgb(255 255 255 / 95%)' }} />
-                <Typography.Title level={4} style={{ color: '#fff', marginLeft: '10px', marginBottom: 0 }}>Sản Phẩm Nổi Bật Hôm Nay</Typography.Title>
-            </div>
-        </div>
-
         <div className='high-product' style={classContainer}>
             <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 marginBottom: '15px'
             }}>
-                <BulbFilled style={{ fontSize: '20px', color: '#ef4444' }} />
-                <Typography.Title level={4} style={{ color: '#000', marginLeft: '10px', marginBottom: 0 }}>Bán Chạy Nhất</Typography.Title>
+                <BulbFilled style={{ fontSize: '20px', color: 'blue' }} />
+                <Typography.Title level={4} style={{ color: '#000', marginLeft: '10px', marginBottom: 0 }}>Sản Phẩm Nổi Bật</Typography.Title>
             </div>
 
             <Row gutter={8} style={{ textAlign: '-webkit-center' }}>
@@ -87,15 +73,6 @@ export default function HighProductComponent(props: HeaderProps) {
                         <Meta title="Viên uống Omexxel Ginkgo 120 Excelife hỗ trợ tăng cường tuần hoàn máu não, tốt cho tim mạch (30 viên)" description="364.000d / Hộp" />
                     </Card>
                 </Col>
-                {/* <Col style={styleCol} lg={4}>
-                    <Card
-                        hoverable
-                        style={{ width: 192, boxShadow: '0 0 0 1px #d8e0e8' }}
-                        cover={<img style={{ height: '192px', padding: '10px' }} alt="example" src="https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/600x600/filters:quality(90):fill(white)/nhathuoclongchau.com.vn/images/product/2022/12/00028684-vien-uong-omega-3-6-9-naturecare-giam-cholesterol-bao-ve-tim-mach-60-vien-9210-63a9_large.jpg" />}
-                    >
-                        <Meta title="Viên sủi Optimax Immunity Booster Vid - Fighter tăng cường sức đề kháng (20 viên)" description="118.000d / Tuýp" />
-                    </Card>
-                </Col> */}
                 {/* ROW TWO */}
                 <Col style={styleCol} lg={6} xs={12}>
                     <Card
@@ -133,16 +110,13 @@ export default function HighProductComponent(props: HeaderProps) {
                         <Meta title="Viên uống Omexxel Ginkgo 120 Excelife hỗ trợ tăng cường tuần hoàn máu não, tốt cho tim mạch (30 viên)" description="364.000d / Hộp" />
                     </Card>
                 </Col>
-                {/* <Col style={styleCol} lg={4}>
-                    <Card
-                        hoverable
-                        style={{ width: 192, boxShadow: '0 0 0 1px #d8e0e8' }}
-                        cover={<img style={{ height: '192px', padding: '10px' }} alt="example" src="https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/600x600/filters:quality(90):fill(white)/nhathuoclongchau.com.vn/images/product/2022/12/00028684-vien-uong-omega-3-6-9-naturecare-giam-cholesterol-bao-ve-tim-mach-60-vien-9210-63a9_large.jpg" />}
-                    >
-                        <Meta title="Viên sủi Optimax Immunity Booster Vid - Fighter tăng cường sức đề kháng (20 viên)" description="118.000d / Tuýp" />
-                    </Card>
-                </Col> */}
             </Row>
+
+            <div className='text-center m-4'>
+                <Button shape="round" icon={<DownOutlined />} size={'large'}>
+                    Xem thêm 37 sản phẩm
+                </Button>
+            </div>
         </div>
     </div>;
 }
