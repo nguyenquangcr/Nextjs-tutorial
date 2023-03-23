@@ -8,6 +8,7 @@ import notification from './notification-bar.png'
 import HeaderComponent from '@/components/common/Header/header';
 import BootstrapCarousel from '@/components/common/Carousel';
 import SearchComponent from '@/components/common/SearchComponent';
+import HighProductComponent from '@/components/common/HighProducts';
 
 const { Header, Footer, Sider, Content } = Layout;
 export interface HomePageProps {
@@ -38,7 +39,8 @@ export default function HomePage({ post }: HomePageProps) {
         <HeaderComponent />
         <BootstrapCarousel />
         <SearchComponent />
-        <Content style={contentStyle}>Content</Content>
+        {/* high product */}
+        <HighProductComponent />
         <Footer style={footerStyle}>Footer</Footer>
       </Layout>
     </Space>
