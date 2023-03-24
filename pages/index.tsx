@@ -2,7 +2,6 @@ import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
 import { notFound } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React from 'react';
-import 'antd/dist/reset.css';
 import { Layout, Space, Image } from 'antd';
 import notification from './notification-bar.png'
 import HeaderComponent from '@/components/common/Header/header';
@@ -10,6 +9,8 @@ import BootstrapCarousel from '@/components/common/Carousel';
 import SearchComponent from '@/components/common/SearchComponent';
 import HighProductComponent from '@/components/common/HighProducts';
 import ProductComponent from '@/components/common/Products';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
 
 const { Header, Footer, Sider, Content } = Layout;
 export interface HomePageProps {
@@ -33,6 +34,8 @@ const footerStyle: React.CSSProperties = {
 };
 
 export default function HomePage({ post }: HomePageProps) {
+
+  const count = useSelector((state: RootState) => state.counter.value);
 
   return (
     <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
