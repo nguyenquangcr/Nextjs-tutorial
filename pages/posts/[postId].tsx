@@ -1,5 +1,4 @@
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
-import { notFound } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -25,7 +24,6 @@ export default function PostDetailPage({ post }: PostDetailProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  console.log('get static path');
   const response = await fetch('https://js-post-api.herokuapp.com/api/posts?_page=1');
   const data = await response.json();
 
@@ -38,9 +36,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<PostDetailProps> = async (
   context: GetStaticPropsContext
 ) => {
-  console.log('get static props', context.params?.postId);
   const postId = context.params?.postId;
-  console.log('postId:', postId);
   if (!postId)
     return {
       notFound: true,
