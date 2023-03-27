@@ -1,6 +1,6 @@
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
 import { notFound } from 'next/navigation';
-import { useRouter } from 'next/router';
+import { useRouter, } from 'next/router';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   Layout,
@@ -14,6 +14,8 @@ import {
   Input,
   Popconfirm,
   Button,
+  InputNumber,
+  Typography,
 } from 'antd';
 import notification from './notification-bar.png';
 import HeaderComponent from '@/components/common/Header/header';
@@ -23,6 +25,8 @@ import HighProductComponent from '@/components/common/HighProducts';
 import ProductComponent from '@/components/common/Products';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
+import Link from 'next/link';
+import { LeftOutlined } from '@ant-design/icons';
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -37,19 +41,37 @@ const classContainer: React.CSSProperties = {
   marginLeft: ' auto',
 };
 
-const contentStyle: React.CSSProperties = {
-  textAlign: 'center',
-  minHeight: 120,
-  lineHeight: '120px',
-  color: '#fff',
-  backgroundColor: '#108ee9',
-};
+const containerRight: React.CSSProperties = {
+  padding: ' 16px',
+  background: ' #fff',
+  borderRadius: ' 1.2rem',
+  marginLeft: ' auto',
+  top: ' 1rem',
+  maxWidth: ' 384px'
+}
 
-const footerStyle: React.CSSProperties = {
-  textAlign: 'center',
-  color: '#fff',
-  backgroundColor: '#7dbcea',
-};
+const labelButton: React.CSSProperties = {
+  display: ' inline-flex',
+  alignItems: ' center',
+  justifyContent: ' center',
+  width: ' 100%',
+  padding: ' 12px',
+  color: ' #fff',
+  outline: ' none',
+  border: ' none',
+  background: ' linear-gradient(315deg,#1250dc 14.64%,#306de4 85.36%)',
+  borderRadius: ' 42px',
+  cursor: ' pointer',
+  fontFamily: ' Inter,Arial,Helvetica,sans-serif'
+}
+
+const labelFormInfoCustomer: React.CSSProperties = {
+  maxWidth: ' 600px',
+  background: ' #fff',
+  borderRadius: ' 0.8rem',
+  padding: ' 1.6rem',
+  margin: ' 10px 0',
+}
 
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }: any) => {
@@ -129,16 +151,6 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-const rowSelection = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: any) => {
-    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-  },
-  getCheckboxProps: (record: any) => ({
-    disabled: record.name === 'Disabled User', // Column configuration not to be checked
-    name: record.name,
-  }),
-};
-
 export default function HomePage({ post }: HomePageProps) {
   // const count = useSelector((state: RootState) => state.counter.value);
 
@@ -156,8 +168,8 @@ export default function HomePage({ post }: HomePageProps) {
       address: 'London, Park Lane no. 1',
     },
   ]);
-  const [count, setCount] = useState(2);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [activeForm, setActiveForm] = useState(false);
 
   const handleDelete = (key: any) => {
     const newData: any = dataSource.filter((item: any) => item.key !== key);
@@ -165,17 +177,37 @@ export default function HomePage({ post }: HomePageProps) {
   };
   const defaultColumns = [
     {
-      title: 'name',
+      title: 'Chọn tất cả',
       dataIndex: 'name',
-      width: '30%',
+      width: '35%',
+      render: (_: any, record: any) => {
+        console.log('record:', record);
+        console.log('_:', _);
+        return (<div style={{ display: 'flex', alignItems: 'center' }}>
+          <img
+            style={{ width: '52px', height: '52px' }}
+            alt="example"
+            src="https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/600x600/filters:quality(90):fill(white)/nhathuoclongchau.com.vn/images/product/2020/01/00017891-boi-mau-forte-tat-thanh-125ml-siro-bo-phe-4358-5e14_large.jpg"
+          />
+          <Typography.Title level={5}
+            style={{ color: '#000', margin: '10px', cursor: 'pointer' }}>
+            Viên uống Sâm Nhung Bổ Thận NV Dolexpharm giúp tráng dương, mạnh gân cốt (30 viên)
+          </Typography.Title>
+
+        </div>)
+      },
       editable: true,
     },
     {
-      title: 'age',
+      title: 'Giá thành',
       dataIndex: 'age',
     },
     {
-      title: 'address',
+      title: 'Số lượng',
+      dataIndex: 'address',
+    },
+    {
+      title: 'Đơn vị',
       dataIndex: 'address',
     },
     {
@@ -222,13 +254,58 @@ export default function HomePage({ post }: HomePageProps) {
     };
   });
 
-  const onSelectChange = (newSelectedRowKeys: any) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+  const onSelectChange = (newSelectedRowKeys: any, value: any) => {
+    console.log('value:', value)
     setSelectedRowKeys(newSelectedRowKeys);
   };
   const rowSelection = {
     selectedRowKeys,
-    onChange: onSelectChange,
+    onChange: (newSelectedRowKeys: any, value: any) => onSelectChange(newSelectedRowKeys, value),
+  };
+
+  //form
+  const formItemLayout = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 8 },
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 16 },
+    },
+  };
+
+  const layout = {
+    labelCol: { span: 8 },
+    wrapperCol: { span: 16 },
+  };
+
+  const tailLayout = {
+    wrapperCol: {
+      xs: {
+        span: 24,
+        offset: 0,
+      },
+      sm: {
+        span: 16,
+        offset: 8,
+      },
+    },
+  };
+
+  const validateMessages = {
+    required: '${label} is required!',
+    types: {
+      email: '${label} is not a valid email!',
+      number: '${label} is not a valid number!',
+    },
+    number: {
+      range: '${label} must be between ${min} and ${max}',
+    },
+  };
+
+  const onFinish = (values: any) => {
+    console.log(values);
   };
 
   return (
@@ -236,26 +313,24 @@ export default function HomePage({ post }: HomePageProps) {
       <Layout>
         <HeaderComponent />
         <div style={classContainer}>
-          <Breadcrumb
+          {activeForm == false ? <Breadcrumb
             items={[
               {
-                title: 'Home',
+                title: <Link href={'/'}>Trang chủ</Link>,
               },
               {
-                title: <a href="">Application Center</a>,
-              },
-              {
-                title: <a href="">Application List</a>,
-              },
-              {
-                title: 'An Application',
+                title: 'Giỏ hàng',
               },
             ]}
-          />
+          /> : <Typography.Title onClick={() => setActiveForm(false)}
+            level={5}
+            style={{ color: '#000', margin: '10px', cursor: 'pointer' }}
+          ><LeftOutlined /> Quay lại giỏ hàng
+          </Typography.Title>}
 
-          <Row gutter={8}>
+          <Row gutter={24}>
             {/* ROW ONE */}
-            <Col lg={18} xs={12}>
+            <Col lg={16} xs={12}>
               <div>
                 <Table
                   components={components}
@@ -264,18 +339,75 @@ export default function HomePage({ post }: HomePageProps) {
                   dataSource={dataSource}
                   columns={columns}
                   rowSelection={rowSelection}
+                  pagination={false}
                 />
               </div>
+              {
+                activeForm && <Form
+                  {...layout}
+                  name="nest-messages"
+                  onFinish={onFinish}
+                  style={labelFormInfoCustomer}
+                  validateMessages={validateMessages}
+                >
+                  <Form.Item name={'name'} label="Họ và tên" rules={[{ required: true, message: 'Xin hãy nhập họ và tên!' }]}>
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name={'email'} label="Email" rules={[{ type: 'email', required: true, message: 'Xin hãy nhập email!' }]}>
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    name="phone"
+                    label="Số điện thoại"
+                    rules={[{ required: true, message: 'Xin hãy nhập số điện thoại!' }]}
+                  >
+                    <Input type='number' />
+                  </Form.Item>
+                  <Form.Item
+                    name="note"
+                    label="Ghi chú"
+                  >
+                    <Input placeholder='Thêm ghi chú (ví dụ: Hãy gọi trước khi giao)' />
+                  </Form.Item>
+                  <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+                    <Button type="primary" htmlType="submit">
+                      Hoàn tất
+                    </Button>
+                  </Form.Item>
+                </Form>
+              }
             </Col>
-            <Col lg={6} xs={12}>
-              bill
+            <Col lg={8} xs={12}>
+              <div style={containerRight}>
+                <Form
+                  name="validate_other"
+                  {...formItemLayout}
+                  initialValues={{ 'input-number': 3, 'checkbox-group': ['A', 'B'], rate: 3.5 }}
+                  style={{ maxWidth: 600 }}
+                >
+                  <Form.Item {...tailLayout} label="Tổng tiền">
+                    <span className="ant-form-text">339.000đ</span>
+                  </Form.Item>
+                  <Form.Item {...tailLayout} label="Giảm giá trực tiếp">
+                    <span className="ant-form-text">0đ</span>
+                  </Form.Item>
+                  <Form.Item {...tailLayout} label="Giảm giá voucher ">
+                    <span className="ant-form-text">0đ</span>
+                  </Form.Item>
+                  <hr />
+                  <Form.Item {...tailLayout} label="Thành tiền">
+                    <span className="ant-form-text">339.000đ</span>
+                  </Form.Item>
+                </Form>
+                {activeForm == false && <button onClick={() => setActiveForm(true)} style={labelButton}>Đặt hàng</button>}
+              </div>
             </Col>
           </Row>
         </div>
 
-        <Footer style={footerStyle}>Footer</Footer>
+        {/* <Footer style={footerStyle}>Footer</Footer> */}
       </Layout>
-    </Space>
+    </Space >
   );
 }
 
