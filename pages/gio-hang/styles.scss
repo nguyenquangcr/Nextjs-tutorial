@@ -1,0 +1,45 @@
+.minus-class {
+  border-radius: 34px 0 0 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 1.5rem;
+  background: #fff;
+  border: 1px solid #e4e8ed;
+  border-radius: 34px;
+  box-sizing: border-box;
+  outline: none;
+  color: #020b27;
+}
+.class-input-count {
+  max-width: 40px;
+  padding: 6px 3px;
+  border: 1px solid #e4e8ed;
+  border-radius: 0;
+  border-right: 0;
+  border-left: 0;
+  background-color: #fff;
+  outline: none;
+  font-weight: 500;
+  height: 1.5rem;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #020b27;
+}
+
+.plus-class {
+  border-radius: 0 34px 34px 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 1.5rem;
+  background: #fff;
+  border: 1px solid #e4e8ed;
+  border-radius: 34px;
+  box-sizing: border-box;
+  outline: none;
+  color: #020b27;
+}

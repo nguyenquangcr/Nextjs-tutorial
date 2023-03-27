@@ -1,9 +1,11 @@
 import React from 'react';
 import { Typography, Card, Col, Row, Button } from 'antd';
-import { DownOutlined, BulbFilled } from '@ant-design/icons';
+import { DownOutlined, BulbFilled, PlusCircleOutlined } from '@ant-design/icons';
 import './index.css';
+import { useDispatch } from 'react-redux';
+import { updateArrShoping } from 'slices/medicineSlice';
 
-export interface HeaderProps {}
+export interface HeaderProps { }
 
 const { Meta } = Card;
 
@@ -24,6 +26,13 @@ const styleCol: React.CSSProperties = {
 };
 
 export default function ProductComponent(props: HeaderProps) {
+  const dispatch = useDispatch();
+
+  const addProduct = (value: any) => {
+    dispatch(updateArrShoping(value));
+  }
+
+
   return (
     <div>
       <div className="high-product" style={classContainer}>
@@ -61,6 +70,18 @@ export default function ProductComponent(props: HeaderProps) {
                 title="Siro bổ phế Bối Mẫu Forte Mom And Baby Tất Thành hỗ trợ giảm ho, đau rát họng, khản tiếng (125ml)"
                 description="55.000d / Chai"
               />
+              <Button className='class-plus-btn' onClick={() => addProduct(
+                {
+                  key: '0',
+                  name: 'Siro bổ phế Bối Mẫu Forte Mom And Baby Tất Thành hỗ trợ giảm ho, đau rát họng, khản tiếng (125ml)',
+                  image: 'https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/600x600/filters:quality(90):fill(white)/nhathuoclongchau.com.vn/images/product/2020/01/00017891-boi-mau-forte-tat-thanh-125ml-siro-bo-phe-4358-5e14_large.jpg',
+                  price: 33000,
+                  count: 1,
+                  unit: 'Hộp'
+                }
+              )}>
+                <PlusCircleOutlined /> Thêm
+              </Button>
             </Card>
           </Col>
           <Col style={styleCol} lg={6} xs={12}>
@@ -79,6 +100,18 @@ export default function ProductComponent(props: HeaderProps) {
                 title="Siro Healthy New Kids hỗ trợ kích thích tiêu hóa, giúp ăn ngon (120ml)"
                 description="81.000d / Chai"
               />
+              <Button className='class-plus-btn' onClick={() => addProduct(
+                {
+                  key: '1',
+                  name: "Siro Healthy New Kids hỗ trợ kích thích tiêu hóa, giúp ăn ngon (120ml)",
+                  image: 'https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/600x600/filters:quality(90):fill(white)/nhathuoclongchau.com.vn/images/product/2020/09/00345454-siro-an-ngon-healthy-new-kid-8980-5f62_large.jpg',
+                  price: 43000,
+                  count: 1,
+                  unit: 'Hộp'
+                }
+              )}>
+                <PlusCircleOutlined /> Thêm
+              </Button>
             </Card>
           </Col>
           <Col style={styleCol} lg={6} xs={12}>

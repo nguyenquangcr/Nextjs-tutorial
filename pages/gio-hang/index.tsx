@@ -17,19 +17,14 @@ import {
   InputNumber,
   Typography,
 } from 'antd';
-import notification from './notification-bar.png';
 import HeaderComponent from '@/components/common/Header/header';
-import BootstrapCarousel from '@/components/common/Carousel';
-import SearchComponent from '@/components/common/SearchComponent';
-import HighProductComponent from '@/components/common/HighProducts';
-import ProductComponent from '@/components/common/Products';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import Link from 'next/link';
-import { LeftOutlined } from '@ant-design/icons';
-
-const { Header, Footer, Sider, Content } = Layout;
-
+import { LeftOutlined, DeleteOutlined } from '@ant-design/icons';
+//style
+import './styles.scss';
+import { updateCountMedicine } from 'slices/medicineSlice';
 export interface HomePageProps {
   post: any;
 }
@@ -72,6 +67,7 @@ const labelFormInfoCustomer: React.CSSProperties = {
   padding: ' 1.6rem',
   margin: ' 10px 0',
 }
+
 
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }: any) => {
@@ -152,72 +148,67 @@ const EditableCell = ({
 };
 
 export default function HomePage({ post }: HomePageProps) {
-  // const count = useSelector((state: RootState) => state.counter.value);
-
-  const [dataSource, setDataSource] = useState<any>([
-    {
-      key: '0',
-      name: 'Edward King 0',
-      age: '32',
-      address: 'London, Park Lane no. 0',
-    },
-    {
-      key: '1',
-      name: 'Edward King 1',
-      age: '32',
-      address: 'London, Park Lane no. 1',
-    },
-  ]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const dispatch = useDispatch();
+  const arrProduct = useSelector((state: RootState) => state.medicine.arrShoping);
+  const [dataSource, setDataSource] = useState<any>(arrProduct);
+  // const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [activeForm, setActiveForm] = useState(false);
 
   const handleDelete = (key: any) => {
     const newData: any = dataSource.filter((item: any) => item.key !== key);
     setDataSource(newData);
   };
+
+  const actionChangeCountMedicine = (key: any, type: any) => {
+    dispatch(updateCountMedicine({ key, type }));
+  }
   const defaultColumns = [
     {
-      title: 'Chọn tất cả',
+      title: 'Thông tin sản phẩm',
       dataIndex: 'name',
       width: '35%',
       render: (_: any, record: any) => {
-        console.log('record:', record);
-        console.log('_:', _);
         return (<div style={{ display: 'flex', alignItems: 'center' }}>
           <img
             style={{ width: '52px', height: '52px' }}
             alt="example"
-            src="https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/600x600/filters:quality(90):fill(white)/nhathuoclongchau.com.vn/images/product/2020/01/00017891-boi-mau-forte-tat-thanh-125ml-siro-bo-phe-4358-5e14_large.jpg"
+            src={record?.image}
           />
           <Typography.Title level={5}
-            style={{ color: '#000', margin: '10px', cursor: 'pointer' }}>
-            Viên uống Sâm Nhung Bổ Thận NV Dolexpharm giúp tráng dương, mạnh gân cốt (30 viên)
+            style={{ color: '#000', margin: '10px', cursor: 'pointer' }}>{record.name}
           </Typography.Title>
 
         </div>)
       },
-      editable: true,
     },
     {
       title: 'Giá thành',
-      dataIndex: 'age',
+      dataIndex: 'price',
     },
     {
       title: 'Số lượng',
-      dataIndex: 'address',
+      dataIndex: '',
+      render: (_: any, record: any) => {
+        return (<div style={{ display: 'flex', alignItems: 'center' }}>
+          <Button className='minus-class' onClick={() => actionChangeCountMedicine(record.key, 'minus')}>-</Button>
+          <Typography.Title level={5}
+            style={{ color: '#000', margin: '10px', cursor: 'pointer' }}>
+            <Input className='class-input-count' defaultValue={record.count} />
+          </Typography.Title>
+          <Button className='plus-class' onClick={() => actionChangeCountMedicine(record.key, 'plus')}>+</Button>
+        </div>)
+      },
     },
     {
       title: 'Đơn vị',
-      dataIndex: 'address',
+      dataIndex: 'unit',
     },
     {
       title: 'operation',
       dataIndex: 'operation',
       render: (_: any, record: any) =>
         dataSource.length >= 1 ? (
-          <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
-            <a>Delete</a>
-          </Popconfirm>
+          <DeleteOutlined onClick={() => handleDelete(record.key)} />
         ) : null,
     },
   ];
@@ -238,7 +229,7 @@ export default function HomePage({ post }: HomePageProps) {
       cell: EditableCell,
     },
   };
-  const columns = defaultColumns.map((col) => {
+  const columns = defaultColumns.map((col: any) => {
     if (!col.editable) {
       return col;
     }
@@ -254,14 +245,14 @@ export default function HomePage({ post }: HomePageProps) {
     };
   });
 
-  const onSelectChange = (newSelectedRowKeys: any, value: any) => {
-    console.log('value:', value)
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: (newSelectedRowKeys: any, value: any) => onSelectChange(newSelectedRowKeys, value),
-  };
+  // const onSelectChange = (newSelectedRowKeys: any, value: any) => {
+  //   console.log('value:', value)
+  //   setSelectedRowKeys(newSelectedRowKeys);
+  // };
+  // const rowSelection = {
+  //   selectedRowKeys,
+  //   onChange: (newSelectedRowKeys: any, value: any) => onSelectChange(newSelectedRowKeys, value),
+  // };
 
   //form
   const formItemLayout = {
@@ -338,7 +329,7 @@ export default function HomePage({ post }: HomePageProps) {
                   bordered
                   dataSource={dataSource}
                   columns={columns}
-                  rowSelection={rowSelection}
+                  // rowSelection={rowSelection}
                   pagination={false}
                 />
               </div>

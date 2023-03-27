@@ -1,8 +1,12 @@
 import React from 'react';
-import { Layout, Space, Image, Typography } from 'antd';
+import { Layout, Space, Image, Typography, Badge } from 'antd';
 import { FileTextFilled, ShoppingFilled } from '@ant-design/icons';
 import './index.css'
+import Link from 'next/link';
+import { RootState } from 'store';
+import { useSelector } from 'react-redux';
 
+const { Header } = Layout;
 export interface HeaderProps { }
 
 const classContainer: React.CSSProperties = {
@@ -18,7 +22,9 @@ const headerImage: React.CSSProperties = {
 };
 
 export default function HeaderComponent(props: HeaderProps) {
-  return <div>
+  const arrShoping = useSelector((state: RootState) => state.medicine.arrShoping);
+
+  return <div style={{ position: 'sticky', top: 0, zIndex: 1000, width: '100%' }}>
     <Image
       style={headerImage}
       preview={false}
@@ -36,10 +42,14 @@ export default function HeaderComponent(props: HeaderProps) {
             <Typography.Title level={5} style={{ color: '#fff', marginBottom: 0, marginLeft: '8px' }}>Tra cứu </Typography.Title>
             {/* <Typography.Text>Lịch sử đơn hàng</Typography.Text> */}
           </div>
-          <div style={{ display: 'flex', alignItems: 'flex-end', marginLeft: '15px' }}>
-            <ShoppingFilled style={{ fontSize: '40px', color: 'rgb(255 255 255 / 95%)' }} />
-            <Typography.Title level={5} style={{ color: '#fff', marginBottom: 0, marginLeft: '8px' }}>Giỏ hàng</Typography.Title>
-          </div>
+          <Link href={'/gio-hang'}>
+            <div style={{ display: 'flex', alignItems: 'flex-end', marginLeft: '15px', cursor: 'pointer' }}>
+              <Badge count={arrShoping ? arrShoping.length : ''}>
+                <ShoppingFilled style={{ fontSize: '40px', color: 'rgb(255 255 255 / 95%)' }} />
+              </Badge>
+              <Typography.Title level={5} style={{ color: '#fff', marginBottom: 0, marginLeft: '8px' }}>Giỏ hàng</Typography.Title>
+            </div>
+          </Link>
         </div>
       </div>
     </div>
