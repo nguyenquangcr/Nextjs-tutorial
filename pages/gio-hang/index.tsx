@@ -157,6 +157,8 @@ export default function HomePage({ post }: HomePageProps) {
     },
   ]);
   const [count, setCount] = useState(2);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
   const handleDelete = (key: any) => {
     const newData: any = dataSource.filter((item: any) => item.key !== key);
     setDataSource(newData);
@@ -187,16 +189,7 @@ export default function HomePage({ post }: HomePageProps) {
         ) : null,
     },
   ];
-  const handleAdd = () => {
-    const newData = {
-      key: count,
-      name: `Edward King ${count}`,
-      age: '32',
-      address: `London, Park Lane no. ${count}`,
-    };
-    setDataSource([...dataSource, newData]);
-    setCount(count + 1);
-  };
+
   const handleSave = (row: any) => {
     const newData = [...dataSource];
     const index = newData.findIndex((item) => row.key === item.key);
@@ -229,6 +222,15 @@ export default function HomePage({ post }: HomePageProps) {
     };
   });
 
+  const onSelectChange = (newSelectedRowKeys: any) => {
+    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+
   return (
     <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
       <Layout>
@@ -255,21 +257,13 @@ export default function HomePage({ post }: HomePageProps) {
             {/* ROW ONE */}
             <Col lg={18} xs={12}>
               <div>
-                <Button
-                  onClick={handleAdd}
-                  type="primary"
-                  style={{
-                    marginBottom: 16,
-                  }}
-                >
-                  Add a row
-                </Button>
                 <Table
                   components={components}
                   rowClassName={() => 'editable-row'}
                   bordered
                   dataSource={dataSource}
                   columns={columns}
+                  rowSelection={rowSelection}
                 />
               </div>
             </Col>
