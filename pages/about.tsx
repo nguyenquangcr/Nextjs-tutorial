@@ -12,7 +12,6 @@ export default function AboutPage(props: AboutProps) {
   const router = useRouter();
   //state
   const [postList, setPostList] = React.useState([]);
-  console.log('About query:', router.query);
 
   React.useEffect(() => {
     (async () => {
@@ -50,7 +49,6 @@ export default function AboutPage(props: AboutProps) {
 }
 
 export async function getStaticProps() {
-  console.log('get static props');
 
   return {
     props: {}, // will be passed to the page component as props

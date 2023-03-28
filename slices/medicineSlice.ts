@@ -13,30 +13,16 @@ export const medicineSlice = createSlice({
   name: 'medicine',
   initialState,
   reducers: {
-    updateArrShoping: (state, {payload}: PayloadAction<any>) => {
+    addProductToShopingCart: (state, {payload}: PayloadAction<any>) => {
         state.arrShoping = [...state.arrShoping,payload]
     },
-    updateCountMedicine: (state,action: PayloadAction<any>) => {
-        const {key, type} = action?.payload;
-        let cloneArrShoping = [...state.arrShoping];
-        let endArr:any=[];
-        cloneArrShoping.map(item=>{
-            if(item?.key == key) {
-                if(key == 'minus' && item?.count > 0) endArr.push({
-                    ...item,count:item.count--
-                }) 
-                else if(key == 'plus')endArr.push({
-                    ...item,count:item.count++
-                }) 
-            } else endArr.push(item);
-        })
-        state.arrShoping=[...endArr]
-        
+    updateArrShoping: (state, {payload}: PayloadAction<any>) => {
+        state.arrShoping = payload;
     },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { updateArrShoping, updateCountMedicine } = medicineSlice.actions;
+export const { updateArrShoping, addProductToShopingCart } = medicineSlice.actions;
 
 export default medicineSlice.reducer;

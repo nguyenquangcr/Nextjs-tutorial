@@ -22,9 +22,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import Link from 'next/link';
 import { LeftOutlined, DeleteOutlined } from '@ant-design/icons';
+import FormatCurrency from '../../utils/FormatCurrency';
 //style
 import './styles.scss';
-import { updateCountMedicine } from 'slices/medicineSlice';
+import { updateArrShoping } from 'slices/medicineSlice';
 export interface HomePageProps {
   post: any;
 }
@@ -149,18 +150,45 @@ const EditableCell = ({
 
 export default function HomePage({ post }: HomePageProps) {
   const dispatch = useDispatch();
+  //store
   const arrProduct = useSelector((state: RootState) => state.medicine.arrShoping);
+  //state
+  const [totalPrice, setTotalPrice] = useState(0);
   const [dataSource, setDataSource] = useState<any>(arrProduct);
-  // const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [activeForm, setActiveForm] = useState(false);
 
+  useEffect(() => {
+    let total = 0;
+    arrProduct.length > 0 && arrProduct.map(item => {
+      total += (item.price * item?.count)
+    })
+    setTotalPrice(total);
+  }, [arrProduct])
+
+
   const handleDelete = (key: any) => {
-    const newData: any = dataSource.filter((item: any) => item.key !== key);
+    const newData: any = arrProduct.filter((item: any) => item.key !== key);
     setDataSource(newData);
+    dispatch(updateArrShoping(newData));
   };
 
   const actionChangeCountMedicine = (key: any, type: any) => {
-    dispatch(updateCountMedicine({ key, type }));
+    let newArrProduct: any = [];
+    arrProduct?.map(item => {
+      if (item?.key == key) {
+
+        if (type == 'minus' && item?.count > 0) {
+          newArrProduct.push({
+            ...item, count: item.count - 1
+          })
+        }
+        else if (type == 'plus') newArrProduct.push({
+          ...item, count: item.count + 1
+        })
+        else return;
+      } else newArrProduct.push(item);
+    })
+    dispatch(updateArrShoping(newArrProduct));
   }
   const defaultColumns = [
     {
@@ -184,16 +212,25 @@ export default function HomePage({ post }: HomePageProps) {
     {
       title: 'Giá thành',
       dataIndex: 'price',
+      render: (_: any, record: any) => {
+        return (<div style={{ display: 'flex', alignItems: 'center' }}>
+          <Typography.Title level={5}
+            style={{ color: '#000', margin: '10px', cursor: 'pointer', border: 'none' }}>
+            {FormatCurrency(record?.price)}
+          </Typography.Title>
+        </div>)
+      },
+
     },
     {
       title: 'Số lượng',
       dataIndex: '',
       render: (_: any, record: any) => {
         return (<div style={{ display: 'flex', alignItems: 'center' }}>
-          <Button className='minus-class' onClick={() => actionChangeCountMedicine(record.key, 'minus')}>-</Button>
+          <Button disabled={record?.count <= 0} className='minus-class' onClick={() => actionChangeCountMedicine(record.key, 'minus')}>-</Button>
           <Typography.Title level={5}
             style={{ color: '#000', margin: '10px', cursor: 'pointer' }}>
-            <Input className='class-input-count' defaultValue={record.count} />
+            <Input className='class-input-count' value={record?.count} />
           </Typography.Title>
           <Button className='plus-class' onClick={() => actionChangeCountMedicine(record.key, 'plus')}>+</Button>
         </div>)
@@ -207,14 +244,14 @@ export default function HomePage({ post }: HomePageProps) {
       title: 'operation',
       dataIndex: 'operation',
       render: (_: any, record: any) =>
-        dataSource.length >= 1 ? (
+        arrProduct.length >= 1 ? (
           <DeleteOutlined onClick={() => handleDelete(record.key)} />
         ) : null,
     },
   ];
 
   const handleSave = (row: any) => {
-    const newData = [...dataSource];
+    const newData = [...arrProduct];
     const index = newData.findIndex((item) => row.key === item.key);
     const item = newData[index];
     newData.splice(index, 1, {
@@ -244,15 +281,6 @@ export default function HomePage({ post }: HomePageProps) {
       }),
     };
   });
-
-  // const onSelectChange = (newSelectedRowKeys: any, value: any) => {
-  //   console.log('value:', value)
-  //   setSelectedRowKeys(newSelectedRowKeys);
-  // };
-  // const rowSelection = {
-  //   selectedRowKeys,
-  //   onChange: (newSelectedRowKeys: any, value: any) => onSelectChange(newSelectedRowKeys, value),
-  // };
 
   //form
   const formItemLayout = {
@@ -327,9 +355,8 @@ export default function HomePage({ post }: HomePageProps) {
                   components={components}
                   rowClassName={() => 'editable-row'}
                   bordered
-                  dataSource={dataSource}
+                  dataSource={arrProduct}
                   columns={columns}
-                  // rowSelection={rowSelection}
                   pagination={false}
                 />
               </div>
@@ -377,17 +404,17 @@ export default function HomePage({ post }: HomePageProps) {
                   style={{ maxWidth: 600 }}
                 >
                   <Form.Item {...tailLayout} label="Tổng tiền">
-                    <span className="ant-form-text">339.000đ</span>
+                    <span className="ant-form-text">{FormatCurrency(totalPrice)}</span>
                   </Form.Item>
                   <Form.Item {...tailLayout} label="Giảm giá trực tiếp">
-                    <span className="ant-form-text">0đ</span>
+                    <span className="ant-form-text">{FormatCurrency(0)}</span>
                   </Form.Item>
                   <Form.Item {...tailLayout} label="Giảm giá voucher ">
-                    <span className="ant-form-text">0đ</span>
+                    <span className="ant-form-text">{FormatCurrency(0)}</span>
                   </Form.Item>
                   <hr />
                   <Form.Item {...tailLayout} label="Thành tiền">
-                    <span className="ant-form-text">339.000đ</span>
+                    <span className="ant-form-text">{FormatCurrency(totalPrice)}</span>
                   </Form.Item>
                 </Form>
                 {activeForm == false && <button onClick={() => setActiveForm(true)} style={labelButton}>Đặt hàng</button>}

@@ -2,8 +2,9 @@ import React from 'react';
 import { Typography, Card, Col, Row, Button } from 'antd';
 import { DownOutlined, BulbFilled, PlusCircleOutlined } from '@ant-design/icons';
 import './index.css';
-import { useDispatch } from 'react-redux';
-import { updateArrShoping } from 'slices/medicineSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProductToShopingCart } from 'slices/medicineSlice';
+import { RootState } from 'store';
 
 export interface HeaderProps { }
 
@@ -27,9 +28,11 @@ const styleCol: React.CSSProperties = {
 
 export default function ProductComponent(props: HeaderProps) {
   const dispatch = useDispatch();
+  const arrProduct = useSelector((state: RootState) => state.medicine.arrShoping);
 
   const addProduct = (value: any) => {
-    dispatch(updateArrShoping(value));
+    if (arrProduct.some(item => item?.key == value?.key) == false)
+      dispatch(addProductToShopingCart(value));
   }
 
 
