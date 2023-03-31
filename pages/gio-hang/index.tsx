@@ -43,7 +43,8 @@ const containerRight: React.CSSProperties = {
   borderRadius: ' 1.2rem',
   marginLeft: ' auto',
   top: ' 1rem',
-  maxWidth: ' 384px'
+  width: '95%',
+  margin: '10px auto'
 }
 
 const labelButton: React.CSSProperties = {
@@ -62,11 +63,11 @@ const labelButton: React.CSSProperties = {
 }
 
 const labelFormInfoCustomer: React.CSSProperties = {
-  maxWidth: ' 600px',
+  width: '95%',
   background: ' #fff',
   borderRadius: ' 0.8rem',
   padding: ' 1.6rem',
-  margin: ' 10px 0',
+  margin: ' 10px auto',
 }
 
 
@@ -148,7 +149,10 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
+
+
 export default function HomePage({ post }: HomePageProps) {
+
   const dispatch = useDispatch();
   //store
   const arrProduct = useSelector((state: RootState) => state.medicine.arrShoping);
@@ -156,6 +160,13 @@ export default function HomePage({ post }: HomePageProps) {
   const [totalPrice, setTotalPrice] = useState(0);
   const [dataSource, setDataSource] = useState<any>(arrProduct);
   const [activeForm, setActiveForm] = useState(false);
+  const [columnTable, setColumnTable] = useState<any>([]);
+
+  useEffect(() => {
+    if (window.innerWidth > 600) setColumnTable(defaultColumns);
+    else setColumnTable(mediaColumns);
+  }, [])
+
 
   useEffect(() => {
     let total = 0;
@@ -165,31 +176,53 @@ export default function HomePage({ post }: HomePageProps) {
     setTotalPrice(total);
   }, [arrProduct])
 
+  const mediaColumns = [
+    {
+      title: 'Thông tin sản phẩm',
+      dataIndex: 'name',
+      width: '90%',
+      render: (_: any, record: any) => {
+        return (<div style={{ display: 'flex', alignItems: 'center' }}>
+          <img
+            style={{
+              width: '52px', height: '52px',
+              boxShadow: '0 0 0 1px #e4e8ed',
+              borderRadius: '7.2px',
+              padding: '2px'
+            }}
+            alt="example"
+            src={record?.image}
+          />
+          <div>
+            <Typography.Title level={5}
+              style={{ color: '#000', margin: '10px', cursor: 'pointer' }}>{record.name}
+            </Typography.Title>
+            <Typography.Title level={5}
+              style={{ color: '#000', margin: '10px', cursor: 'pointer', border: 'none' }}>
+              {FormatCurrency(record?.price)}
+            </Typography.Title>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <Button disabled={record?.count <= 0} className='minus-class' onClick={() => actionChangeCountMedicine(record.key, 'minus')}>-</Button>
+              <Typography.Title level={5}
+                style={{ color: '#000', margin: '10px', cursor: 'pointer' }}>
+                <Input className='class-input-count' value={record?.count} />
+              </Typography.Title>
+              <Button className='plus-class' onClick={() => actionChangeCountMedicine(record.key, 'plus')}>+</Button>
+            </div>
+          </div>
+        </div>)
+      },
+    },
+    {
+      title: 'operation',
+      dataIndex: 'operation',
+      render: (_: any, record: any) =>
+        arrProduct.length >= 1 ? (
+          <DeleteOutlined onClick={() => handleDelete(record.key)} />
+        ) : null,
+    },
+  ]
 
-  const handleDelete = (key: any) => {
-    const newData: any = arrProduct.filter((item: any) => item.key !== key);
-    setDataSource(newData);
-    dispatch(updateArrShoping(newData));
-  };
-
-  const actionChangeCountMedicine = (key: any, type: any) => {
-    let newArrProduct: any = [];
-    arrProduct?.map(item => {
-      if (item?.key == key) {
-
-        if (type == 'minus' && item?.count > 0) {
-          newArrProduct.push({
-            ...item, count: item.count - 1
-          })
-        }
-        else if (type == 'plus') newArrProduct.push({
-          ...item, count: item.count + 1
-        })
-        else return;
-      } else newArrProduct.push(item);
-    })
-    dispatch(updateArrShoping(newArrProduct));
-  }
   const defaultColumns = [
     {
       title: 'Thông tin sản phẩm',
@@ -198,7 +231,12 @@ export default function HomePage({ post }: HomePageProps) {
       render: (_: any, record: any) => {
         return (<div style={{ display: 'flex', alignItems: 'center' }}>
           <img
-            style={{ width: '52px', height: '52px' }}
+            style={{
+              width: '52px', height: '52px',
+              boxShadow: '0 0 0 1px #e4e8ed',
+              borderRadius: '7.2px',
+              padding: '2px'
+            }}
             alt="example"
             src={record?.image}
           />
@@ -250,6 +288,31 @@ export default function HomePage({ post }: HomePageProps) {
     },
   ];
 
+  const handleDelete = (key: any) => {
+    const newData: any = arrProduct.filter((item: any) => item.key !== key);
+    setDataSource(newData);
+    dispatch(updateArrShoping(newData));
+  };
+
+  const actionChangeCountMedicine = (key: any, type: any) => {
+    let newArrProduct: any = [];
+    arrProduct?.map(item => {
+      if (item?.key == key) {
+
+        if (type == 'minus' && item?.count > 0) {
+          newArrProduct.push({
+            ...item, count: item.count - 1
+          })
+        }
+        else if (type == 'plus') newArrProduct.push({
+          ...item, count: item.count + 1
+        })
+        else return;
+      } else newArrProduct.push(item);
+    })
+    dispatch(updateArrShoping(newArrProduct));
+  }
+
   const handleSave = (row: any) => {
     const newData = [...arrProduct];
     const index = newData.findIndex((item) => row.key === item.key);
@@ -266,7 +329,7 @@ export default function HomePage({ post }: HomePageProps) {
       cell: EditableCell,
     },
   };
-  const columns = defaultColumns.map((col: any) => {
+  const columns = mediaColumns.map((col: any) => {
     if (!col.editable) {
       return col;
     }
@@ -332,25 +395,30 @@ export default function HomePage({ post }: HomePageProps) {
       <Layout>
         <HeaderComponent />
         <div style={classContainer}>
-          {activeForm == false ? <Breadcrumb
-            items={[
-              {
-                title: <Link href={'/'}>Trang chủ</Link>,
-              },
-              {
-                title: 'Giỏ hàng',
-              },
-            ]}
-          /> : <Typography.Title onClick={() => setActiveForm(false)}
-            level={5}
-            style={{ color: '#000', margin: '10px', cursor: 'pointer' }}
-          ><LeftOutlined /> Quay lại giỏ hàng
-          </Typography.Title>}
+          <div style={{ margin: '5px' }}>
+            {activeForm == false ? <Breadcrumb
+              items={[
+                {
+                  title: <Link href={'/'}>Trang chủ</Link>,
+                },
+                {
+                  title: 'Giỏ hàng',
+                },
+              ]}
+            /> : <Typography.Title onClick={() => setActiveForm(false)}
+              level={5}
+              style={{
+                color: '#000', cursor: 'pointer', display: 'flex',
+                alignItems: 'center'
+              }}
+            ><LeftOutlined /> Quay lại giỏ hàng
+            </Typography.Title>}
+          </div>
 
           <Row gutter={24}>
             {/* ROW ONE */}
-            <Col lg={16} xs={12}>
-              <div>
+            <Col lg={16} xs={24}>
+              <div style={{ margin: '5px' }}>
                 <Table
                   components={components}
                   rowClassName={() => 'editable-row'}
@@ -395,7 +463,7 @@ export default function HomePage({ post }: HomePageProps) {
                 </Form>
               }
             </Col>
-            <Col lg={8} xs={12}>
+            <Col lg={8} xs={24}>
               <div style={containerRight}>
                 <Form
                   name="validate_other"
