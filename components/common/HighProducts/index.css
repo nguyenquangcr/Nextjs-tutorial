@@ -1,9 +1,63 @@
-.banner-high-product{
+.custom-card {
+    position: relative;
+}
+
+.class-note {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 12px;
+    cursor: default;
+    height: auto;
+    line-height: 100%;
+    padding: 4px 8px;
+    border: none;
+    color: #fff;
+    background-color: #1d48ba;
+    border-radius: 10px;
+}
+
+.banner-high-product {
     margin-top: 50px;
-    background: linear-gradient(270deg,#072d94 0.46%,#597bd9 98.15%);
+    background: linear-gradient(270deg, #072d94 0.46%, #597bd9 98.15%);
     padding: 32px 0;
 }
 
-.high-product{
+.high-product {
     padding: 32px 0;
+}
+
+.nameMidicine {
+    display: -webkit-box;
+    margin-bottom: 8px !important;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    font-size: 17px !important;
+    font-weight: 400;
+    line-height: 24px !important;
+}
+
+.custom-card .ant-card-body {
+    padding-bottom: 15px !important;
+    padding: 5px 10px;
+}
+
+.class-price {
+    margin-top: 0 !important;
+    color: #334155 !important;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 18px !important;
+    font-weight: 400;
+    vertical-align: baseline;
+    background: 0 0;
+}
+
+.class-price span {
+    font-size: 18px !important;
+    color: #072d94 !important;
 }
