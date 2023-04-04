@@ -34,7 +34,7 @@ export default function HeaderComponent(props: HeaderProps) {
       <div style={classContainer} className={'classheaderchild'}>
         <Image
           preview={false}
-          src={'https://nhathuoclongchau.com.vn/frontend_v3/images/longchau-logo.svg'}
+          src={'https://res.cloudinary.com/dmttpbcgv/image/upload/v1680603568/Frame_16_hkotuy.svg'}
         />
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'flex-end' }}>
