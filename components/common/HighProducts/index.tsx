@@ -5,18 +5,11 @@ import './index.css';
 
 export interface HeaderProps { }
 
-const { Meta } = Card;
-
 const classContainer: React.CSSProperties = {
   width: ' 100%',
   maxWidth: ' 1200px',
   marginRight: ' auto',
   marginLeft: ' auto',
-};
-
-const headerImage: React.CSSProperties = {
-  width: '100vw',
-  height: '30px',
 };
 
 const styleCol: React.CSSProperties = {
