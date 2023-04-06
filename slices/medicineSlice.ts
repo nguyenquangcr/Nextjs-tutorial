@@ -2,11 +2,13 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface MedicineState {
-  arrShoping: Array<any>
+  arrShoping: Array<any>,
+  user: any
 }
 
 const initialState: MedicineState = {
     arrShoping: [],
+    user: null
 }
 
 export const medicineSlice = createSlice({
@@ -19,10 +21,13 @@ export const medicineSlice = createSlice({
     updateArrShoping: (state, {payload}: PayloadAction<any>) => {
         state.arrShoping = payload;
     },
+    updateUser: (state, {payload}: PayloadAction<any>) => {
+      state.user = payload;
+  },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { updateArrShoping, addProductToShopingCart } = medicineSlice.actions;
+export const { updateArrShoping, addProductToShopingCart,updateUser } = medicineSlice.actions;
 
 export default medicineSlice.reducer;

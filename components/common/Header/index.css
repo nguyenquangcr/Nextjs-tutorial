@@ -13,7 +13,7 @@
 @media only screen and (max-width: 600px) {
     .classheaderchild {
         display: flex;
-        justify-content: space-between;
+        justify-contscent: space-between;
         padding: 16px 0;
         flex-direction: column;
         align-items: center;
