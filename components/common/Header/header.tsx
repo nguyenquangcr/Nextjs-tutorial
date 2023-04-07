@@ -34,7 +34,7 @@ export default function HeaderComponent(props: HeaderProps) {
       <div style={classContainer} className={'classheaderchild'}>
         <Image
           preview={false}
-          src={'https://res.cloudinary.com/dmttpbcgv/image/upload/v1680603568/Frame_16_hkotuy.svg'}
+          src={'https://res.cloudinary.com/dmttpbcgv/image/upload/v1680844992/Frame_16_adjzb8.svg'}
         />
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'flex-end' }}>
