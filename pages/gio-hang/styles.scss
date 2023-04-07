@@ -43,3 +43,25 @@
   outline: none;
   color: #020b27;
 }
+
+.class-plus-btn {
+  display: flex;
+  align-items: center;
+  margin-top: 17px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  padding: 12px;
+  color: #fff;
+  outline: none;
+  border: none;
+  background: linear-gradient(315deg, #1250dc 14.64%, #306de4 85.36%);
+  border-radius: 42px;
+  cursor: pointer;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+}
+
+.class-plus-btn:hover {
+  color: #fff !important;
+}

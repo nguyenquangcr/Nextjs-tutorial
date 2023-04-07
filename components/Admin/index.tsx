@@ -8,6 +8,7 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 import MedicineAdminComponent from './MedicineAdminComponent';
+import OrderAdminComponent from './OrderAdminComponent';
 
 export interface PageAminProps {}
 
@@ -64,7 +65,7 @@ export default function PageAdminComponent(props: PageAminProps) {
             background: colorBgContainer,
           }}
         >
-          {keySelected == '1' ? <MedicineAdminComponent /> : 'Oerder'}
+          {keySelected == '1' ? <MedicineAdminComponent /> : <OrderAdminComponent />}
         </Content>
       </Layout>
     </Layout>

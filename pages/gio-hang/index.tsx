@@ -1,6 +1,3 @@
-import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
-import { notFound } from 'next/navigation';
-import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   Layout,
@@ -25,7 +22,7 @@ import { LeftOutlined, DeleteOutlined } from '@ant-design/icons';
 import FormatCurrency from '../../utils/FormatCurrency';
 //style
 import './styles.scss';
-import { updateArrShoping } from 'slices/medicineSlice';
+import { CreateOrder, updateArrShoping } from 'slices/medicineSlice';
 export interface HomePageProps {
   post: any;
 }
@@ -149,18 +146,24 @@ const EditableCell = ({
 };
 
 export default function HomePage({ post }: HomePageProps) {
+  const [form] = Form.useForm();
   const dispatch = useDispatch();
   //store
   const arrProduct = useSelector((state: RootState) => state.medicine.arrShoping);
   //state
   const [totalPrice, setTotalPrice] = useState(0);
-  const [dataSource, setDataSource] = useState<any>(arrProduct);
   const [activeForm, setActiveForm] = useState(false);
   const [columnTable, setColumnTable] = useState<any>([]);
+
+  const [loading, setloading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     if (window.innerWidth > 600) setColumnTable(defaultColumns);
     else setColumnTable(mediaColumns);
+    return () => {
+      setSuccess(false);
+    };
   }, []);
 
   useEffect(() => {
@@ -326,27 +329,31 @@ export default function HomePage({ post }: HomePageProps) {
 
   const handleDelete = (key: any) => {
     const newData: any = arrProduct.filter((item: any) => item.key !== key);
-    setDataSource(newData);
     dispatch(updateArrShoping(newData));
   };
 
   const actionChangeCountMedicine = (key: any, type: any) => {
     let newArrProduct: any = [];
+    // console.log('arrProduct', arrProduct);
+    // console.log('key', key);
+    // console.log('type', type);
+
     arrProduct?.map((item) => {
       if (item?.key == key) {
         if (type == 'minus' && item?.count > 0) {
-          newArrProduct.push({
+          return newArrProduct.push({
             ...item,
             count: item.count - 1,
           });
         } else if (type == 'plus')
-          newArrProduct.push({
+          return newArrProduct.push({
             ...item,
             count: item.count + 1,
           });
-        else return;
       } else newArrProduct.push(item);
     });
+    // console.log('newArrProduct', newArrProduct);
+
     dispatch(updateArrShoping(newArrProduct));
   };
 
@@ -358,7 +365,6 @@ export default function HomePage({ post }: HomePageProps) {
       ...item,
       ...row,
     });
-    setDataSource(newData);
   };
   const components = {
     body: {
@@ -424,167 +430,166 @@ export default function HomePage({ post }: HomePageProps) {
   };
 
   const onFinish = (values: any) => {
-    console.log(values);
+    setloading(true);
+    const formatValue = {
+      ...values,
+      order: arrProduct.map((item) => {
+        return { medicine: item?.name, count: item?.count };
+      }),
+      price: totalPrice,
+    };
+    if (formatValue?.price) dispatch(CreateOrder(formatValue, setloading, setSuccess));
   };
-
+  {
+    /* <Link href={'/'}>Trang chủ</Link> */
+  }
   return (
     <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
       <Layout>
         <HeaderComponent />
         <div style={classContainer}>
-          <div style={{ margin: '5px' }}>
-            {activeForm == false ? (
-              <Breadcrumb
-                items={[
-                  {
-                    title: <Link href={'/'}>Trang chủ</Link>,
-                  },
-                  {
-                    title: 'Giỏ hàng',
-                  },
-                ]}
-              />
-            ) : (
-              <Typography.Title
-                onClick={() => setActiveForm(false)}
-                level={5}
-                style={{
-                  color: '#000',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                <LeftOutlined /> Quay lại giỏ hàng
-              </Typography.Title>
-            )}
-          </div>
-
-          <Row gutter={24}>
-            {/* ROW ONE */}
-            <Col lg={16} xs={24}>
-              <div style={{ margin: '5px' }}>
-                <Table
-                  components={components}
-                  rowClassName={() => 'editable-row'}
-                  bordered
-                  dataSource={arrProduct}
-                  columns={columns}
-                  pagination={false}
+          {success == false && (
+            <div style={{ margin: '5px' }}>
+              {activeForm == false ? (
+                <Breadcrumb
+                  items={[
+                    {
+                      title: <Link href={'/'}>Trang chủ</Link>,
+                    },
+                    {
+                      title: 'Giỏ hàng',
+                    },
+                  ]}
                 />
-              </div>
-              {activeForm && (
-                <Form
-                  {...layout}
-                  name="nest-messages"
-                  onFinish={onFinish}
-                  style={labelFormInfoCustomer}
-                  validateMessages={validateMessages}
+              ) : (
+                <Typography.Title
+                  onClick={() => setActiveForm(false)}
+                  level={5}
+                  style={{
+                    color: '#000',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
                 >
-                  <Form.Item
-                    name={'name'}
-                    label="Họ và tên"
-                    rules={[{ required: true, message: 'Xin hãy nhập họ và tên!' }]}
-                  >
-                    <Input />
-                  </Form.Item>
-                  <Form.Item
-                    name={'email'}
-                    label="Email"
-                    rules={[{ type: 'email', required: true, message: 'Xin hãy nhập email!' }]}
-                  >
-                    <Input />
-                  </Form.Item>
-                  <Form.Item
-                    name="phone"
-                    label="Số điện thoại"
-                    rules={[{ required: true, message: 'Xin hãy nhập số điện thoại!' }]}
-                  >
-                    <Input type="number" />
-                  </Form.Item>
-                  <Form.Item name="note" label="Ghi chú">
-                    <Input placeholder="Thêm ghi chú (ví dụ: Hãy gọi trước khi giao)" />
-                  </Form.Item>
-                  <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                    <Button type="primary" htmlType="submit">
-                      Hoàn tất
-                    </Button>
-                  </Form.Item>
-                </Form>
+                  <LeftOutlined /> Quay lại giỏ hàng
+                </Typography.Title>
               )}
-            </Col>
-            <Col lg={8} xs={24}>
-              <div style={containerRight}>
-                <Form
-                  name="validate_other"
-                  {...formItemLayout}
-                  initialValues={{ 'input-number': 3, 'checkbox-group': ['A', 'B'], rate: 3.5 }}
-                  style={{ maxWidth: 600 }}
-                >
-                  <Form.Item {...tailLayout} label="Tổng tiền">
-                    <span className="ant-form-text">{FormatCurrency(totalPrice)}</span>
-                  </Form.Item>
-                  <Form.Item {...tailLayout} label="Giảm giá trực tiếp">
-                    <span className="ant-form-text">{FormatCurrency(0)}</span>
-                  </Form.Item>
-                  <Form.Item {...tailLayout} label="Giảm giá voucher ">
-                    <span className="ant-form-text">{FormatCurrency(0)}</span>
-                  </Form.Item>
-                  <hr />
-                  <Form.Item {...tailLayout} label="Thành tiền">
-                    <span className="ant-form-text">{FormatCurrency(totalPrice)}</span>
-                  </Form.Item>
-                </Form>
-                {activeForm == false && (
-                  <button onClick={() => setActiveForm(true)} style={labelButton}>
-                    Đặt hàng
-                  </button>
-                )}
-              </div>
-            </Col>
-          </Row>
-        </div>
+            </div>
+          )}
 
-        {/* <Footer style={footerStyle}>Footer</Footer> */}
+          {success === false ? (
+            <Row gutter={24}>
+              {/* ROW ONE */}
+              <Col lg={16} xs={24}>
+                <div style={{ margin: '5px' }}>
+                  <Table
+                    components={components}
+                    rowClassName={() => 'editable-row'}
+                    bordered
+                    dataSource={arrProduct}
+                    columns={columns}
+                    pagination={false}
+                  />
+                </div>
+                {activeForm && (
+                  <Form
+                    {...layout}
+                    disabled={loading == true ? true : false}
+                    form={form}
+                    name="nest-messages"
+                    onFinish={onFinish}
+                    style={labelFormInfoCustomer}
+                    validateMessages={validateMessages}
+                  >
+                    <Form.Item
+                      name={'name'}
+                      label="Họ và tên"
+                      rules={[{ required: true, message: 'Xin hãy nhập họ và tên!' }]}
+                    >
+                      <Input />
+                    </Form.Item>
+                    <Form.Item
+                      name={'email'}
+                      label="Email"
+                      rules={[{ type: 'email', required: true, message: 'Xin hãy nhập email!' }]}
+                    >
+                      <Input />
+                    </Form.Item>
+                    <Form.Item
+                      name="phone"
+                      label="Số điện thoại"
+                      rules={[{ required: true, message: 'Xin hãy nhập số điện thoại!' }]}
+                    >
+                      <Input type="number" />
+                    </Form.Item>
+                    <Form.Item
+                      name={'address'}
+                      label="Địa chỉ"
+                      rules={[{ required: true, message: 'Xin hãy nhập địa chỉ!' }]}
+                    >
+                      <Input />
+                    </Form.Item>
+                    <Form.Item name="note" label="Ghi chú">
+                      <Input placeholder="Thêm ghi chú (ví dụ: Hãy gọi trước khi giao)" />
+                    </Form.Item>
+                    <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+                      <Button loading={loading} type="primary" htmlType="submit">
+                        Hoàn tất
+                      </Button>
+                    </Form.Item>
+                  </Form>
+                )}
+              </Col>
+              <Col lg={8} xs={24}>
+                <div style={containerRight}>
+                  <Form
+                    name="validate_other"
+                    {...formItemLayout}
+                    initialValues={{ 'input-number': 3, 'checkbox-group': ['A', 'B'], rate: 3.5 }}
+                    style={{ maxWidth: 600 }}
+                  >
+                    <Form.Item {...tailLayout} label="Tổng tiền">
+                      <span className="ant-form-text">{FormatCurrency(totalPrice)}</span>
+                    </Form.Item>
+                    <Form.Item {...tailLayout} label="Giảm giá trực tiếp">
+                      <span className="ant-form-text">{FormatCurrency(0)}</span>
+                    </Form.Item>
+                    <Form.Item {...tailLayout} label="Giảm giá voucher ">
+                      <span className="ant-form-text">{FormatCurrency(0)}</span>
+                    </Form.Item>
+                    <hr />
+                    <Form.Item {...tailLayout} label="Thành tiền">
+                      <span className="ant-form-text">{FormatCurrency(totalPrice)}</span>
+                    </Form.Item>
+                  </Form>
+                  {activeForm == false && (
+                    <button onClick={() => setActiveForm(true)} style={labelButton}>
+                      Đặt hàng
+                    </button>
+                  )}
+                </div>
+              </Col>
+            </Row>
+          ) : (
+            <div style={{ textAlign: 'center', margin: '20px' }}>
+              <div>
+                {' '}
+                <Typography.Title
+                  level={2}
+                  style={{ color: '#000', margin: '10px', cursor: 'pointer' }}
+                >
+                  {' '}
+                  Đơn hàng của bạn đã được đặt thành công
+                </Typography.Title>
+              </div>
+              <Link href={'/'}>
+                <Button className="class-plus-btn">Quay lại trang chủ</Button>
+              </Link>
+            </div>
+          )}
+        </div>
       </Layout>
     </Space>
   );
 }
-
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   console.log('get static path');
-
-//   return {
-//     paths: [],
-//     fallback: false,
-//   };
-// };
-
-export const getStaticProps: GetStaticProps<HomePageProps> = async (
-  context: GetStaticPropsContext
-) => {
-  // console.log('get static props', context.params?.postId);
-  // const postId = context.params?.postId;
-  // console.log('postId:', postId);
-  // if (!postId)
-  //   return {
-  //     notFound: true,
-  //   };
-
-  //server-side
-  //run when build time
-  // const response = await fetch(`https://js-post-api.herokuapp.com/api/posts/${postId}`);
-  // const data = await response.json();
-
-  return {
-    props: {
-      post: [],
-    },
-  };
-};
-
-// export async function getServerSideProps(context: any) {
-//   return {
-//     props: {}, // will be passed to the page component as props
-//   }
-// }

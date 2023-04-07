@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 
-export const openNotificationWithIcon = (status, key) => {
+export const openNotificationWithIcon = (status: any, key: any) => {
   switch (status) {
     case 200:
       return toast.success(key, {
@@ -10,7 +10,7 @@ export const openNotificationWithIcon = (status, key) => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined
+        progress: undefined,
       });
     case 400:
     case 401:
@@ -23,7 +23,7 @@ export const openNotificationWithIcon = (status, key) => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined
+        progress: undefined,
       });
 
     default:
@@ -34,7 +34,7 @@ export const openNotificationWithIcon = (status, key) => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined
+        progress: undefined,
       });
   }
 };

@@ -31,7 +31,6 @@ import axios from 'axios';
 import { RootState } from 'store';
 import { openNotificationWithIcon } from '../notificationComponent';
 import FormatCurrency from 'utils/FormatCurrency';
-// import axios from 'axios'
 
 export interface MedicineProps {}
 
@@ -137,6 +136,7 @@ const components = {
 
 export default function MedicineAdminComponent(props: MedicineProps) {
   const dispatch = useDispatch();
+  const [form] = Form.useForm();
   //store
   const arrMedicine = useSelector((state: RootState) => state.medicine.arrMedicine);
   //state
@@ -308,15 +308,6 @@ export default function MedicineAdminComponent(props: MedicineProps) {
       if (property == 'upload') data.append('image', values[property]?.file?.originFileObj);
       else data.append(property, values[property]);
     }
-
-    // data.append('name', name);
-    // data.append('description', description);
-    // data.append('price', price);
-    // data.append('note', note);
-    // data.append('tag', tag);
-    // data.append('unit', unit);
-    // data.append('image', upload?.file?.originFileObj);
-
     const url = `${domain}/medicine`;
 
     // const config = {
@@ -332,6 +323,7 @@ export default function MedicineAdminComponent(props: MedicineProps) {
       .post(url, data)
       .then((res: any) => {
         setLoadding(false);
+        form.resetFields();
         dispatch(getListMedicine());
         openNotificationWithIcon(200, 'Thêm thành công');
       })
@@ -364,6 +356,7 @@ export default function MedicineAdminComponent(props: MedicineProps) {
       <Col lg={8} xs={24}>
         <div style={containerRight}>
           <Form
+            form={form}
             disabled={loadding ? true : false}
             name="basic"
             labelCol={{ span: 8 }}
