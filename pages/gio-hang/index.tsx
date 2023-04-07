@@ -1,6 +1,6 @@
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
 import { notFound } from 'next/navigation';
-import { useRouter, } from 'next/router';
+import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   Layout,
@@ -44,8 +44,8 @@ const containerRight: React.CSSProperties = {
   marginLeft: ' auto',
   top: ' 1rem',
   width: '95%',
-  margin: '10px auto'
-}
+  margin: '10px auto',
+};
 
 const labelButton: React.CSSProperties = {
   display: ' inline-flex',
@@ -59,8 +59,8 @@ const labelButton: React.CSSProperties = {
   background: ' linear-gradient(315deg,#1250dc 14.64%,#306de4 85.36%)',
   borderRadius: ' 42px',
   cursor: ' pointer',
-  fontFamily: ' Inter,Arial,Helvetica,sans-serif'
-}
+  fontFamily: ' Inter,Arial,Helvetica,sans-serif',
+};
 
 const labelFormInfoCustomer: React.CSSProperties = {
   width: '95%',
@@ -68,8 +68,7 @@ const labelFormInfoCustomer: React.CSSProperties = {
   borderRadius: ' 0.8rem',
   padding: ' 1.6rem',
   margin: ' 10px auto',
-}
-
+};
 
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }: any) => {
@@ -149,10 +148,7 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-
-
 export default function HomePage({ post }: HomePageProps) {
-
   const dispatch = useDispatch();
   //store
   const arrProduct = useSelector((state: RootState) => state.medicine.arrShoping);
@@ -165,16 +161,16 @@ export default function HomePage({ post }: HomePageProps) {
   useEffect(() => {
     if (window.innerWidth > 600) setColumnTable(defaultColumns);
     else setColumnTable(mediaColumns);
-  }, [])
-
+  }, []);
 
   useEffect(() => {
     let total = 0;
-    arrProduct.length > 0 && arrProduct.map(item => {
-      total += (item.price * item?.count)
-    })
+    arrProduct.length > 0 &&
+      arrProduct.map((item) => {
+        total += item.price * item?.count;
+      });
     setTotalPrice(total);
-  }, [arrProduct])
+  }, [arrProduct]);
 
   const mediaColumns = [
     {
@@ -182,46 +178,65 @@ export default function HomePage({ post }: HomePageProps) {
       dataIndex: 'name',
       width: '90%',
       render: (_: any, record: any) => {
-        return (<div style={{ display: 'flex', alignItems: 'center' }}>
-          <img
-            style={{
-              width: '52px', height: '52px',
-              boxShadow: '0 0 0 1px #e4e8ed',
-              borderRadius: '7.2px',
-              padding: '2px'
-            }}
-            alt="example"
-            src={record?.image}
-          />
-          <div>
-            <Typography.Title level={5}
-              style={{ color: '#000', margin: '10px', cursor: 'pointer' }}>{record.name}
-            </Typography.Title>
-            <Typography.Title level={5}
-              style={{ color: '#000', margin: '10px', cursor: 'pointer', border: 'none' }}>
-              {FormatCurrency(record?.price)}
-            </Typography.Title>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Button disabled={record?.count <= 0} className='minus-class' onClick={() => actionChangeCountMedicine(record.key, 'minus')}>-</Button>
-              <Typography.Title level={5}
-                style={{ color: '#000', margin: '10px', cursor: 'pointer' }}>
-                <Input className='class-input-count' value={record?.count} />
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img
+              style={{
+                width: '52px',
+                height: '52px',
+                boxShadow: '0 0 0 1px #e4e8ed',
+                borderRadius: '7.2px',
+                padding: '2px',
+              }}
+              alt="example"
+              src={record?.image}
+            />
+            <div>
+              <Typography.Title
+                level={5}
+                style={{ color: '#000', margin: '10px', cursor: 'pointer' }}
+              >
+                {record.name}
               </Typography.Title>
-              <Button className='plus-class' onClick={() => actionChangeCountMedicine(record.key, 'plus')}>+</Button>
+              <Typography.Title
+                level={5}
+                style={{ color: '#000', margin: '10px', cursor: 'pointer', border: 'none' }}
+              >
+                {FormatCurrency(record?.price)}
+              </Typography.Title>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Button
+                  disabled={record?.count <= 0}
+                  className="minus-class"
+                  onClick={() => actionChangeCountMedicine(record.key, 'minus')}
+                >
+                  -
+                </Button>
+                <Typography.Title
+                  level={5}
+                  style={{ color: '#000', margin: '10px', cursor: 'pointer' }}
+                >
+                  <Input className="class-input-count" value={record?.count} />
+                </Typography.Title>
+                <Button
+                  className="plus-class"
+                  onClick={() => actionChangeCountMedicine(record.key, 'plus')}
+                >
+                  +
+                </Button>
+              </div>
             </div>
           </div>
-        </div>)
+        );
       },
     },
     {
       title: 'operation',
       dataIndex: 'operation',
       render: (_: any, record: any) =>
-        arrProduct.length >= 1 ? (
-          <DeleteOutlined onClick={() => handleDelete(record.key)} />
-        ) : null,
+        arrProduct.length >= 1 ? <DeleteOutlined onClick={() => handleDelete(record.key)} /> : null,
     },
-  ]
+  ];
 
   const defaultColumns = [
     {
@@ -229,49 +244,72 @@ export default function HomePage({ post }: HomePageProps) {
       dataIndex: 'name',
       width: '35%',
       render: (_: any, record: any) => {
-        return (<div style={{ display: 'flex', alignItems: 'center' }}>
-          <img
-            style={{
-              width: '52px', height: '52px',
-              boxShadow: '0 0 0 1px #e4e8ed',
-              borderRadius: '7.2px',
-              padding: '2px'
-            }}
-            alt="example"
-            src={record?.image}
-          />
-          <Typography.Title level={5}
-            style={{ color: '#000', margin: '10px', cursor: 'pointer' }}>{record.name}
-          </Typography.Title>
-
-        </div>)
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img
+              style={{
+                width: '52px',
+                height: '52px',
+                boxShadow: '0 0 0 1px #e4e8ed',
+                borderRadius: '7.2px',
+                padding: '2px',
+              }}
+              alt="example"
+              src={record?.image}
+            />
+            <Typography.Title
+              level={5}
+              style={{ color: '#000', margin: '10px', cursor: 'pointer' }}
+            >
+              {record.name}
+            </Typography.Title>
+          </div>
+        );
       },
     },
     {
       title: 'Giá thành',
       dataIndex: 'price',
       render: (_: any, record: any) => {
-        return (<div style={{ display: 'flex', alignItems: 'center' }}>
-          <Typography.Title level={5}
-            style={{ color: '#000', margin: '10px', cursor: 'pointer', border: 'none' }}>
-            {FormatCurrency(record?.price)}
-          </Typography.Title>
-        </div>)
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Typography.Title
+              level={5}
+              style={{ color: '#000', margin: '10px', cursor: 'pointer', border: 'none' }}
+            >
+              {FormatCurrency(record?.price)}
+            </Typography.Title>
+          </div>
+        );
       },
-
     },
     {
       title: 'Số lượng',
       dataIndex: '',
       render: (_: any, record: any) => {
-        return (<div style={{ display: 'flex', alignItems: 'center' }}>
-          <Button disabled={record?.count <= 0} className='minus-class' onClick={() => actionChangeCountMedicine(record.key, 'minus')}>-</Button>
-          <Typography.Title level={5}
-            style={{ color: '#000', margin: '10px', cursor: 'pointer' }}>
-            <Input className='class-input-count' value={record?.count} />
-          </Typography.Title>
-          <Button className='plus-class' onClick={() => actionChangeCountMedicine(record.key, 'plus')}>+</Button>
-        </div>)
+        return (
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Button
+              disabled={record?.count <= 0}
+              className="minus-class"
+              onClick={() => actionChangeCountMedicine(record.key, 'minus')}
+            >
+              -
+            </Button>
+            <Typography.Title
+              level={5}
+              style={{ color: '#000', margin: '10px', cursor: 'pointer' }}
+            >
+              <Input className="class-input-count" value={record?.count} />
+            </Typography.Title>
+            <Button
+              className="plus-class"
+              onClick={() => actionChangeCountMedicine(record.key, 'plus')}
+            >
+              +
+            </Button>
+          </div>
+        );
       },
     },
     {
@@ -282,9 +320,7 @@ export default function HomePage({ post }: HomePageProps) {
       title: 'operation',
       dataIndex: 'operation',
       render: (_: any, record: any) =>
-        arrProduct.length >= 1 ? (
-          <DeleteOutlined onClick={() => handleDelete(record.key)} />
-        ) : null,
+        arrProduct.length >= 1 ? <DeleteOutlined onClick={() => handleDelete(record.key)} /> : null,
     },
   ];
 
@@ -296,22 +332,23 @@ export default function HomePage({ post }: HomePageProps) {
 
   const actionChangeCountMedicine = (key: any, type: any) => {
     let newArrProduct: any = [];
-    arrProduct?.map(item => {
+    arrProduct?.map((item) => {
       if (item?.key == key) {
-
         if (type == 'minus' && item?.count > 0) {
           newArrProduct.push({
-            ...item, count: item.count - 1
-          })
-        }
-        else if (type == 'plus') newArrProduct.push({
-          ...item, count: item.count + 1
-        })
+            ...item,
+            count: item.count - 1,
+          });
+        } else if (type == 'plus')
+          newArrProduct.push({
+            ...item,
+            count: item.count + 1,
+          });
         else return;
       } else newArrProduct.push(item);
-    })
+    });
     dispatch(updateArrShoping(newArrProduct));
-  }
+  };
 
   const handleSave = (row: any) => {
     const newData = [...arrProduct];
@@ -329,7 +366,7 @@ export default function HomePage({ post }: HomePageProps) {
       cell: EditableCell,
     },
   };
-  const columns = mediaColumns.map((col: any) => {
+  const columns = columnTable.map((col: any) => {
     if (!col.editable) {
       return col;
     }
@@ -396,23 +433,31 @@ export default function HomePage({ post }: HomePageProps) {
         <HeaderComponent />
         <div style={classContainer}>
           <div style={{ margin: '5px' }}>
-            {activeForm == false ? <Breadcrumb
-              items={[
-                {
-                  title: <Link href={'/'}>Trang chủ</Link>,
-                },
-                {
-                  title: 'Giỏ hàng',
-                },
-              ]}
-            /> : <Typography.Title onClick={() => setActiveForm(false)}
-              level={5}
-              style={{
-                color: '#000', cursor: 'pointer', display: 'flex',
-                alignItems: 'center'
-              }}
-            ><LeftOutlined /> Quay lại giỏ hàng
-            </Typography.Title>}
+            {activeForm == false ? (
+              <Breadcrumb
+                items={[
+                  {
+                    title: <Link href={'/'}>Trang chủ</Link>,
+                  },
+                  {
+                    title: 'Giỏ hàng',
+                  },
+                ]}
+              />
+            ) : (
+              <Typography.Title
+                onClick={() => setActiveForm(false)}
+                level={5}
+                style={{
+                  color: '#000',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <LeftOutlined /> Quay lại giỏ hàng
+              </Typography.Title>
+            )}
           </div>
 
           <Row gutter={24}>
@@ -428,18 +473,26 @@ export default function HomePage({ post }: HomePageProps) {
                   pagination={false}
                 />
               </div>
-              {
-                activeForm && <Form
+              {activeForm && (
+                <Form
                   {...layout}
                   name="nest-messages"
                   onFinish={onFinish}
                   style={labelFormInfoCustomer}
                   validateMessages={validateMessages}
                 >
-                  <Form.Item name={'name'} label="Họ và tên" rules={[{ required: true, message: 'Xin hãy nhập họ và tên!' }]}>
+                  <Form.Item
+                    name={'name'}
+                    label="Họ và tên"
+                    rules={[{ required: true, message: 'Xin hãy nhập họ và tên!' }]}
+                  >
                     <Input />
                   </Form.Item>
-                  <Form.Item name={'email'} label="Email" rules={[{ type: 'email', required: true, message: 'Xin hãy nhập email!' }]}>
+                  <Form.Item
+                    name={'email'}
+                    label="Email"
+                    rules={[{ type: 'email', required: true, message: 'Xin hãy nhập email!' }]}
+                  >
                     <Input />
                   </Form.Item>
                   <Form.Item
@@ -447,13 +500,10 @@ export default function HomePage({ post }: HomePageProps) {
                     label="Số điện thoại"
                     rules={[{ required: true, message: 'Xin hãy nhập số điện thoại!' }]}
                   >
-                    <Input type='number' />
+                    <Input type="number" />
                   </Form.Item>
-                  <Form.Item
-                    name="note"
-                    label="Ghi chú"
-                  >
-                    <Input placeholder='Thêm ghi chú (ví dụ: Hãy gọi trước khi giao)' />
+                  <Form.Item name="note" label="Ghi chú">
+                    <Input placeholder="Thêm ghi chú (ví dụ: Hãy gọi trước khi giao)" />
                   </Form.Item>
                   <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
                     <Button type="primary" htmlType="submit">
@@ -461,7 +511,7 @@ export default function HomePage({ post }: HomePageProps) {
                     </Button>
                   </Form.Item>
                 </Form>
-              }
+              )}
             </Col>
             <Col lg={8} xs={24}>
               <div style={containerRight}>
@@ -485,7 +535,11 @@ export default function HomePage({ post }: HomePageProps) {
                     <span className="ant-form-text">{FormatCurrency(totalPrice)}</span>
                   </Form.Item>
                 </Form>
-                {activeForm == false && <button onClick={() => setActiveForm(true)} style={labelButton}>Đặt hàng</button>}
+                {activeForm == false && (
+                  <button onClick={() => setActiveForm(true)} style={labelButton}>
+                    Đặt hàng
+                  </button>
+                )}
               </div>
             </Col>
           </Row>
@@ -493,7 +547,7 @@ export default function HomePage({ post }: HomePageProps) {
 
         {/* <Footer style={footerStyle}>Footer</Footer> */}
       </Layout>
-    </Space >
+    </Space>
   );
 }
 
