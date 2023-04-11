@@ -2,16 +2,13 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   Layout,
   Space,
-  Image,
   Breadcrumb,
   Row,
   Col,
   Table,
   Form,
   Input,
-  Popconfirm,
   Button,
-  InputNumber,
   Typography,
 } from 'antd';
 import HeaderComponent from '@/components/common/Header/header';
@@ -23,9 +20,6 @@ import FormatCurrency from '../../utils/FormatCurrency';
 //style
 import './styles.scss';
 import { CreateOrder, updateArrShoping } from 'slices/medicineSlice';
-export interface HomePageProps {
-  post: any;
-}
 
 const classContainer: React.CSSProperties = {
   width: ' 100%',
@@ -145,25 +139,21 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-export default function HomePage({ post }: HomePageProps) {
+export default function HomePage() {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   //store
   const arrProduct = useSelector((state: RootState) => state.medicine.arrShoping);
+  //ref
+  const refcolumn: React.MutableRefObject<number> = useRef(0);
   //state
   const [totalPrice, setTotalPrice] = useState(0);
   const [activeForm, setActiveForm] = useState(false);
-  const [columnTable, setColumnTable] = useState<any>([]);
-
   const [loading, setloading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    if (window.innerWidth > 600) setColumnTable(defaultColumns);
-    else setColumnTable(mediaColumns);
-    return () => {
-      setSuccess(false);
-    };
+    refcolumn.current = window.innerWidth;
   }, []);
 
   useEffect(() => {
@@ -334,10 +324,6 @@ export default function HomePage({ post }: HomePageProps) {
 
   const actionChangeCountMedicine = (key: any, type: any) => {
     let newArrProduct: any = [];
-    // console.log('arrProduct', arrProduct);
-    // console.log('key', key);
-    // console.log('type', type);
-
     arrProduct?.map((item) => {
       if (item?.key == key) {
         if (type == 'minus' && item?.count > 0) {
@@ -352,41 +338,15 @@ export default function HomePage({ post }: HomePageProps) {
           });
       } else newArrProduct.push(item);
     });
-    // console.log('newArrProduct', newArrProduct);
-
     dispatch(updateArrShoping(newArrProduct));
   };
 
-  const handleSave = (row: any) => {
-    const newData = [...arrProduct];
-    const index = newData.findIndex((item) => row.key === item.key);
-    const item = newData[index];
-    newData.splice(index, 1, {
-      ...item,
-      ...row,
-    });
-  };
   const components = {
     body: {
       row: EditableRow,
       cell: EditableCell,
     },
   };
-  const columns = columnTable.map((col: any) => {
-    if (!col.editable) {
-      return col;
-    }
-    return {
-      ...col,
-      onCell: (record: any) => ({
-        record,
-        editable: col.editable,
-        dataIndex: col.dataIndex,
-        title: col.title,
-        handleSave,
-      }),
-    };
-  });
 
   //form
   const formItemLayout = {
@@ -440,9 +400,7 @@ export default function HomePage({ post }: HomePageProps) {
     };
     if (formatValue?.price) dispatch(CreateOrder(formatValue, setloading, setSuccess));
   };
-  {
-    /* <Link href={'/'}>Trang chủ</Link> */
-  }
+
   return (
     <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
       <Layout>
@@ -483,14 +441,24 @@ export default function HomePage({ post }: HomePageProps) {
               {/* ROW ONE */}
               <Col lg={16} xs={24}>
                 <div style={{ margin: '5px' }}>
-                  <Table
-                    components={components}
-                    rowClassName={() => 'editable-row'}
-                    bordered
-                    dataSource={arrProduct}
-                    columns={columns}
-                    pagination={false}
-                  />
+                  {
+                    refcolumn.current > 600 ? <Table
+                      components={components}
+                      rowClassName={() => 'editable-row'}
+                      bordered
+                      dataSource={arrProduct}
+                      columns={defaultColumns}
+                      pagination={false}
+                    /> : <Table
+                      components={components}
+                      rowClassName={() => 'editable-row'}
+                      bordered
+                      dataSource={arrProduct}
+                      columns={mediaColumns}
+                      pagination={false}
+                    />
+                  }
+
                 </div>
                 {activeForm && (
                   <Form
