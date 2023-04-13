@@ -1,53 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Layout,
-  Space,
-  Image,
-  Breadcrumb,
   Row,
   Col,
   Table,
   Form,
   Input,
   Popconfirm,
-  Button,
-  InputNumber,
   Typography,
-  Upload,
+  Badge,
 } from 'antd';
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  DeleteOutlined,
-} from '@ant-design/icons';
-import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
+import { DeleteOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteMedicine, deleteOrder, getListMedicine, getListOrder } from 'slices/medicineSlice';
-import { domain } from 'Constant';
-import axios from 'axios';
+import { deleteOrder, getListOrder, updateStatusOrder } from 'slices/medicineSlice';
 import { RootState } from 'store';
-import { openNotificationWithIcon } from '../notificationComponent';
 import FormatCurrency from 'utils/FormatCurrency';
-// import axios from 'axios'
+import moment from 'moment';
 
-export interface OrderProps {}
+export interface OrderProps { }
 
-const headerImage: React.CSSProperties = {
-  width: '100vw',
-  height: '30px',
+//form
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 8 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 16 },
+  },
 };
 
-const containerRight: React.CSSProperties = {
-  padding: ' 16px',
-  background: ' #fff',
-  borderRadius: ' 1.2rem',
-  marginLeft: ' auto',
-  top: ' 1rem',
-  width: '95%',
-  margin: '10px auto',
+const layout = {
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
+};
+
+const tailLayout = {
+  wrapperCol: {
+    xs: {
+      span: 24,
+      offset: 0,
+    },
+    sm: {
+      span: 16,
+      offset: 8,
+    },
+  },
+};
+
+const styleFormItem: React.CSSProperties = {
+  marginBottom: '0'
 };
 
 const EditableContext = React.createContext(null);
@@ -140,156 +142,114 @@ export default function OrderAdminComponent(props: OrderProps) {
   //store
   const arrOrder = useSelector((state: RootState) => state.medicine.arrOrder);
   //state
-  const [loadding, setLoadding] = useState(false);
-  const [columnTable, setColumnTable] = useState<any>([]);
+  const [pageSize, setPageSize] = useState(3);
 
   useEffect(() => {
     dispatch(getListOrder());
   }, []);
 
-  //   useEffect(() => {
-  //     if (window.innerWidth > 1000) setColumnTable(defaultColumns);
-  //     else setColumnTable(mediaColumns);
-  //   }, []);
-
   const defaultColumns = [
     {
-      title: 'Tên',
-      dataIndex: 'name',
+      title: 'Mã khách hàng',
+      dataIndex: 'id',
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
+      title: 'Ngày tạo',
+      dataIndex: 'createAt',
+      render: (_: any, record: any) => {
+        return <Typography.Title
+          level={5}
+        >
+          {moment(record.createAt, 'YYYY-MM-DD HH:mm:ss').add(7, 'hour').format('DD/MM/YYYY HH:mm:ss')}
+        </Typography.Title>
+      }
     },
     {
-      title: 'Số điện thoại',
-      dataIndex: 'phoneNumber',
-    },
-    {
-      title: 'Địa chỉ',
-      dataIndex: 'address',
-    },
-    {
-      title: 'Ghi chú',
-      dataIndex: 'note',
-    },
-    {
-      title: 'Tổng tiền',
-      dataIndex: 'price',
+      title: 'Thông tin khách hàng',
+      dataIndex: '',
       render: (_: any, record: any) => {
         return (
-          <Typography.Title
-            level={5}
-            style={{ color: '#000', margin: '10px', cursor: 'pointer', border: 'none' }}
-          >
-            {FormatCurrency(record?.price)}
-          </Typography.Title>
-        );
-      },
+          <div>
+            <Form
+              name="validate_other"
+            >
+              <Form.Item style={styleFormItem} label="Tên">
+                <span>{record?.name}</span>
+              </Form.Item>
+              <Form.Item style={styleFormItem} label="Email">
+                <span>{record?.email}</span>
+              </Form.Item>
+              <Form.Item style={styleFormItem} label="Số điện thoại">
+                <span>{record?.phoneNumber}</span>
+              </Form.Item>
+              <Form.Item style={styleFormItem} label="Địa chỉ">
+                <span>{record?.address}</span>
+              </Form.Item>
+              <Form.Item style={styleFormItem} label="Ghi chú">
+                <span>{record?.note}</span>
+              </Form.Item>
+            </Form>
+          </div>
+        )
+      }
     },
     {
       title: 'Chi tiết đơn hàng',
       dataIndex: 'order',
-      width: '35%',
       render: (_: any, record: any) => {
         return (
-          record?.order &&
-          record?.order?.map((item: any, index: any) => {
-            return (
-              <div key={index}>
-                <div>
-                  <span>Tên thuốc: {item.medicine}</span> <span>Số lượng: {item.count}</span>
-                </div>
-              </div>
-            );
-          })
+          <div>
+            <Form
+              name="validate_other"
+            >
+              <Form.Item style={styleFormItem} label="Tổng tiền">
+                <span>{FormatCurrency(record?.price)}</span>
+              </Form.Item>
+              {
+                record?.order &&
+                record?.order?.map((item: any, index: any) => {
+                  return (
+                    <div key={index}>
+                      <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                        <Form.Item style={styleFormItem} label="Tên thuốc">
+                          <span>{item.medicine}</span>
+                        </Form.Item>
+                        <Form.Item style={{ marginLeft: '10px', marginBottom: '0' }} label="Số lượng">
+                          <span>{item.count}</span>
+                        </Form.Item>
+                      </div>
+                    </div>
+                  );
+                })
+              }
+            </Form>
+          </div>
         );
       },
     },
     {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      render: (_: any, record: any) => {
+        return <>{record.status ? <Badge status="success" text="Đã xử lý" /> : <Badge status="processing" text="Đang xử lý" />}</>
+      }
+    }, {
       title: '',
       dataIndex: '',
-      render: (_: any, record: { key: React.Key }) => (
-        <Popconfirm
-          style={{ cursor: 'pointer' }}
-          title="Bạn có chắc chắn xóa?"
-          onConfirm={() => handleDelete(record)}
-        >
-          <a>
-            <DeleteOutlined style={{ fontSize: '20px', color: 'red' }} /> Xóa
-          </a>
-        </Popconfirm>
+      render: (_: any, record: any) => (
+        <>
+          {record.status == false && <div style={{ color: 'blue', cursor: 'pointer', margin: '5px' }} onClick={() => dispatch(updateStatusOrder(record.id, { status: true }))}>Hoàn thành</div>}
+          <Popconfirm
+            style={{ cursor: 'pointer' }}
+            title="Bạn có chắc chắn xóa?"
+            onConfirm={() => handleDelete(record)}
+          >
+            <a style={{ color: 'red', margin: '5px' }}>Xóa</a>
+          </Popconfirm>
+        </>
       ),
     },
   ];
-
-  //   const mediaColumns = [
-  //     {
-  //       title: 'Thông tin sản phẩm',
-  //       dataIndex: 'name',
-  //       width: '90%',
-  //       render: (_: any, record: any) => {
-  //         return (
-  //           <div style={{ display: 'flex', alignItems: 'center' }}>
-  //             <img
-  //               style={{
-  //                 width: '52px',
-  //                 height: '52px',
-  //                 boxShadow: '0 0 0 1px #e4e8ed',
-  //                 borderRadius: '7.2px',
-  //                 padding: '2px',
-  //               }}
-  //               alt="example"
-  //               src={record?.image}
-  //             />
-  //             <div>
-  //               <Typography.Title
-  //                 level={5}
-  //                 style={{ color: '#000', margin: '10px', cursor: 'pointer' }}
-  //               >
-  //                 {record.name}
-  //               </Typography.Title>
-  //               <Typography.Title
-  //                 level={5}
-  //                 style={{ color: '#000', margin: '10px', cursor: 'pointer', border: 'none' }}
-  //               >
-  //                 {FormatCurrency(record?.price)}
-  //               </Typography.Title>
-  //               <div style={{ display: 'flex', alignItems: 'center' }}>
-  //                 <Typography.Title
-  //                   level={5}
-  //                   style={{ color: '#000', margin: '10px', cursor: 'pointer' }}
-  //                 >
-  //                   {record.unit}
-  //                 </Typography.Title>
-  //                 <Typography.Title
-  //                   level={5}
-  //                   style={{ color: '#000', margin: '10px', cursor: 'pointer' }}
-  //                 >
-  //                   {record.note}
-  //                 </Typography.Title>
-  //               </div>
-  //             </div>
-  //           </div>
-  //         );
-  //       },
-  //     },
-  //     {
-  //       title: '',
-  //       dataIndex: '',
-  //       render: (_: any, record: { key: React.Key }) => (
-  //         <Popconfirm
-  //           style={{ cursor: 'pointer' }}
-  //           title="Bạn có chắc chắn xóa?"
-  //           onConfirm={() => handleDelete(record)}
-  //         >
-  //           <a>
-  //             <DeleteOutlined style={{ fontSize: '20px', color: 'red' }} /> Xóa
-  //           </a>
-  //         </Popconfirm>
-  //       ),
-  //     },
-  //   ];
 
   const handleDelete = (value: any) => {
     dispatch(deleteOrder(value?.id));
@@ -306,7 +266,9 @@ export default function OrderAdminComponent(props: OrderProps) {
             bordered
             dataSource={arrOrder}
             columns={defaultColumns}
-            pagination={false}
+            pagination={{
+              pageSize: pageSize, showSizeChanger: true, pageSizeOptions: ['3', '10', '15'], onChange: (page, pageside) => { setPageSize(pageside) }
+            }}
           />
         </div>
       </Col>

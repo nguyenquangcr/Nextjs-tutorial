@@ -13,6 +13,7 @@ export const medicineService = {
     const endpoint = `${domain}/medicine/${id}`;
     return axios.delete(endpoint);
   },
+  //Order
   _createOrder: (data: any) => {
     const endpoint = `${domain}/order`;
     return axios.post(endpoint, data);
@@ -25,4 +26,8 @@ export const medicineService = {
     const endpoint = `${domain}/order/${id}`;
     return axios.delete(endpoint);
   },
+  __updateStatusOrder: (id:string, data:any) => {
+    const endpoint = `${domain}/order/${id}/updateStatus`;
+    return axios.put(endpoint, data);
+  }
 };

@@ -39,18 +39,18 @@ export default function PageAdminComponent(props: PageAminProps) {
             {
               key: '1',
               icon: <UserOutlined />,
-              label: 'Medicine',
+              label: 'Thuốc',
             },
             {
               key: '2',
               icon: <VideoCameraOutlined />,
-              label: 'Order',
+              label: 'Đơn hàng',
             },
           ]}
         />
       </Sider>
       <Layout className="site-layout">
-        <Header style={{ padding: 5, background: colorBgContainer }}>
+        <Header style={{ background: colorBgContainer }}>
           {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
             className: 'trigger',
             onClick: () => setCollapsed(!collapsed),
@@ -58,8 +58,7 @@ export default function PageAdminComponent(props: PageAminProps) {
         </Header>
         <Content
           style={{
-            margin: '24px 16px',
-            padding: 24,
+            margin: '10px',
             minHeight: 280,
             background: colorBgContainer,
           }}

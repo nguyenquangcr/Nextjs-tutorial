@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Layout,
-  Space,
-  Image,
-  Breadcrumb,
   Row,
   Col,
   Table,
@@ -19,7 +15,6 @@ import {
   UploadOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
-import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteMedicine, getListMedicine } from 'slices/medicineSlice';
 import { domain } from 'Constant';
@@ -140,6 +135,7 @@ export default function MedicineAdminComponent(props: MedicineProps) {
   const [columnTable, setColumnTable] = useState<any>([]);
   const [typeForm, setTypeForm] = useState('ADD');
   const [idUpdate, setidUpdate] = useState(null);
+  const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
     dispatch(getListMedicine());
@@ -222,7 +218,7 @@ export default function MedicineAdminComponent(props: MedicineProps) {
     {
       title: 'Thông tin sản phẩm',
       dataIndex: 'name',
-      width: '90%',
+      width: '75%',
       render: (_: any, record: any) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -273,15 +269,12 @@ export default function MedicineAdminComponent(props: MedicineProps) {
       title: '',
       dataIndex: '',
       render: (_: any, record: { key: React.Key }) => (
-        <Popconfirm
+        <><Popconfirm
           style={{ cursor: 'pointer' }}
           title="Bạn có chắc chắn xóa?"
           onConfirm={() => handleDelete(record)}
-        >
-          <a>
-            <DeleteOutlined style={{ fontSize: '20px', color: 'red' }} /> Xóa
-          </a>
-        </Popconfirm>
+        ><a style={{ color: 'red' }}> Xóa</a>
+        </Popconfirm><a style={{ color: 'blue', marginLeft: '10px' }} onClick={() => funcFillDataMedicin(record)}> Chỉnh sửa</a></>
       ),
     },
   ];
@@ -321,7 +314,7 @@ export default function MedicineAdminComponent(props: MedicineProps) {
 
     if (typeForm == "UPDATE") {
       return await axios
-        .put(`${url}/${idUpdate}`, values)
+        .put(`${url}/${idUpdate}`, data)
         .then((res: any) => {
           setLoadding(false);
           form.resetFields();
@@ -360,13 +353,14 @@ export default function MedicineAdminComponent(props: MedicineProps) {
       <Col lg={16} xs={24}>
         <div style={{ margin: '5px', height: '100%' }}>
           <Table
-            scroll={{ y: '60vh' }}
             components={components}
             rowClassName={() => 'editable-row'}
             bordered
             dataSource={arrMedicine}
             columns={columnTable}
-            pagination={false}
+            pagination={{
+              pageSize: pageSize, showSizeChanger: true, pageSizeOptions: ['10', '20', '30'], onChange: (page, pageside) => { setPageSize(pageside) }
+            }}
           />
         </div>
       </Col>
@@ -383,31 +377,31 @@ export default function MedicineAdminComponent(props: MedicineProps) {
             onFinish={onFinish}
             autoComplete="off"
           >
-            <Form.Item label="Name" name="name" rules={[{ required: true }]}>
+            <Form.Item label="Tên" name="name" rules={[{ required: true }]}>
+              <Input.TextArea />
+            </Form.Item>
+
+            <Form.Item label="Mô tả" name="description">
+              <Input.TextArea />
+            </Form.Item>
+
+            <Form.Item label="Đơn vị" name="unit" rules={[{ required: true }]}>
               <Input />
             </Form.Item>
 
-            <Form.Item label="Description" name="description">
+            <Form.Item label="Ghi chú" name="note">
               <Input />
             </Form.Item>
 
-            <Form.Item label="Unit" name="unit" rules={[{ required: true }]}>
+            <Form.Item label="Giá bán" name="price" rules={[{ required: true }]}>
+              <InputNumber style={{ minWidth: '100px' }} addonAfter="VND" />
+            </Form.Item>
+
+            <Form.Item label="Danh mục" name="tags" >
               <Input />
             </Form.Item>
 
-            <Form.Item label="Note" name="note">
-              <Input />
-            </Form.Item>
-
-            <Form.Item label="Price" name="price" rules={[{ required: true }]}>
-              <InputNumber />
-            </Form.Item>
-
-            <Form.Item label="Tag" name="tag" rules={[{ required: true }]}>
-              <Input />
-            </Form.Item>
-
-            <Form.Item name="upload" label="Upload">
+            <Form.Item name="upload" label="Hình ảnh">
               <Upload
                 customRequest={customRequest}
                 fileList={fileList}
@@ -423,7 +417,7 @@ export default function MedicineAdminComponent(props: MedicineProps) {
 
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
               {
-                typeForm == 'UPDATE' && <Button style={{ marginRight: '10px' }} loading={loadding} type="default" onClick={() => {
+                typeForm == 'UPDATE' && <Button style={{ marginRight: '10px' }} type="default" onClick={() => {
                   setTypeForm("ADD");
                   form.resetFields();
                 }}>

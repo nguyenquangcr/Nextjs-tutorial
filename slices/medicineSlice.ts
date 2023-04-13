@@ -146,4 +146,24 @@ export function deleteOrder(id: string): any {
   };
 }
 
+export function updateStatusOrder(id: string, data:any): any {
+  return async (dispatch: any) => {
+    try {
+      await medicineService
+        .__updateStatusOrder(id,data)
+        .then((res) => {
+          if (res) {
+            openNotificationWithIcon(200, 'Cập nhật trạng thái đơn hàng thành công');
+            dispatch(getListOrder());
+          }
+        })
+        .catch((err) => {
+          console.log('err', err);
+        });
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+}
+
 export default medicineSlice.reducer;
