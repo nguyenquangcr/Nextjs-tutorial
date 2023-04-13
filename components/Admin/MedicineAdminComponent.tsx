@@ -16,11 +16,7 @@ import {
   Upload,
 } from 'antd';
 import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
   UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
   DeleteOutlined,
 } from '@ant-design/icons';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
@@ -32,7 +28,7 @@ import { RootState } from 'store';
 import { openNotificationWithIcon } from '../notificationComponent';
 import FormatCurrency from 'utils/FormatCurrency';
 
-export interface MedicineProps {}
+export interface MedicineProps { }
 
 const headerImage: React.CSSProperties = {
   width: '100vw',
@@ -142,6 +138,8 @@ export default function MedicineAdminComponent(props: MedicineProps) {
   //state
   const [loadding, setLoadding] = useState(false);
   const [columnTable, setColumnTable] = useState<any>([]);
+  const [typeForm, setTypeForm] = useState('ADD');
+  const [idUpdate, setidUpdate] = useState(null);
 
   useEffect(() => {
     dispatch(getListMedicine());
@@ -207,15 +205,15 @@ export default function MedicineAdminComponent(props: MedicineProps) {
       title: '',
       dataIndex: '',
       render: (_: any, record: { key: React.Key }) => (
-        <Popconfirm
+        <><Popconfirm
           style={{ cursor: 'pointer' }}
           title="Bạn có chắc chắn xóa?"
           onConfirm={() => handleDelete(record)}
         >
-          <a>
-            <DeleteOutlined style={{ fontSize: '20px', color: 'red' }} /> Xóa
+          <a style={{ color: 'red' }}>
+            Xóa
           </a>
-        </Popconfirm>
+        </Popconfirm><a style={{ color: 'blue', marginLeft: '10px' }} onClick={() => funcFillDataMedicin(record)}> Chỉnh sửa</a></>
       ),
     },
   ];
@@ -288,6 +286,14 @@ export default function MedicineAdminComponent(props: MedicineProps) {
     },
   ];
 
+  const funcFillDataMedicin = (value: any) => {
+    setidUpdate(value?.id)
+    setTypeForm("UPDATE");
+    for (const property in value) {
+      if (property !== 'image') form.setFieldValue(property, value[property])
+    }
+  }
+
   const handleDelete = (value: any) => {
     dispatch(deleteMedicine(value?.id));
   };
@@ -300,26 +306,35 @@ export default function MedicineAdminComponent(props: MedicineProps) {
   const [fileList, setFileList] = useState<any>([]);
 
   const onFinish = async (values: any) => {
+    console.log('values:', values)
     setLoadding(true);
     const { name, description, price, note, tag, unit, upload } = values;
     const data = new FormData();
 
     for (const property in values) {
-      if (property == 'upload') data.append('image', values[property]?.file?.originFileObj);
+      if (property == 'upload') {
+        if (values[property]?.file?.originFileObj) data.append('image', values[property]?.file?.originFileObj);
+      }
       else data.append(property, values[property]);
     }
     const url = `${domain}/medicine`;
 
-    // const config = {
-    //     onUploadProgress: function (progressEvent) {
-    //         var percentCompleted = Math.round(
-    //             (progressEvent.loaded * 100) / progressEvent.total
-    //         );
-    //         setProgress(percentCompleted);
-    //     }
-    // };
-
-    await axios
+    if (typeForm == "UPDATE") {
+      return await axios
+        .put(`${url}/${idUpdate}`, values)
+        .then((res: any) => {
+          setLoadding(false);
+          form.resetFields();
+          setTypeForm("ADD")
+          dispatch(getListMedicine());
+          openNotificationWithIcon(200, 'Cập nhật thành công');
+        })
+        .catch((err: any) => {
+          setLoadding(false);
+          openNotificationWithIcon(500, 'Cập nhật thất bại');
+          console.log('err:', err);
+        });
+    } else return await axios
       .post(url, data)
       .then((res: any) => {
         setLoadding(false);
@@ -332,6 +347,7 @@ export default function MedicineAdminComponent(props: MedicineProps) {
         openNotificationWithIcon(500, 'Thêm thất bại');
         console.log('err:', err);
       });
+
   };
 
   const onUploadChange = (info: any) => {
@@ -342,8 +358,9 @@ export default function MedicineAdminComponent(props: MedicineProps) {
     <Row gutter={24}>
       {/* ROW ONE */}
       <Col lg={16} xs={24}>
-        <div style={{ margin: '5px' }}>
+        <div style={{ margin: '5px', height: '100%' }}>
           <Table
+            scroll={{ y: '60vh' }}
             components={components}
             rowClassName={() => 'editable-row'}
             bordered
@@ -393,8 +410,6 @@ export default function MedicineAdminComponent(props: MedicineProps) {
             <Form.Item name="upload" label="Upload">
               <Upload
                 customRequest={customRequest}
-                // onRemove={onRemove}
-                // ref={ref}
                 fileList={fileList}
                 onChange={onUploadChange}
                 maxCount={1}
@@ -404,9 +419,19 @@ export default function MedicineAdminComponent(props: MedicineProps) {
               </Upload>
             </Form.Item>
 
+
+
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+              {
+                typeForm == 'UPDATE' && <Button style={{ marginRight: '10px' }} loading={loadding} type="default" onClick={() => {
+                  setTypeForm("ADD");
+                  form.resetFields();
+                }}>
+                  Hủy
+                </Button>
+              }
               <Button loading={loadding} type="primary" htmlType="submit">
-                Submit
+                {typeForm == 'UPDATE' ? 'Chỉnh sửa' : "Thêm"}
               </Button>
             </Form.Item>
           </Form>

@@ -10,11 +10,10 @@ import {
 import MedicineAdminComponent from './MedicineAdminComponent';
 import OrderAdminComponent from './OrderAdminComponent';
 
-export interface PageAminProps {}
+export interface PageAminProps { }
 
-const headerImage: React.CSSProperties = {
-  width: '100vw',
-  height: '30px',
+const styleSiderbar: React.CSSProperties = {
+  minHeight: '100vh'
 };
 
 const { Header, Sider, Content } = Layout;
@@ -28,8 +27,8 @@ export default function PageAdminComponent(props: PageAminProps) {
   } = theme.useToken();
 
   return (
-    <Layout style={{ height: '100vh' }}>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+    <Layout style={{ height: '100%' }}>
+      <Sider style={styleSiderbar} trigger={null} collapsible collapsed={collapsed}>
         <div className="logo" />
         <Menu
           onClick={(value) => setKeySelected(value?.key)}

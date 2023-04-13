@@ -34,10 +34,11 @@ export interface HomePageProps {
 }
 
 const classContainer: React.CSSProperties = {
-  width: ' 100%',
-  maxWidth: ' 1200px',
-  marginRight: ' auto',
-  marginLeft: ' auto',
+  width: '100%',
+  minWidth: '100vw',
+  minHeight: '100vh',
+  height: '100%',
+  background: 'rgb(248, 249, 250)'
 };
 
 export default function HomePage({ post }: HomePageProps) {
@@ -50,7 +51,7 @@ export default function HomePage({ post }: HomePageProps) {
     if (user?.username == 'admin' && user?.password == 'admin') setcheckLogin(true)
   }, [user])
 
-  return (<>{checkLogin == false ? <FormLoginComponent /> : <PageAdminComponent />}</>);
+  return (<div style={classContainer}>{checkLogin == false ? <FormLoginComponent /> : <PageAdminComponent />}</div>);
 }
 
 // export const getStaticPaths: GetStaticPaths = async () => {
