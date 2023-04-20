@@ -12,6 +12,7 @@ import OrderAdminComponent from './OrderAdminComponent';
 import { getUserInfo, updateAccessToken, updateInforUser } from 'slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
+import './style.scss';
 
 export interface PageAminProps {}
 
@@ -60,7 +61,7 @@ export default function PageAdminComponent(props: PageAminProps) {
         />
       </Sider>
       <Layout className="site-layout">
-        <Header style={{ background: colorBgContainer }}>
+        <Header className="custom-mobile" style={{ background: colorBgContainer }}>
           {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
             className: 'trigger',
             onClick: () => setCollapsed(!collapsed),
