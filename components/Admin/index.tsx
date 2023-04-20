@@ -13,10 +13,10 @@ import { getUserInfo, updateAccessToken, updateInforUser } from 'slices/userSlic
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 
-export interface PageAminProps { }
+export interface PageAminProps {}
 
 const styleSiderbar: React.CSSProperties = {
-  minHeight: '100vh'
+  minHeight: '100vh',
 };
 
 const { Header, Sider, Content } = Layout;
@@ -33,9 +33,8 @@ export default function PageAdminComponent(props: PageAminProps) {
   } = theme.useToken();
 
   React.useEffect(() => {
-    dispatch(getUserInfo())
+    dispatch(getUserInfo());
   }, []);
-
 
   return (
     <Layout style={{ height: '100%' }}>
@@ -67,12 +66,17 @@ export default function PageAdminComponent(props: PageAminProps) {
             onClick: () => setCollapsed(!collapsed),
           })}
           <span style={{ color: '#000', margin: '10px', fontSize: '20px' }}>
-            welcome to, {inforUser.name}
-            <span style={{ color: 'blue', marginLeft: '10px', fontSize: '20px', cursor: 'pointer' }} onClick={() => {
-              localStorage.setItem('accessToken', '');
-              dispatch(updateAccessToken(null))
-              dispatch(updateInforUser({}))
-            }}>Đăng xuất</span>
+            Chào mừng , {inforUser?.name}
+            <span
+              style={{ color: 'blue', marginLeft: '10px', fontSize: '20px', cursor: 'pointer' }}
+              onClick={() => {
+                localStorage.setItem('accessToken', '');
+                dispatch(updateAccessToken(null));
+                dispatch(updateInforUser({}));
+              }}
+            >
+              Đăng xuất
+            </span>
           </span>
         </Header>
         <Content
