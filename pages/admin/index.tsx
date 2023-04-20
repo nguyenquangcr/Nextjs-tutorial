@@ -29,6 +29,7 @@ import './styles.scss';
 import { updateArrShoping } from 'slices/medicineSlice';
 import FormLoginComponent from '@/components/Form/FormLoginComponent';
 import PageAdminComponent from '@/components/Admin';
+import { updateAccessToken } from 'slices/userSlice';
 export interface HomePageProps {
   post: any;
 }
@@ -42,16 +43,18 @@ const classContainer: React.CSSProperties = {
 };
 
 export default function HomePage({ post }: HomePageProps) {
+  const dispatch = useDispatch();
   //store
-  const user = useSelector((state: RootState) => state.medicine.user);
+  const accessToken = useSelector((state: RootState) => state.user.accessToken);
   //state
-  const [checkLogin, setcheckLogin] = useState(false)
 
   useEffect(() => {
-    if (user?.username == 'admin' && user?.password == 'admin') setcheckLogin(true)
-  }, [user])
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) dispatch(updateAccessToken(accessToken));
+  }, [])
 
-  return (<div style={classContainer}>{checkLogin == false ? <FormLoginComponent /> : <PageAdminComponent />}</div>);
+
+  return (<div style={classContainer}>{accessToken == null ? <FormLoginComponent /> : <PageAdminComponent />}</div>);
 }
 
 // export const getStaticPaths: GetStaticPaths = async () => {

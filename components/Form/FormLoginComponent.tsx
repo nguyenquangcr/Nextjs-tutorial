@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { RootState } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from 'slices/medicineSlice';
+import { funcLogin } from 'slices/userSlice';
 
 export interface FormLoginProps { }
 
@@ -15,12 +16,12 @@ const headerImage: React.CSSProperties = {
 
 export default function FormLoginComponent(props: FormLoginProps) {
     const dispatch = useDispatch();
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-    };
+    //store
+    const loading = useSelector((state: RootState) => state.user.loading);
+    //state
 
-    const onFinish = (values: any) => {
-        dispatch(updateUser(values))
+    const onFinish = ({ username, password }: any) => {
+        dispatch(funcLogin({ username, password }))
     };
 
     return (<Form
@@ -30,32 +31,31 @@ export default function FormLoginComponent(props: FormLoginProps) {
         style={{ maxWidth: 600, padding: '50px', margin: '0 auto' }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
     >
         <Form.Item
-            label="Username"
+            label="Tên đăng nhập"
             name="username"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: 'Xin hãy nhập tên đăng nhập!' }]}
         >
             <Input />
         </Form.Item>
 
         <Form.Item
-            label="Password"
+            label="Mật khẩu"
             name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            rules={[{ required: true, message: 'Xin hãy nhập mật khẩu!' }]}
         >
             <Input.Password />
         </Form.Item>
 
         <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
-            <Checkbox>Remember me</Checkbox>
+            <Checkbox>Ghi nhớ tôi</Checkbox>
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type="primary" htmlType="submit">
-                Submit
+            <Button loading={loading} type="primary" htmlType="submit">
+                Đăng nhập
             </Button>
         </Form.Item>
     </Form>)

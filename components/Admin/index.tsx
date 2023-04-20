@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Menu, theme } from 'antd';
+import { Layout, Menu, theme, Typography } from 'antd';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -9,6 +9,9 @@ import {
 } from '@ant-design/icons';
 import MedicineAdminComponent from './MedicineAdminComponent';
 import OrderAdminComponent from './OrderAdminComponent';
+import { getUserInfo, updateAccessToken, updateInforUser } from 'slices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store';
 
 export interface PageAminProps { }
 
@@ -19,12 +22,20 @@ const styleSiderbar: React.CSSProperties = {
 const { Header, Sider, Content } = Layout;
 
 export default function PageAdminComponent(props: PageAminProps) {
+  const dispatch = useDispatch();
+  const inforUser: any = useSelector((state: RootState) => state.user.inforUser);
+  //state
   const [collapsed, setCollapsed] = useState(false);
   const [keySelected, setKeySelected] = useState('1');
 
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  React.useEffect(() => {
+    dispatch(getUserInfo())
+  }, []);
+
 
   return (
     <Layout style={{ height: '100%' }}>
@@ -55,6 +66,14 @@ export default function PageAdminComponent(props: PageAminProps) {
             className: 'trigger',
             onClick: () => setCollapsed(!collapsed),
           })}
+          <span style={{ color: '#000', margin: '10px', fontSize: '20px' }}>
+            welcome to, {inforUser.name}
+            <span style={{ color: 'blue', marginLeft: '10px', fontSize: '20px', cursor: 'pointer' }} onClick={() => {
+              localStorage.setItem('accessToken', '');
+              dispatch(updateAccessToken(null))
+              dispatch(updateInforUser({}))
+            }}>Đăng xuất</span>
+          </span>
         </Header>
         <Content
           style={{

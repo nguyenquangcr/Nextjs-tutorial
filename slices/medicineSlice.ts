@@ -25,8 +25,6 @@ export const medicineSlice = createSlice({
       state.arrShoping = [...state.arrShoping, payload];
     },
     updateArrShoping: (state, { payload }: PayloadAction<any>) => {
-      // console.log('payload', payload);
-
       state.arrShoping = payload;
     },
     updateUser: (state, { payload }: PayloadAction<any>) => {
@@ -146,11 +144,11 @@ export function deleteOrder(id: string): any {
   };
 }
 
-export function updateStatusOrder(id: string, data:any): any {
+export function updateStatusOrder(id: string, data: any): any {
   return async (dispatch: any) => {
     try {
       await medicineService
-        .__updateStatusOrder(id,data)
+        .__updateStatusOrder(id, data)
         .then((res) => {
           if (res) {
             openNotificationWithIcon(200, 'Cập nhật trạng thái đơn hàng thành công');
