@@ -29,7 +29,7 @@ import './styles.scss';
 import { updateArrShoping } from 'slices/medicineSlice';
 import FormLoginComponent from '@/components/Form/FormLoginComponent';
 import PageAdminComponent from '@/components/Admin';
-import { updateAccessToken } from 'slices/userSlice';
+import { updateAccessToken, updateInforUser } from 'slices/userSlice';
 export interface HomePageProps {
   post: any;
 }
@@ -46,11 +46,17 @@ export default function HomePage({ post }: HomePageProps) {
   const dispatch = useDispatch();
   //store
   const accessToken = useSelector((state: RootState) => state.user.accessToken);
+  const inforUser: any = useSelector((state: RootState) => state.user.inforUser);
   //state
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) dispatch(updateAccessToken(accessToken));
+    return () => {
+      localStorage.setItem('accessToken', '');
+      dispatch(updateAccessToken(null));
+      dispatch(updateInforUser(null));
+    }
   }, [])
 
 
