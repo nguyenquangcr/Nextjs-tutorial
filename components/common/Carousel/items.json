@@ -5,28 +5,28 @@
         "id": 1,
         "title": "Photography",
         "body": "Bootstrap Carousel Example",
-        "imageUrl": "https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/1600x400/filters:quality(100):fill(white)/https://nhathuoclongchau.com.vn/upload/slide/1678849856-VRaS-hang-nhat-t3.png",
+        "imageUrl": "https://cdn.nhathuoclongchau.com.vn/unsafe/1610x492/https://cms-prod.s3-sgn09.fptcloud.com/Banner_Destop_cb5af066c4.png",
         "docs": "https://getbootstrap.com/docs/4.0/components/carousel/"
       },
       {
         "id": 2,
         "title": "City Views",
         "body": "Bootstrap Carousel Example",
-        "imageUrl": "https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/1600x400/filters:quality(100):fill(white)/https://nhathuoclongchau.com.vn/upload/slide/1678849994-9Ilx-fmcg-t3-2023.jpg",
+        "imageUrl": "https://cdn.nhathuoclongchau.com.vn/unsafe/1610x492/https://cms-prod.s3-sgn09.fptcloud.com/Banner_Web_PC_1610x492_e287158fd1.png",
         "docs": "https://getbootstrap.com/docs/4.0/components/carousel/"
       },
       {
         "id": 3,
         "title": "Wild Life",
         "body": "Bootstrap Carousel Example",
-        "imageUrl": "https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/1600x400/filters:quality(100):fill(white)/https://nhathuoclongchau.com.vn/upload/slide/1679467148-87n5-tien-phong-tra-gop-0.jpg",
+        "imageUrl": "https://cdn.nhathuoclongchau.com.vn/unsafe/1610x492/https://cms-prod.s3-sgn09.fptcloud.com/D1_805x246_71ffc24b02.png",
         "docs": "https://getbootstrap.com/docs/4.0/components/carousel/"
       },
       {
         "id": 4,
         "title": "Foods and Culture",
         "body": "Bootstrap Carousel Example",
-        "imageUrl": "https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/1600x400/filters:quality(100):fill(white)/https://nhathuoclongchau.com.vn/upload/slide/1678847543-Y1Nu-thiet-bi-y-te-2023.png",
+        "imageUrl": "https://cdn.nhathuoclongchau.com.vn/unsafe/1610x492/https://cms-prod.s3-sgn09.fptcloud.com/Banner_Web_PC_805x246_87b0f61c8c.png",
         "docs": "https://getbootstrap.com/docs/4.0/components/carousel/"
       }
     ],
