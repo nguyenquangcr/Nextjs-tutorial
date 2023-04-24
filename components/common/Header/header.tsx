@@ -25,11 +25,6 @@ export default function HeaderComponent(props: HeaderProps) {
   const arrShoping = useSelector((state: RootState) => state.medicine.arrShoping);
 
   return <div style={{ position: 'sticky', top: 0, zIndex: 1000, width: '100%' }}>
-    <Image
-      style={headerImage}
-      preview={false}
-      src={'https://nhathuoclongchau.com.vn/frontend_v3/images/covid/notification-bar.png'}
-    />
     <div className={'classheader'}>
       <div style={classContainer} className={'classheaderchild'}>
         <Image
@@ -40,7 +35,6 @@ export default function HeaderComponent(props: HeaderProps) {
           <div style={{ display: 'flex', alignItems: 'flex-end' }}>
             <FileTextFilled style={{ fontSize: '40px', color: 'rgb(255 255 255 / 95%)' }} />
             <Typography.Title level={5} style={{ color: '#fff', marginBottom: 0, marginLeft: '8px' }}>Tra cứu </Typography.Title>
-            {/* <Typography.Text>Lịch sử đơn hàng</Typography.Text> */}
           </div>
           <Link href={'/gio-hang'}>
             <div style={{ display: 'flex', alignItems: 'flex-end', marginLeft: '15px', cursor: 'pointer' }}>
