@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Layout, Space, Image } from 'antd';
-import notification from './notification-bar.png'
+import notification from './notification-bar.png';
 import HeaderComponent from '@/components/common/Header/header';
 import BootstrapCarousel from '@/components/common/Carousel';
 import SearchComponent from '@/components/common/SearchComponent';
@@ -11,13 +11,12 @@ import HighProductComponent from '@/components/common/HighProducts';
 import ProductComponent from '@/components/common/Products';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
+import axios from 'axios';
 
 const { Header, Footer, Sider, Content } = Layout;
 export interface HomePageProps {
-  post: any;
+  medicine: any;
 }
-
-
 
 const contentStyle: React.CSSProperties = {
   textAlign: 'center',
@@ -33,10 +32,7 @@ const footerStyle: React.CSSProperties = {
   backgroundColor: '#7dbcea',
 };
 
-export default function HomePage({ post }: HomePageProps) {
-
-  const count = useSelector((state: RootState) => state.counter.value);
-
+export default function HomePage({ medicine }: HomePageProps) {
   return (
     <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
       <Layout>
@@ -44,7 +40,7 @@ export default function HomePage({ post }: HomePageProps) {
         <BootstrapCarousel />
         <SearchComponent />
         {/* high product */}
-        <HighProductComponent />
+        <HighProductComponent medicine={medicine} />
         {/* product */}
         <ProductComponent />
         <Footer style={footerStyle}>Footer</Footer>
@@ -62,7 +58,6 @@ export default function HomePage({ post }: HomePageProps) {
 //   };
 // };
 
-
 export const getStaticProps: GetStaticProps<HomePageProps> = async (
   context: GetStaticPropsContext
 ) => {
@@ -76,14 +71,19 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async (
 
   //server-side
   //run when build time
-  // const response = await fetch(`https://js-post-api.herokuapp.com/api/posts/${postId}`);
-  // const data = await response.json();
+  let arrMedicine: any = [];
+  await axios
+    .get(`https://heroku-backend-nestjs.herokuapp.com/medicine/getListToParams?take=8`)
+    .then((res) => {
+      console.log('-----------------------------');
+      arrMedicine = res.data;
+      console.log('res:', res);
+    });
 
   return {
     props: {
-      post: [],
+      medicine: arrMedicine,
     },
-
   };
 };
 
