@@ -77,7 +77,6 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async (
     .then((res) => {
       console.log('-----------------------------');
       arrMedicine = res.data;
-      console.log('res:', res);
     });
 
   return {

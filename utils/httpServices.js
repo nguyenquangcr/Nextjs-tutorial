@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { domainFE } from 'Constant';
 // ----------------------------------------------------------------------
 
 const getLocalStorage = (key) => {
@@ -32,30 +33,28 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// axiosInstance.interceptors.response.use(
-//   response => response,
-//   error => {
-//     if (
-//       error?.response?.data?.code !== undefined &&
-//       error?.response?.data?.code == 401
-//     ) {
-//       window.location = CENTRAL_LOGOUT_ENDPOINT;
-//       storage.removeItem('redux-auth');
-//       storage.removeItem('accessToken');
-//     }
-//     if (
-//       error?.response?.status !== undefined &&
-//       error?.response?.status == 401
-//     ) {
-//       window.location = CENTRAL_LOGOUT_ENDPOINT;
-//       storage.removeItem('redux-auth');
-//       storage.removeItem('accessToken');
-//     }
-//     return Promise.reject(
-//       (error.response && error.response.data) || 'Something went wrong'
-//     );
-//   }
-// );
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.log('error:', error);
+    if (error?.response?.statusText == 'Unauthorized' && error?.response?.status == 401) {
+      window.location = domainFE;
+      storage.removeItem('redux-auth');
+      storage.removeItem('accessToken');
+    }
+    // if (
+    //   error?.response?.status !== undefined &&
+    //   error?.response?.status == 401
+    // ) {
+    //   window.location = CENTRAL_LOGOUT_ENDPOINT;
+    //   storage.removeItem('redux-auth');
+    //   storage.removeItem('accessToken');
+    // }
+    // return Promise.reject(
+    //   (error.response && error.response.data) || 'Something went wrong'
+    // );
+  }
+);
 
 export default axiosInstance;
 
