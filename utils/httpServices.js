@@ -36,11 +36,10 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.log('error:', error);
     if (error?.response?.statusText == 'Unauthorized' && error?.response?.status == 401) {
-      window.location = domainFE;
       storage.removeItem('redux-auth');
       storage.removeItem('accessToken');
+      // window.location = domainFE;
     }
     // if (
     //   error?.response?.status !== undefined &&
