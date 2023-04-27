@@ -29,8 +29,11 @@ const styleCol: React.CSSProperties = {
 
 export default function ProductComponent(props: HeaderProps) {
   const dispatch = useDispatch();
+  //state store
   const arrProduct = useSelector((state: RootState) => state.medicine.arrShoping);
   const arrMedicineUser = useSelector((state: RootState) => state.medicine.listMedicineUser);
+  const totalMedicine = useSelector((state: RootState) => state.medicine.totalMedicine);
+  const accessTokenUser = useSelector((state: RootState) => state.user.accessTokenUser);
 
   React.useEffect(() => {
     dispatch(getListMedicineUser(8));
@@ -42,12 +45,18 @@ export default function ProductComponent(props: HeaderProps) {
   };
 
   const handleBtnViewPlus = () => {
-    if (arrMedicineUser.length < 16) {
-      return dispatch(getListMedicineUser(16));
-    } else {
-      return dispatch(updateOpenModalLoging(true));
-    }
+    if (arrMedicineUser.length >= 16) {
+      if (accessTokenUser == null) return dispatch(updateOpenModalLoging(true));
+      else dispatch(getListMedicineUser(arrMedicineUser.length + 8));
+    } else dispatch(getListMedicineUser(arrMedicineUser.length + 8));
   };
+
+  const renderTextBtnPlus = () => {
+    if (arrMedicineUser.length >= 16) {
+      if (accessTokenUser == null) return 'Vui lòng đăng nhập để xem tiếp';
+      else return 'Xem thêm 8 sản phẩm';
+    } else return 'Xem thêm 8 sản phẩm'
+  }
 
   return (
     <div>
@@ -115,15 +124,16 @@ export default function ProductComponent(props: HeaderProps) {
         </Row>
 
         <div className="text-center m-4">
-          <Button
+          {arrMedicineUser.length < totalMedicine && <Button
             onClick={() => handleBtnViewPlus()}
             style={{ display: 'flex', margin: 'auto', alignItems: 'center' }}
             shape="round"
             icon={arrMedicineUser.length < 16 && <DownOutlined />}
             size={'large'}
           >
-            {arrMedicineUser.length < 16 ? 'Xem thêm 8 sản phẩm' : 'Vui lòng đăng nhập để xem tiếp'}
-          </Button>
+            {/* {arrMedicineUser.length < 16 ? 'Xem thêm 8 sản phẩm' : 'Vui lòng đăng nhập để xem tiếp'} */}
+            {renderTextBtnPlus()}
+          </Button>}
         </div>
       </div>
     </div>

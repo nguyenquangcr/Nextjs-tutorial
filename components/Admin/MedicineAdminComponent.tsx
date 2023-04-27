@@ -299,7 +299,6 @@ export default function MedicineAdminComponent(props: MedicineProps) {
   const [fileList, setFileList] = useState<any>([]);
 
   const onFinish = async (values: any) => {
-    console.log('values:', values)
     setLoadding(true);
     const { name, description, price, note, tag, unit, upload } = values;
     const data = new FormData();

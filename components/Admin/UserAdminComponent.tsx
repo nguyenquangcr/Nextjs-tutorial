@@ -182,7 +182,6 @@ export default function UserAdminComponent(props: MedicineProps) {
         dispatch(deleteUser(value?.id));
     };
     const onFinish = async (values: any) => {
-        console.log('values:', values);
         const { name, email, password } = values;
         dispatch(CreateUser({
             name, email, password, role: 'member'

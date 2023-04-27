@@ -501,8 +501,11 @@ export default function HomePage() {
                     <Form.Item name="note" label="Ghi chú">
                       <Input placeholder="Thêm ghi chú (ví dụ: Hãy gọi trước khi giao)" />
                     </Form.Item>
-                    <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-                      <Button loading={loading} type="primary" htmlType="submit">
+                    <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}
+                      help={arrProduct.length == 0 && "Vui lòng thêm sản phẩm vào giỏ hàng"}
+                      validateStatus={"error"}
+                    >
+                      <Button disabled={arrProduct.length == 0} loading={loading} type="primary" htmlType="submit">
                         Hoàn tất
                       </Button>
                     </Form.Item>

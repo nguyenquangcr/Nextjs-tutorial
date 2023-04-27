@@ -4,6 +4,7 @@ import { medicineService } from 'api/medicine';
 import { openNotificationWithIcon } from '@/components/notificationComponent';
 
 export interface MedicineState {
+  totalMedicine: number;
   listMedicineUser: Array<any>;
   arrShoping: Array<any>;
   user: any;
@@ -12,6 +13,7 @@ export interface MedicineState {
 }
 
 const initialState: MedicineState = {
+  totalMedicine: 0,
   listMedicineUser: [],
   arrShoping: [],
   user: null,
@@ -23,6 +25,9 @@ export const medicineSlice = createSlice({
   name: 'medicine',
   initialState,
   reducers: {
+    updateTotalMedicine: (state, { payload }: PayloadAction<any>) => {
+      state.totalMedicine = payload;
+    },
     addProductToShopingCart: (state, { payload }: PayloadAction<any>) => {
       state.arrShoping = [...state.arrShoping, payload];
     },
@@ -66,6 +71,26 @@ export function getListMedicine(): any {
     }
   };
 }
+
+export function UpdateTotalMedicine(): any {
+  return async (dispatch: any) => {
+    try {
+      await medicineService
+        .getListMedicine()
+        .then((res) => {
+          if (res) {
+            dispatch(medicineSlice.actions.updateTotalMedicine(res?.data?.length));
+          }
+        })
+        .catch((err) => {
+          console.log('err', err);
+        });
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+}
+
 export function getListMedicineUser(take: number): any {
   return async (dispatch: any) => {
     try {

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { RootState } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
 import { funcLoginUser, getUserInfoUser, updateAccessTokenUser, updateInforUser, updateOpenModalLoging } from 'slices/userSlice';
+import { openNotificationWithIcon } from '@/components/notificationComponent';
 
 export interface HeaderProps { }
 
@@ -31,7 +32,8 @@ export default function HeaderComponent(props: HeaderProps) {
 
   React.useEffect(() => {
     if (localStorage.getItem('accessTokenUser')) {
-      dispatch(getUserInfoUser())
+      dispatch(getUserInfoUser());
+      dispatch(updateAccessTokenUser(localStorage.getItem('accessTokenUser')))
     }
   }, [])
 
@@ -64,7 +66,9 @@ export default function HeaderComponent(props: HeaderProps) {
                 <Typography.Title level={5} style={{ color: '#fff', marginBottom: 0, marginLeft: '8px' }}>{inforUser?.name}</Typography.Title>
               </div>
             </Popover>}
-          <Link href={'/gio-hang'}>
+          <Link href={arrShoping.length != 0 ? '/gio-hang' : '/'} onClick={() => {
+            if (arrShoping.length == 0) openNotificationWithIcon(500, 'Vui lòng thêm sản phẩm vào giỏ hàng trước khi đi đến trang thanh toán!');
+          }}>
             <div style={{ display: 'flex', alignItems: 'flex-end', marginLeft: '15px', cursor: 'pointer' }}>
               <Badge count={arrShoping ? arrShoping.length : ''}>
                 <ShoppingFilled style={{ fontSize: '30px', color: 'rgb(255 255 255 / 95%)' }} />

@@ -9,9 +9,10 @@ import BootstrapCarousel from '@/components/common/Carousel';
 import SearchComponent from '@/components/common/SearchComponent';
 import HighProductComponent from '@/components/common/HighProducts';
 import ProductComponent from '@/components/common/Products';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import axios from 'axios';
+import { UpdateTotalMedicine } from 'slices/medicineSlice';
 
 const { Header, Footer, Sider, Content } = Layout;
 export interface HomePageProps {
@@ -33,6 +34,14 @@ const footerStyle: React.CSSProperties = {
 };
 
 export default function HomePage({ medicine }: HomePageProps) {
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(UpdateTotalMedicine())
+  }, [])
+
+
+
   return (
     <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
       <Layout>
@@ -72,12 +81,12 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async (
   //server-side
   //run when build time
   let arrMedicine: any = [];
-  // await axios
-  //   .get(`https://heroku-backend-nestjs.herokuapp.com/medicine/getListToParams?take=8`)
-  //   .then((res) => {
-  //     console.log('-----------------------------');
-  //     arrMedicine = res.data;
-  //   });
+  await axios
+    .get(`https://heroku-backend-nestjs.herokuapp.com/medicine/getListToParams?take=8`)
+    .then((res) => {
+      console.log('-----------------------------');
+      arrMedicine = res.data;
+    });
 
   return {
     props: {
