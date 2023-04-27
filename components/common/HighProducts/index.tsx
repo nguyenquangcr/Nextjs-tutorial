@@ -1,9 +1,11 @@
 import React from 'react';
-import { Typography, Card, Col, Row } from 'antd';
-import { HighlightFilled, BulbFilled } from '@ant-design/icons';
-import Image from 'next/image';
+import { Typography, Card, Col, Row, Button } from 'antd';
+import { HighlightFilled, BulbFilled, PlusCircleOutlined } from '@ant-design/icons';
 //style
 import './index.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { addProductToShopingCart } from 'slices/medicineSlice';
+import { RootState } from 'store';
 
 const classContainer: React.CSSProperties = {
   width: ' 100%',
@@ -17,7 +19,13 @@ const styleCol: React.CSSProperties = {
 };
 
 export default function HighProductComponent({ medicine }: any) {
-  console.log('medicine:', medicine);
+  const dispatch = useDispatch();
+  const arrProduct = useSelector((state: RootState) => state.medicine.arrShoping);
+
+  const addProduct = (value: any) => {
+    if (arrProduct.some((item) => item?.key == value?.key) == false)
+      dispatch(addProductToShopingCart(value));
+  };
   return (
     <div>
       <div className="banner-high-product">
@@ -69,11 +77,6 @@ export default function HighProductComponent({ medicine }: any) {
                     hoverable
                     style={{ width: 192, boxShadow: '0 0 0 1px #d8e0e8' }}
                     cover={
-                      //   <Image
-                      //   src={item?.image}
-                      //   alt={item?.name}
-                      //   style={{ height: '192px', padding: '10px' }}
-                      // />
                       <img
                         style={{ height: '192px', padding: '10px' }}
                         alt={item?.name}
@@ -88,6 +91,21 @@ export default function HighProductComponent({ medicine }: any) {
                     <Typography.Title level={4} className="class-price">
                       <span>{item?.price}</span> /{item?.unit}
                     </Typography.Title>
+                    <Button
+                      className="class-plus-btn"
+                      onClick={() =>
+                        addProduct({
+                          key: item?.id,
+                          name: item?.name,
+                          image: item.image,
+                          price: item?.price,
+                          count: 1,
+                          unit: item?.unit,
+                        })
+                      }
+                    >
+                      <PlusCircleOutlined /> Thêm
+                    </Button>
                   </Card>
                 </Col>
               );

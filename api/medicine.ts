@@ -9,6 +9,10 @@ export const medicineService = {
     const endpoint = `${domain}/medicine`;
     return axios.get(endpoint);
   },
+  getListMedicineUser: (take:number) => {
+    const endpoint = `${domain}/medicine/getListToParams?take=${take}`;
+    return axios.get(endpoint);
+  },
   deleteMedicine: (id: string) => {
     const endpoint = `${domain}/medicine/${id}`;
     return axios.delete(endpoint);

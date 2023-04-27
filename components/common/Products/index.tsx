@@ -3,10 +3,10 @@ import { Typography, Card, Col, Row, Button } from 'antd';
 import { DownOutlined, BulbFilled, PlusCircleOutlined } from '@ant-design/icons';
 import './index.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProductToShopingCart } from 'slices/medicineSlice';
+import { addProductToShopingCart, getListMedicineUser } from 'slices/medicineSlice';
 import { RootState } from 'store';
 
-export interface HeaderProps { }
+export interface HeaderProps {}
 
 const { Meta } = Card;
 
@@ -29,12 +29,24 @@ const styleCol: React.CSSProperties = {
 export default function ProductComponent(props: HeaderProps) {
   const dispatch = useDispatch();
   const arrProduct = useSelector((state: RootState) => state.medicine.arrShoping);
+  const arrMedicineUser = useSelector((state: RootState) => state.medicine.listMedicineUser);
+
+  React.useEffect(() => {
+    dispatch(getListMedicineUser(8));
+  }, []);
 
   const addProduct = (value: any) => {
-    if (arrProduct.some(item => item?.key == value?.key) == false)
+    if (arrProduct.some((item) => item?.key == value?.key) == false)
       dispatch(addProductToShopingCart(value));
-  }
+  };
 
+  const handleBtnViewPlus = () => {
+    if (arrMedicineUser.length < 16) {
+      return dispatch(getListMedicineUser(16));
+    } else {
+      console.log('dang nhap');
+    }
+  };
 
   return (
     <div>
@@ -57,180 +69,59 @@ export default function ProductComponent(props: HeaderProps) {
 
         <Row gutter={8}>
           {/* ROW ONE */}
-          <Col style={styleCol} lg={6} xs={12}>
-            <Card
-              hoverable
-              style={{ width: 192, boxShadow: '0 0 0 1px #d8e0e8' }}
-              cover={
-                <img
-                  style={{ height: '192px', padding: '10px' }}
-                  alt="example"
-                  src="https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/600x600/filters:quality(90):fill(white)/nhathuoclongchau.com.vn/images/product/2020/01/00017891-boi-mau-forte-tat-thanh-125ml-siro-bo-phe-4358-5e14_large.jpg"
-                />
-              }
-            >
-              <Meta
-                title="Siro bổ phế Bối Mẫu Forte Mom And Baby Tất Thành hỗ trợ giảm ho, đau rát họng, khản tiếng (125ml)"
-                description="55.000d / Chai"
-              />
-              <Button className='class-plus-btn' onClick={() => addProduct(
-                {
-                  key: '0',
-                  name: 'Siro bổ phế Bối Mẫu Forte Mom And Baby Tất Thành hỗ trợ giảm ho, đau rát họng, khản tiếng (125ml)',
-                  image: 'https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/600x600/filters:quality(90):fill(white)/nhathuoclongchau.com.vn/images/product/2020/01/00017891-boi-mau-forte-tat-thanh-125ml-siro-bo-phe-4358-5e14_large.jpg',
-                  price: 33000,
-                  count: 1,
-                  unit: 'Hộp'
-                }
-              )}>
-                <PlusCircleOutlined /> Thêm
-              </Button>
-            </Card>
-          </Col>
-          <Col style={styleCol} lg={6} xs={12}>
-            <Card
-              hoverable
-              style={{ width: 192, boxShadow: '0 0 0 1px #d8e0e8' }}
-              cover={
-                <img
-                  style={{ height: '192px', padding: '10px' }}
-                  alt="example"
-                  src="https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/600x600/filters:quality(90):fill(white)/nhathuoclongchau.com.vn/images/product/2020/09/00345454-siro-an-ngon-healthy-new-kid-8980-5f62_large.jpg"
-                />
-              }
-            >
-              <Meta
-                title="Siro Healthy New Kids hỗ trợ kích thích tiêu hóa, giúp ăn ngon (120ml)"
-                description="81.000d / Chai"
-              />
-              <Button className='class-plus-btn' onClick={() => addProduct(
-                {
-                  key: '1',
-                  name: "Siro Healthy New Kids hỗ trợ kích thích tiêu hóa, giúp ăn ngon (120ml)",
-                  image: 'https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/600x600/filters:quality(90):fill(white)/nhathuoclongchau.com.vn/images/product/2020/09/00345454-siro-an-ngon-healthy-new-kid-8980-5f62_large.jpg',
-                  price: 43000,
-                  count: 1,
-                  unit: 'Hộp'
-                }
-              )}>
-                <PlusCircleOutlined /> Thêm
-              </Button>
-            </Card>
-          </Col>
-          <Col style={styleCol} lg={6} xs={12}>
-            <Card
-              hoverable
-              style={{ width: 192, boxShadow: '0 0 0 1px #d8e0e8' }}
-              cover={
-                <img
-                  style={{ height: '192px', padding: '10px' }}
-                  alt="example"
-                  src="https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/600x600/filters:quality(90):fill(white)/nhathuoclongchau.com.vn/images/product/2021/04/00030511-lacto-biomin-gold-new-hdpharma-20-goi-2174-607c_large.jpg"
-                />
-              }
-            >
-              <Meta
-                title="Dung dịch xịt Xuyên Tâm Liên Hải Thượng Vương Royal Care giảm ho, giảm đờm (30ml)"
-                description="97.000d / Hộp"
-              />
-            </Card>
-          </Col>
-          <Col style={styleCol} lg={6} xs={12}>
-            <Card
-              hoverable
-              style={{ width: 192, boxShadow: '0 0 0 1px #d8e0e8' }}
-              cover={
-                <img
-                  style={{ height: '192px', padding: '10px' }}
-                  alt="example"
-                  src="https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/600x600/filters:quality(90):fill(white)/nhathuoclongchau.com.vn/images/product/2022/10/00021988-anica-phytextra-60v-5137-6347_large.jpg"
-                />
-              }
-            >
-              <Meta
-                title="Viên uống Omexxel Ginkgo 120 Excelife hỗ trợ tăng cường tuần hoàn máu não, tốt cho tim mạch (30 viên)"
-                description="364.000d / Hộp"
-              />
-            </Card>
-          </Col>
-          {/* ROW TWO */}
-          <Col style={styleCol} lg={6} xs={12}>
-            <Card
-              hoverable
-              style={{ width: 192, boxShadow: '0 0 0 1px #d8e0e8' }}
-              cover={
-                <img
-                  style={{ height: '192px', padding: '10px' }}
-                  alt="example"
-                  src="https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/600x600/filters:quality(90):fill(white)/nhathuoclongchau.com.vn/images/product/2020/01/00017891-boi-mau-forte-tat-thanh-125ml-siro-bo-phe-4358-5e14_large.jpg"
-                />
-              }
-            >
-              <Meta
-                title="Siro bổ phế Bối Mẫu Forte Mom And Baby Tất Thành hỗ trợ giảm ho, đau rát họng, khản tiếng (125ml)"
-                description="55.000d / Chai"
-              />
-            </Card>
-          </Col>
-          <Col style={styleCol} lg={6} xs={12}>
-            <Card
-              hoverable
-              style={{ width: 192, boxShadow: '0 0 0 1px #d8e0e8' }}
-              cover={
-                <img
-                  style={{ height: '192px', padding: '10px' }}
-                  alt="example"
-                  src="https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/600x600/filters:quality(90):fill(white)/nhathuoclongchau.com.vn/images/product/2020/09/00345454-siro-an-ngon-healthy-new-kid-8980-5f62_large.jpg"
-                />
-              }
-            >
-              <Meta
-                title="Siro Healthy New Kids hỗ trợ kích thích tiêu hóa, giúp ăn ngon (120ml)"
-                description="81.000d / Chai"
-              />
-            </Card>
-          </Col>
-          <Col style={styleCol} lg={6} xs={12}>
-            <Card
-              hoverable
-              style={{ width: 192, boxShadow: '0 0 0 1px #d8e0e8' }}
-              cover={
-                <img
-                  style={{ height: '192px', padding: '10px' }}
-                  alt="example"
-                  src="https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/600x600/filters:quality(90):fill(white)/nhathuoclongchau.com.vn/images/product/2021/04/00030511-lacto-biomin-gold-new-hdpharma-20-goi-2174-607c_large.jpg"
-                />
-              }
-            >
-              <Meta
-                title="Dung dịch xịt Xuyên Tâm Liên Hải Thượng Vương Royal Care giảm ho, giảm đờm (30ml)"
-                description="97.000d / Hộp"
-              />
-            </Card>
-          </Col>
-          <Col style={styleCol} lg={6} xs={12}>
-            <Card
-              hoverable
-              style={{ width: 192, boxShadow: '0 0 0 1px #d8e0e8' }}
-              cover={
-                <img
-                  style={{ height: '192px', padding: '10px' }}
-                  alt="example"
-                  src="https://cdn.nhathuoclongchau.com.vn/unsafe/fit-in/600x600/filters:quality(90):fill(white)/nhathuoclongchau.com.vn/images/product/2022/10/00021988-anica-phytextra-60v-5137-6347_large.jpg"
-                />
-              }
-            >
-              <Meta
-                title="Viên uống Omexxel Ginkgo 120 Excelife hỗ trợ tăng cường tuần hoàn máu não, tốt cho tim mạch (30 viên)"
-                description="364.000d / Hộp"
-              />
-            </Card>
-          </Col>
+          {arrMedicineUser &&
+            arrMedicineUser?.map((item: any, index: any) => {
+              return (
+                <Col style={styleCol} lg={6} xs={12} key={index}>
+                  <Card
+                    className="custom-card"
+                    hoverable
+                    style={{ width: 192, boxShadow: '0 0 0 1px #d8e0e8' }}
+                    cover={
+                      <img
+                        style={{ height: '192px', padding: '10px' }}
+                        alt={item?.name}
+                        src={item?.image}
+                      />
+                    }
+                  >
+                    <div className="class-note">{item?.description}</div>
+                    <Typography.Title level={4} className="nameMidicine">
+                      {item?.name}
+                    </Typography.Title>
+                    <Typography.Title level={4} className="class-price">
+                      <span>{item?.price}</span> /{item?.unit}
+                    </Typography.Title>
+                    <Button
+                      className="class-plus-btn"
+                      onClick={() =>
+                        addProduct({
+                          key: item?.id,
+                          name: item?.name,
+                          image: item.image,
+                          price: item?.price,
+                          count: 1,
+                          unit: item?.unit,
+                        })
+                      }
+                    >
+                      <PlusCircleOutlined /> Thêm
+                    </Button>
+                  </Card>
+                </Col>
+              );
+            })}
         </Row>
 
         <div className="text-center m-4">
-          <Button shape="round" icon={<DownOutlined />} size={'large'}>
-            Xem thêm 37 sản phẩm
+          <Button
+            onClick={() => handleBtnViewPlus()}
+            style={{ display: 'flex', margin: 'auto', alignItems: 'center' }}
+            shape="round"
+            icon={arrMedicineUser.length < 16 && <DownOutlined />}
+            size={'large'}
+          >
+            {arrMedicineUser.length < 16 ? 'Xem thêm 8 sản phẩm' : 'Vui lòng đăng nhập để xem tiếp'}
           </Button>
         </div>
       </div>
