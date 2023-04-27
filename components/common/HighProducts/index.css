@@ -51,13 +51,13 @@
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 18px !important;
+    font-size: 16px !important;
     font-weight: 400;
     vertical-align: baseline;
     background: 0 0;
 }
 
 .class-price span {
-    font-size: 18px !important;
+    font-size: 16px !important;
     color: #072d94 !important;
 }

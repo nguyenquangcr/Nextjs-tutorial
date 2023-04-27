@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addProductToShopingCart, getListMedicineUser } from 'slices/medicineSlice';
 import { RootState } from 'store';
 import { updateOpenModalLoging } from 'slices/userSlice';
+import FormatCurrency from 'utils/FormatCurrency';
 
 export interface HeaderProps { }
 
@@ -81,6 +82,7 @@ export default function ProductComponent(props: HeaderProps) {
           {/* ROW ONE */}
           {arrMedicineUser &&
             arrMedicineUser?.map((item: any, index: any) => {
+              console.log('item:', item)
               return (
                 <Col style={styleCol} lg={6} xs={12} key={index}>
                   <Card
@@ -99,8 +101,8 @@ export default function ProductComponent(props: HeaderProps) {
                     <Typography.Title level={4} className="nameMidicine">
                       {item?.name}
                     </Typography.Title>
-                    <Typography.Title level={4} className="class-price">
-                      <span>{item?.price}</span> /{item?.unit}
+                    <Typography.Title style={{ fontSize: '16px!important' }} level={5} className="class-price">
+                      <span>{FormatCurrency(item?.price)}</span> /{item?.unit}
                     </Typography.Title>
                     <Button
                       className="class-plus-btn"

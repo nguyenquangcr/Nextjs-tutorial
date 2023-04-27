@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import axios from 'axios';
 import { UpdateTotalMedicine } from 'slices/medicineSlice';
+import { domain } from 'Constant';
 
 const { Header, Footer, Sider, Content } = Layout;
 export interface HomePageProps {
@@ -82,9 +83,8 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async (
   //run when build time
   let arrMedicine: any = [];
   await axios
-    .get(`https://heroku-backend-nestjs.herokuapp.com/medicine/getListToParams?take=8`)
+    .get(`${domain}/medicine/getListToParams?take=8`)
     .then((res) => {
-      console.log('-----------------------------');
       arrMedicine = res.data;
     });
 
