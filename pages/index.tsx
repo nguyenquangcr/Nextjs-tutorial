@@ -72,12 +72,12 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async (
   //server-side
   //run when build time
   let arrMedicine: any = [];
-  await axios
-    .get(`https://heroku-backend-nestjs.herokuapp.com/medicine/getListToParams?take=8`)
-    .then((res) => {
-      console.log('-----------------------------');
-      arrMedicine = res.data;
-    });
+  // await axios
+  //   .get(`https://heroku-backend-nestjs.herokuapp.com/medicine/getListToParams?take=8`)
+  //   .then((res) => {
+  //     console.log('-----------------------------');
+  //     arrMedicine = res.data;
+  //   });
 
   return {
     props: {

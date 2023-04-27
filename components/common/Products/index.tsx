@@ -5,8 +5,9 @@ import './index.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProductToShopingCart, getListMedicineUser } from 'slices/medicineSlice';
 import { RootState } from 'store';
+import { updateOpenModalLoging } from 'slices/userSlice';
 
-export interface HeaderProps {}
+export interface HeaderProps { }
 
 const { Meta } = Card;
 
@@ -44,7 +45,7 @@ export default function ProductComponent(props: HeaderProps) {
     if (arrMedicineUser.length < 16) {
       return dispatch(getListMedicineUser(16));
     } else {
-      console.log('dang nhap');
+      return dispatch(updateOpenModalLoging(true));
     }
   };
 

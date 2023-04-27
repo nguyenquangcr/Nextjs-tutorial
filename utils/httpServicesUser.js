@@ -12,9 +12,9 @@ const getLocalStorage = (key) => {
 };
 
 const getLocalToken = () => {
-  const accessToken = getLocalStorage('accessToken');
-  if (accessToken) {
-    return `Bearer ${accessToken}`;
+  const accessTokenUser = getLocalStorage('accessTokenUser');
+  if (accessTokenUser) {
+    return `Bearer ${accessTokenUser}`;
   }
   return null;
 };
@@ -37,8 +37,8 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error?.response?.statusText == 'Unauthorized' && error?.response?.status == 401) {
-      localStorage.removeItem('accessToken');
-      window.location = domainFE;
+      localStorage.removeItem('accessTokenUser');
+      // window.location = domainFE;
     }
   }
 );

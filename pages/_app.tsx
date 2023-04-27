@@ -9,6 +9,7 @@ import Script from 'next/script'
 import '../styles/globals.css';
 import 'antd/dist/reset.css';
 import 'react-toastify/dist/ReactToastify.css';
+import { Modal } from 'antd';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

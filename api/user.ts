@@ -1,4 +1,5 @@
 import axios from '../utils/httpServices';
+import axiosUser from '../utils/httpServicesUser';
 import { domain } from 'Constant';
 
 /**
@@ -12,6 +13,14 @@ export const userService = {
   getUserInfo: () => {
     const endpoint = `${domain}/auth/user`;
     return axios.get(endpoint);
+  },
+  loginUser: (data: { username: string; password: string }) => {
+    const endpoint = `${domain}/auth/login`;
+    return axiosUser.post(endpoint, data);
+  },
+  getUserInfoUser: () => {
+    const endpoint = `${domain}/auth/user`;
+    return axiosUser.get(endpoint);
   },
   getListUser: () => {
     const endpoint = `${domain}/user`;
