@@ -1,6 +1,6 @@
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
 import { notFound } from 'next/navigation';
-import { useRouter, } from 'next/router';
+import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   Layout,
@@ -30,16 +30,22 @@ import { updateArrShoping } from 'slices/medicineSlice';
 import FormLoginComponent from '@/components/Form/FormLoginComponent';
 import PageAdminComponent from '@/components/Admin';
 import { updateAccessToken, updateInforUser } from 'slices/userSlice';
+import background from '../../src/assets/static/images/back-ground.png';
+import clsx from 'clsx';
 export interface HomePageProps {
   post: any;
 }
 
-const classContainer: React.CSSProperties = {
+const classContainer = {
   width: '100%',
   minWidth: '100vw',
   minHeight: '100vh',
   height: '100%',
-  background: 'rgb(248, 249, 250)'
+  backgroundImage: `url("https://res.cloudinary.com/dmttpbcgv/image/upload/v1684547070/back-ground_lsanlq.png")`,
+  backgroundSize: 'cover',
+};
+const customFormLogin: React.CSSProperties = {
+  marginTop: '50px',
 };
 
 export default function HomePage({ post }: HomePageProps) {
@@ -56,21 +62,15 @@ export default function HomePage({ post }: HomePageProps) {
       localStorage.setItem('accessToken', '');
       dispatch(updateAccessToken(null));
       dispatch(updateInforUser(null));
-    }
-  }, [])
+    };
+  }, []);
 
-
-  return (<div style={classContainer}>{accessToken == null ? <FormLoginComponent /> : <PageAdminComponent />}</div>);
+  return (
+    <div className={clsx('classContainer', accessToken == null && 'customFormLogin')}>
+      {accessToken == null ? <FormLoginComponent /> : <PageAdminComponent />}
+    </div>
+  );
 }
-
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   console.log('get static path');
-
-//   return {
-//     paths: [],
-//     fallback: false,
-//   };
-// };
 
 export const getStaticProps: GetStaticProps<HomePageProps> = async (
   context: GetStaticPropsContext

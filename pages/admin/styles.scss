@@ -1,3 +1,15 @@
+.classContainer {
+  width: 100%;
+  min-width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+  background-image: url('https://res.cloudinary.com/dmttpbcgv/image/upload/v1684547070/back-ground_lsanlq.png');
+  background-size: cover;
+}
+.customFormLogin {
+  padding-top: 50px;
+}
+
 .minus-class {
   border-radius: 34px 0 0 34px;
   display: inline-flex;

@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import counterReducer from './slices/counterSlice';
 import medicineReducer from './slices/medicineSlice';
 import userReducer from './slices/userSlice';
+import postUserReducer from './slices/postUser';
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     medicine: medicineReducer,
     user: userReducer,
+    postUser: postUserReducer,
   },
 });
 
