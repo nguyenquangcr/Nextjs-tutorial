@@ -339,7 +339,7 @@ export default function PostUserAdminComponent(props: MedicineProps) {
             value={postUserDetail?.content}
             disabled
             init={{
-              selector: 'textarea#image-tools',
+              // selector: 'textarea#image-tools',
               height: 500,
               plugins: [
                 'advlist autolink lists link image charmap print preview anchor',

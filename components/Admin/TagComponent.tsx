@@ -17,10 +17,12 @@ const TagComponent = () => {
   useEffect(() => {
     let newArrTag: any = [];
     let newArrValue: any = [];
-    Object.keys(dataTag).forEach(function (key, index) {
-      newArrTag.push(key);
-      newArrValue.push(dataTag[key]);
-    });
+    if (dataTag !== null) {
+      Object.keys(dataTag).forEach(function (key, index) {
+        newArrTag.push(key);
+        newArrValue.push(dataTag[key]);
+      });
+    }
     setArrTag(newArrTag);
     setArrValue(newArrValue);
   }, [dataTag]);
