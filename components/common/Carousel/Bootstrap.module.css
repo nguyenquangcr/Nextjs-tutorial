@@ -1,21 +1,25 @@
 /* Start Bootstrap carousel */
 .itemP {
-    height: 25rem;
-  }
-  .itemP > img {
-    width: 100%;
-    object-fit: cover;
-    height: 25rem;
-  }
-  
-  .caption {
-    background-color: rgba(0, 0, 0, 0.4);
-    border-radius: 15px;
-  }
-  
-  .caption h3 {
-    font-size: 35px;
-    color: rgb(255, 255, 255);
-  }
-  /* End Bootstrap carousel */
-  
+  height: 25rem;
+  background-image: url('https://res.cloudinary.com/dmttpbcgv/image/upload/v1685332512/carousel-1_bfghlk.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.itemP>img {
+  width: 100%;
+  object-fit: cover;
+  height: 25rem;
+}
+
+.caption {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 15px;
+}
+
+.caption h3 {
+  font-size: 35px;
+  color: rgb(255, 255, 255);
+}
+
+/* End Bootstrap carousel */
