@@ -226,7 +226,7 @@ const PostComponent = () => {
               <Form.Item label="Nội dung" name="unit" rules={[{ required: true }]}>
                 <Editor
                   init={{
-                    height: 300,
+                    height: 200,
                     plugins: [
                       'advlist autolink lists link image charmap print preview anchor',
                       'searchreplace visualblocks code fullscreen',
@@ -239,7 +239,24 @@ const PostComponent = () => {
                   }}
                 />
               </Form.Item>
-
+              <Form.Item name="tag" label="Danh mục">
+                <Select
+                  defaultValue="thoi-trang"
+                  //   style={{ width: 120 }}
+                  //   onChange={handleChange}
+                  options={[
+                    { value: 'thoi-trang', label: 'Thời trang' },
+                    { value: 'lam-dep', label: 'Làm đẹp' },
+                    { value: 'doi-song', label: 'Đời sống' },
+                    { value: 'am-thuc', label: 'Ẩm thực' },
+                    { value: 'du-lich', label: 'Du lịch' },
+                    { value: 'tu-vi', label: 'Tử vi' },
+                    { value: 'suc-khoe', label: 'Sức khỏe' },
+                    { value: 'kham-pha', label: 'Khám phá' },
+                    { value: 'cong-nghe', label: 'Công nghệg' },
+                  ]}
+                />
+              </Form.Item>
               <Form.Item name="upload" label="Hình ảnh">
                 <Upload maxCount={1} accept="image/png, image/jpeg">
                   <Button icon={<UploadOutlined />}>Click to upload</Button>
