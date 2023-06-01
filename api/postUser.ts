@@ -1,10 +1,14 @@
-import axios from 'axios';
+import axios from './httpServices';
 import { domain } from 'Constant';
 
 /**
  * LOGIN
  */
 export const postUserService = {
+  getListPost: (data: string) => {
+    const endpoint = `https://meovathay.vn/v2/api/post/category?slug=${data}`;
+    return axios.get(endpoint);
+  },
   getListPostUser: () => {
     const endpoint = `${domain}/post`;
     return axios.get(endpoint);
@@ -27,8 +31,12 @@ export const postUserService = {
   },
 
   getListTag: () => {
-    const endpoint = `${domain}/tag`;
-    return axios.get(endpoint);
+    const endpoint = `${domain}/tag/getList`;
+    return axios.post(endpoint);
+  },
+  getListTagByTime: (data: any) => {
+    const endpoint = `${domain}/tag/getList`;
+    return axios.post(endpoint, data);
   },
   //   //Order
   //   _createOrder: (data: any) => {

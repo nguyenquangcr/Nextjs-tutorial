@@ -20,6 +20,7 @@ import './style.scss';
 import UserAdminComponent from './UserAdminComponent';
 import PostUserAdminComponent from './PostUserComponent';
 import TagComponent from './TagComponent';
+import PostComponent from './PostComponent';
 
 export interface PageAminProps {}
 
@@ -43,16 +44,16 @@ const sideBarAdmin = [
 ];
 
 const sideBarSuperAdmin = [
-  {
-    key: '1',
-    icon: <MedicineBoxOutlined />,
-    label: 'Thuốc',
-  },
-  {
-    key: '2',
-    icon: <VideoCameraOutlined />,
-    label: 'Đơn hàng',
-  },
+  // {
+  //   key: '1',
+  //   icon: <MedicineBoxOutlined />,
+  //   label: 'Thuốc',
+  // },
+  // {
+  //   key: '2',
+  //   icon: <VideoCameraOutlined />,
+  //   label: 'Đơn hàng',
+  // },
   {
     key: '3',
     icon: <UserOutlined />,
@@ -80,7 +81,7 @@ export default function PageAdminComponent(props: PageAminProps) {
   const inforUser: any = useSelector((state: RootState) => state.user.inforUser);
   //state
   const [collapsed, setCollapsed] = useState(false);
-  const [keySelected, setKeySelected] = useState('1');
+  const [keySelected, setKeySelected] = useState('3');
   const [itemSidebar, setItemSidebar] = useState<any>();
 
   const {
@@ -108,6 +109,8 @@ export default function PageAdminComponent(props: PageAminProps) {
         return <PostUserAdminComponent />;
       case '5':
         return <TagComponent />;
+      case '6':
+        return <PostComponent />;
     }
   };
 
@@ -128,7 +131,7 @@ export default function PageAdminComponent(props: PageAminProps) {
                 onClick={(value) => setKeySelected(value?.key)}
                 theme="dark"
                 mode="inline"
-                defaultSelectedKeys={['1']}
+                defaultSelectedKeys={['3']}
                 items={itemSidebar}
               />
             </Sider>
