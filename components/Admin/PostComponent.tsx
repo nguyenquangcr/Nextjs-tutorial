@@ -2,9 +2,10 @@ import { Editor } from '@tinymce/tinymce-react';
 import { Button, Col, Form, Input, Popconfirm, Row, Select, Table, Typography, Upload } from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getListPost } from 'slices/postUser';
+import { getListPost, getListPostSearch } from 'slices/postUser';
 import { RootState } from 'store';
 import { UploadOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 const containerRight: React.CSSProperties = {
   padding: ' 16px',
@@ -106,8 +107,10 @@ const { Title } = Typography;
 const PostComponent = () => {
   const dispatch = useDispatch();
   const listPost = useSelector((state: RootState) => state.postUser.listPost);
+  console.log('listPost:', listPost);
   //state
   const [pageSize, setPageSize] = React.useState(10);
+
   useEffect(() => {
     dispatch(getListPost('thoi-trang'));
   }, []);
@@ -117,13 +120,20 @@ const PostComponent = () => {
       title: 'Tên bài viết',
       dataIndex: 'title',
     },
+    // {
+    //   title: 'Mô tả',
+    //   dataIndex: 'description',
+    // },
     {
-      title: 'Mô tả',
-      dataIndex: 'description',
-    },
-    {
-      title: 'Nhãn dán',
-      dataIndex: 'slug',
+      title: 'Ngày tạo',
+      dataIndex: 'time',
+      defaultSortOrder: 'descend',
+      render: (_: any, record: any) => {
+        return (
+          <span>{moment(record.time, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY HH:mm:ss')}</span>
+        );
+      },
+      sorter: (a: any, b: any): any => new Date(a.time) - new Date(b.time),
     },
     {
       title: 'Hình bài viết',
@@ -164,31 +174,36 @@ const PostComponent = () => {
     dispatch(getListPost(value));
   };
 
+  const { Search } = Input;
+  const onSearch = (value: string) => dispatch(getListPostSearch(value));
+
   return (
     <div>
-      <div style={{ width: '80%', margin: '15px 0' }}>
-        <Title level={4}>Lựa chọn danh mục</Title>
-        <Select
-          defaultValue="thoi-trang"
-          style={{ width: 120 }}
-          onChange={handleChange}
-          options={[
-            { value: 'thoi-trang', label: 'Thời trang' },
-            { value: 'lam-dep', label: 'Làm đẹp' },
-            { value: 'doi-song', label: 'Đời sống' },
-            { value: 'am-thuc', label: 'Ẩm thực' },
-            { value: 'du-lich', label: 'Du lịch' },
-            { value: 'tu-vi', label: 'Tử vi' },
-            { value: 'suc-khoe', label: 'Sức khỏe' },
-            { value: 'kham-pha', label: 'Khám phá' },
-            { value: 'cong-nghe', label: 'Công nghệg' },
-          ]}
-        />
-      </div>
-
       <Row gutter={24}>
         {/* ROW ONE */}
         <Col lg={14} xs={24}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ width: '80%', margin: '15px 0' }}>
+              <Title level={4}>Lựa chọn danh mục</Title>
+              <Select
+                defaultValue="thoi-trang"
+                style={{ width: 120 }}
+                onChange={handleChange}
+                options={[
+                  { value: 'thoi-trang', label: 'Thời trang' },
+                  { value: 'lam-dep', label: 'Làm đẹp' },
+                  { value: 'doi-song', label: 'Đời sống' },
+                  { value: 'am-thuc', label: 'Ẩm thực' },
+                  { value: 'du-lich', label: 'Du lịch' },
+                  { value: 'tu-vi', label: 'Tử vi' },
+                  { value: 'suc-khoe', label: 'Sức khỏe' },
+                  { value: 'kham-pha', label: 'Khám phá' },
+                  { value: 'cong-nghe', label: 'Công nghệg' },
+                ]}
+              />
+            </div>
+            <Search placeholder="Tìm kiếm bài viết" onSearch={onSearch} enterButton />
+          </div>
           <div style={{ margin: '5px', height: '100%' }}>
             <Table
               components={components}

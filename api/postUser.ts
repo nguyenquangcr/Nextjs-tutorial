@@ -5,10 +5,15 @@ import { domain } from 'Constant';
  * LOGIN
  */
 export const postUserService = {
+  searchPost: (key: string) => {
+    const endpoint = `https://meovathay.vn/v2/api/post/search?q=${key}`;
+    return axios.get(endpoint);
+  },
   getListPost: (data: string) => {
     const endpoint = `https://meovathay.vn/v2/api/post/category?slug=${data}`;
     return axios.get(endpoint);
   },
+  //-------------------
   getListPostUser: () => {
     const endpoint = `${domain}/post`;
     return axios.get(endpoint);

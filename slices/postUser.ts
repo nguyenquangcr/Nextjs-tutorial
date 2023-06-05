@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { openNotificationWithIcon } from '@/components/notificationComponent';
 import { postUserService } from 'api/postUser';
-
+import FormatDataPost from '../utils/formatDataPost';
 export interface PostUserState {
   postUserDetail: any;
   listPostUser: Array<any>;
@@ -40,15 +40,33 @@ export const medicineSlice = createSlice({
 export const { updateListPost, updateListPostUser, updatePostUserDetail } = medicineSlice.actions;
 
 //MEDICINE
+export function getListPostSearch(key: any): any {
+  return async (dispatch: any) => {
+    try {
+      await postUserService
+        .searchPost(key)
+        .then((res: any) => {
+          if (res.status == 200) {
+            dispatch(medicineSlice.actions.updateListPost(res?.data?.data?.posts));
+          }
+        })
+        .catch((err) => {
+          console.log('err', err);
+        });
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+}
+
 export function getListPost(data: any): any {
   return async (dispatch: any) => {
     try {
       await postUserService
         .getListPost(data)
         .then((res: any) => {
-          console.log('res:', res);
           if (res.status == 200) {
-            dispatch(medicineSlice.actions.updateListPost(res?.data?.data?.posts));
+            dispatch(medicineSlice.actions.updateListPost(FormatDataPost(res?.data?.data?.posts)));
           }
         })
         .catch((err) => {
