@@ -11,10 +11,7 @@ import {
   Typography,
   Upload,
 } from 'antd';
-import {
-  UploadOutlined,
-  DeleteOutlined,
-} from '@ant-design/icons';
+import { UploadOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteMedicine, getListMedicine } from 'slices/medicineSlice';
 import { domain } from 'Constant';
@@ -23,7 +20,7 @@ import { RootState } from 'store';
 import { openNotificationWithIcon } from '../notificationComponent';
 import FormatCurrency from 'utils/FormatCurrency';
 
-export interface MedicineProps { }
+export interface MedicineProps {}
 
 const headerImage: React.CSSProperties = {
   width: '100vw',
@@ -201,15 +198,22 @@ export default function MedicineAdminComponent(props: MedicineProps) {
       title: '',
       dataIndex: '',
       render: (_: any, record: { key: React.Key }) => (
-        <><Popconfirm
-          style={{ cursor: 'pointer' }}
-          title="Bạn có chắc chắn xóa?"
-          onConfirm={() => handleDelete(record)}
-        >
-          <a style={{ color: 'red' }}>
-            Xóa
+        <>
+          <Popconfirm
+            style={{ cursor: 'pointer' }}
+            title="Bạn có chắc chắn xóa?"
+            onConfirm={() => handleDelete(record)}
+          >
+            <a style={{ color: 'red' }}>Xóa</a>
+          </Popconfirm>
+          <a
+            style={{ color: 'blue', marginLeft: '10px' }}
+            onClick={() => funcFillDataMedicin(record)}
+          >
+            {' '}
+            Chỉnh sửa
           </a>
-        </Popconfirm><a style={{ color: 'blue', marginLeft: '10px' }} onClick={() => funcFillDataMedicin(record)}> Chỉnh sửa</a></>
+        </>
       ),
     },
   ];
@@ -269,23 +273,33 @@ export default function MedicineAdminComponent(props: MedicineProps) {
       title: '',
       dataIndex: '',
       render: (_: any, record: { key: React.Key }) => (
-        <><Popconfirm
-          style={{ cursor: 'pointer' }}
-          title="Bạn có chắc chắn xóa?"
-          onConfirm={() => handleDelete(record)}
-        ><a style={{ color: 'red' }}> Xóa</a>
-        </Popconfirm><a style={{ color: 'blue', marginLeft: '10px' }} onClick={() => funcFillDataMedicin(record)}> Chỉnh sửa</a></>
+        <>
+          <Popconfirm
+            style={{ cursor: 'pointer' }}
+            title="Bạn có chắc chắn xóa?"
+            onConfirm={() => handleDelete(record)}
+          >
+            <a style={{ color: 'red' }}> Xóa</a>
+          </Popconfirm>
+          <a
+            style={{ color: 'blue', marginLeft: '10px' }}
+            onClick={() => funcFillDataMedicin(record)}
+          >
+            {' '}
+            Chỉnh sửa
+          </a>
+        </>
       ),
     },
   ];
 
   const funcFillDataMedicin = (value: any) => {
-    setidUpdate(value?.id)
-    setTypeForm("UPDATE");
+    setidUpdate(value?.id);
+    setTypeForm('UPDATE');
     for (const property in value) {
-      if (property !== 'image') form.setFieldValue(property, value[property])
+      if (property !== 'image') form.setFieldValue(property, value[property]);
     }
-  }
+  };
 
   const handleDelete = (value: any) => {
     dispatch(deleteMedicine(value?.id));
@@ -305,19 +319,19 @@ export default function MedicineAdminComponent(props: MedicineProps) {
 
     for (const property in values) {
       if (property == 'upload') {
-        if (values[property]?.file?.originFileObj) data.append('image', values[property]?.file?.originFileObj);
-      }
-      else data.append(property, values[property]);
+        if (values[property]?.file?.originFileObj)
+          data.append('image', values[property]?.file?.originFileObj);
+      } else data.append(property, values[property]);
     }
     const url = `${domain}/medicine`;
 
-    if (typeForm == "UPDATE") {
+    if (typeForm == 'UPDATE') {
       return await axios
         .put(`${url}/${idUpdate}`, data)
         .then((res: any) => {
           setLoadding(false);
           form.resetFields();
-          setTypeForm("ADD")
+          setTypeForm('ADD');
           dispatch(getListMedicine());
           openNotificationWithIcon(200, 'Cập nhật thành công');
         })
@@ -326,20 +340,20 @@ export default function MedicineAdminComponent(props: MedicineProps) {
           openNotificationWithIcon(500, 'Cập nhật thất bại');
           console.log('err:', err);
         });
-    } else return await axios
-      .post(url, data)
-      .then((res: any) => {
-        setLoadding(false);
-        form.resetFields();
-        dispatch(getListMedicine());
-        openNotificationWithIcon(200, 'Thêm thành công');
-      })
-      .catch((err: any) => {
-        setLoadding(false);
-        openNotificationWithIcon(500, 'Thêm thất bại');
-        console.log('err:', err);
-      });
-
+    } else
+      return await axios
+        .post(url, data)
+        .then((res: any) => {
+          setLoadding(false);
+          form.resetFields();
+          dispatch(getListMedicine());
+          openNotificationWithIcon(200, 'Thêm thành công');
+        })
+        .catch((err: any) => {
+          setLoadding(false);
+          openNotificationWithIcon(500, 'Thêm thất bại');
+          console.log('err:', err);
+        });
   };
 
   const onUploadChange = (info: any) => {
@@ -358,7 +372,12 @@ export default function MedicineAdminComponent(props: MedicineProps) {
             dataSource={arrMedicine}
             columns={columnTable}
             pagination={{
-              pageSize: pageSize, showSizeChanger: true, pageSizeOptions: ['10', '20', '30'], onChange: (page, pageside) => { setPageSize(pageside) }
+              pageSize: pageSize,
+              showSizeChanger: true,
+              pageSizeOptions: ['10', '20', '30'],
+              onChange: (page, pageside) => {
+                setPageSize(pageside);
+              },
             }}
           />
         </div>
@@ -396,7 +415,7 @@ export default function MedicineAdminComponent(props: MedicineProps) {
               <InputNumber style={{ minWidth: '100px' }} addonAfter="VND" />
             </Form.Item>
 
-            <Form.Item label="Danh mục" name="tags" >
+            <Form.Item label="Danh mục" name="tags">
               <Input />
             </Form.Item>
 
@@ -412,19 +431,21 @@ export default function MedicineAdminComponent(props: MedicineProps) {
               </Upload>
             </Form.Item>
 
-
-
             <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              {
-                typeForm == 'UPDATE' && <Button style={{ marginRight: '10px' }} type="default" onClick={() => {
-                  setTypeForm("ADD");
-                  form.resetFields();
-                }}>
+              {typeForm == 'UPDATE' && (
+                <Button
+                  style={{ marginRight: '10px' }}
+                  type="default"
+                  onClick={() => {
+                    setTypeForm('ADD');
+                    form.resetFields();
+                  }}
+                >
                   Hủy
                 </Button>
-              }
+              )}
               <Button loading={loadding} type="primary" htmlType="submit">
-                {typeForm == 'UPDATE' ? 'Chỉnh sửa' : "Thêm"}
+                {typeForm == 'UPDATE' ? 'Chỉnh sửa' : 'Thêm'}
               </Button>
             </Form.Item>
           </Form>

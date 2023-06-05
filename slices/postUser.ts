@@ -7,18 +7,23 @@ export interface PostUserState {
   postUserDetail: any;
   listPostUser: Array<any>;
   dataTag: any;
+  listPost: Array<any>;
 }
 
 const initialState: PostUserState = {
   listPostUser: [],
   postUserDetail: null,
   dataTag: null,
+  listPost: [],
 };
 
 export const medicineSlice = createSlice({
   name: 'medicine',
   initialState,
   reducers: {
+    updateListPost: (state, { payload }: PayloadAction<any>) => {
+      state.listPost = payload;
+    },
     updateListPostUser: (state, { payload }: PayloadAction<any>) => {
       state.listPostUser = payload;
     },
@@ -32,9 +37,29 @@ export const medicineSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { updateListPostUser, updatePostUserDetail } = medicineSlice.actions;
+export const { updateListPost, updateListPostUser, updatePostUserDetail } = medicineSlice.actions;
 
 //MEDICINE
+export function getListPost(data: any): any {
+  return async (dispatch: any) => {
+    try {
+      await postUserService
+        .getListPost(data)
+        .then((res: any) => {
+          console.log('res:', res);
+          if (res.status == 200) {
+            dispatch(medicineSlice.actions.updateListPost(res?.data?.data?.posts));
+          }
+        })
+        .catch((err) => {
+          console.log('err', err);
+        });
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+}
+
 export function getListPostUser(): any {
   return async (dispatch: any) => {
     try {
@@ -140,6 +165,23 @@ export function getListTag(): any {
     try {
       await postUserService
         .getListTag()
+        .then((res) => {
+          dispatch(medicineSlice.actions.updateDataTag(res?.data));
+        })
+        .catch((err) => {
+          console.log('err', err);
+        });
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+}
+
+export function getListTagByTime(data: any): any {
+  return async (dispatch: any) => {
+    try {
+      await postUserService
+        .getListTagByTime(data)
         .then((res) => {
           dispatch(medicineSlice.actions.updateDataTag(res?.data));
         })
