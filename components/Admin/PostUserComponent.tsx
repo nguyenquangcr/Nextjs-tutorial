@@ -14,7 +14,7 @@ import {
   Select,
   Switch,
 } from 'antd';
-import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
+import { MoreOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteMedicine, getListMedicine } from 'slices/medicineSlice';
 import { domain } from 'Constant';
@@ -29,6 +29,7 @@ import {
   updateStatusPostUser,
   updateTagPostUser,
 } from 'slices/postUser';
+import moment from 'moment';
 
 export interface MedicineProps {}
 
@@ -156,7 +157,7 @@ export default function PostUserAdminComponent(props: MedicineProps) {
     return dispatch(updateStatusPostUser(id, checked));
   };
 
-  const defaultColumns = [
+  const defaultColumns: any = [
     {
       title: 'Tên bài viết',
       dataIndex: 'title',
@@ -164,6 +165,23 @@ export default function PostUserAdminComponent(props: MedicineProps) {
     {
       title: 'Mô tả',
       dataIndex: 'description',
+    },
+    {
+      title: 'Ngày tạo',
+      dataIndex: 'time',
+      defaultSortOrder: 'descend',
+      render: (_: any, record: any) => {
+        return (
+          <span>
+            {moment(record.createAt, 'YYYY-MM-DD HH:mm:ss')
+              .add(7, 'hours')
+              .format('DD/MM/YYYY HH:mm:ss')}
+          </span>
+        );
+      },
+      sorter: (a: any, b: any): any => {
+        return (new Date(a.createAt) as any) - (new Date(b.createAt) as any) ;
+      },
     },
     {
       title: 'Nhãn dán',
@@ -187,6 +205,9 @@ export default function PostUserAdminComponent(props: MedicineProps) {
             ]}
           />
         );
+      },
+      sorter: (a: any, b: any): any => {
+        return a.tags.length - b.tags.length;
       },
     },
     {
@@ -224,14 +245,6 @@ export default function PostUserAdminComponent(props: MedicineProps) {
           >
             Xem chi tiết
           </div>
-          {/* {record.status == false && (
-            <div
-              style={{ color: 'blue', cursor: 'pointer', margin: '5px' }}
-              onClick={() => dispatch(updateStatusOrder(record.id, { status: true }))}
-            >
-              Phê duyệt
-            </div>
-          )} */}
           <Popconfirm
             style={{ cursor: 'pointer' }}
             title="Bạn có chắc chắn xóa?"
@@ -307,14 +320,10 @@ export default function PostUserAdminComponent(props: MedicineProps) {
         });
   };
 
-  const onUploadChange = (info: any) => {
-    setFileList([...info.fileList]);
-  };
-
   return (
     <Row gutter={24}>
       {/* ROW ONE */}
-      <Col lg={14} xs={24}>
+      <Col lg={16} xs={24}>
         <div style={{ margin: '5px', height: '100%' }}>
           <Table
             components={components}
@@ -333,13 +342,12 @@ export default function PostUserAdminComponent(props: MedicineProps) {
           />
         </div>
       </Col>
-      <Col lg={10} xs={24}>
+      <Col lg={8} xs={24}>
         <div style={containerRight}>
           <Editor
             value={postUserDetail?.content}
             disabled
             init={{
-              // selector: 'textarea#image-tools',
               height: 500,
               plugins: [
                 'advlist autolink lists link image charmap print preview anchor',
