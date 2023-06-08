@@ -1,10 +1,25 @@
 import { Editor } from '@tinymce/tinymce-react';
-import { Button, Col, Form, Input, Popconfirm, Row, Select, Table, Typography, Upload } from 'antd';
+import classname from 'classnames';
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  Modal,
+  Popconfirm,
+  Row,
+  Select,
+  Table,
+  Typography,
+  Upload,
+} from 'antd';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getListPost } from 'slices/postUser';
+import { getDetailPost, getListPost, getListPostSearch } from 'slices/postUser';
 import { RootState } from 'store';
 import { UploadOutlined } from '@ant-design/icons';
+import moment from 'moment';
+import './stylePost.scss';
 
 const containerRight: React.CSSProperties = {
   padding: ' 16px',
@@ -106,24 +121,35 @@ const { Title } = Typography;
 const PostComponent = () => {
   const dispatch = useDispatch();
   const listPost = useSelector((state: RootState) => state.postUser.listPost);
+  const detailPost = useSelector((state: RootState) => state.postUser.detailPost);
   //state
   const [pageSize, setPageSize] = React.useState(10);
+  const [valueContentPost, setValueContentPost] = React.useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
   useEffect(() => {
     dispatch(getListPost('thoi-trang'));
   }, []);
 
-  const defaultColumns = [
+  useEffect(() => {
+    detailPost !== null && setValueContentPost(detailPost?.content);
+  }, [detailPost]);
+
+  const defaultColumns: any = [
     {
       title: 'Tên bài viết',
       dataIndex: 'title',
     },
     {
-      title: 'Mô tả',
-      dataIndex: 'description',
-    },
-    {
-      title: 'Nhãn dán',
-      dataIndex: 'slug',
+      title: 'Ngày tạo',
+      dataIndex: 'time',
+      defaultSortOrder: 'descend',
+      render: (_: any, record: any) => {
+        return (
+          <span>{moment(record.time, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY HH:mm:ss')}</span>
+        );
+      },
+      sorter: (a: any, b: any): any => (new Date(a.time) as any) - (new Date(b.time) as any),
     },
     {
       title: 'Hình bài viết',
@@ -141,22 +167,32 @@ const PostComponent = () => {
     {
       title: '',
       dataIndex: '',
-      render: (_: any, record: any) => (
-        <>
-          <div>
-            <a style={{ color: 'blue', marginLeft: '10px' }}> Chỉnh sửa</a>
-          </div>
-          <Popconfirm
-            style={{ cursor: 'pointer' }}
-            title="Bạn có chắc chắn xóa?"
-            onConfirm={() => {
-              console.log('OK');
-            }}
-          >
-            <a style={{ color: 'red', margin: '5px' }}>Xóa</a>
-          </Popconfirm>
-        </>
-      ),
+      render: (_: any, record: any) => {
+        return (
+          <>
+            <div>
+              <a
+                style={{ color: 'blue', marginLeft: '10px' }}
+                onClick={() => {
+                  setIsModalOpen(true);
+                  dispatch(getDetailPost(record?.pid, record.slug));
+                }}
+              >
+                Xem nội dung
+              </a>
+            </div>
+            <Popconfirm
+              style={{ cursor: 'pointer' }}
+              title="Bạn có chắc chắn xóa?"
+              onConfirm={() => {
+                console.log('OK');
+              }}
+            >
+              <a style={{ color: 'red', margin: '5px' }}>Xóa</a>
+            </Popconfirm>
+          </>
+        );
+      },
     },
   ];
 
@@ -164,31 +200,40 @@ const PostComponent = () => {
     dispatch(getListPost(value));
   };
 
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const { Search } = Input;
+  const onSearch = (value: string) => dispatch(getListPostSearch(value));
+
   return (
     <div>
-      <div style={{ width: '80%', margin: '15px 0' }}>
-        <Title level={4}>Lựa chọn danh mục</Title>
-        <Select
-          defaultValue="thoi-trang"
-          style={{ width: 120 }}
-          onChange={handleChange}
-          options={[
-            { value: 'thoi-trang', label: 'Thời trang' },
-            { value: 'lam-dep', label: 'Làm đẹp' },
-            { value: 'doi-song', label: 'Đời sống' },
-            { value: 'am-thuc', label: 'Ẩm thực' },
-            { value: 'du-lich', label: 'Du lịch' },
-            { value: 'tu-vi', label: 'Tử vi' },
-            { value: 'suc-khoe', label: 'Sức khỏe' },
-            { value: 'kham-pha', label: 'Khám phá' },
-            { value: 'cong-nghe', label: 'Công nghệg' },
-          ]}
-        />
-      </div>
-
       <Row gutter={24}>
         {/* ROW ONE */}
         <Col lg={14} xs={24}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ width: '80%', margin: '15px 0' }}>
+              <Title level={4}>Lựa chọn danh mục</Title>
+              <Select
+                defaultValue="thoi-trang"
+                style={{ width: 120 }}
+                onChange={handleChange}
+                options={[
+                  { value: 'thoi-trang', label: 'Thời trang' },
+                  { value: 'lam-dep', label: 'Làm đẹp' },
+                  { value: 'doi-song', label: 'Đời sống' },
+                  { value: 'am-thuc', label: 'Ẩm thực' },
+                  { value: 'du-lich', label: 'Du lịch' },
+                  { value: 'tu-vi', label: 'Tử vi' },
+                  { value: 'suc-khoe', label: 'Sức khỏe' },
+                  { value: 'kham-pha', label: 'Khám phá' },
+                  { value: 'cong-nghe', label: 'Công nghệg' },
+                ]}
+              />
+            </div>
+            <Search placeholder="Tìm kiếm bài viết" onSearch={onSearch} enterButton />
+          </div>
           <div style={{ margin: '5px', height: '100%' }}>
             <Table
               components={components}
@@ -222,11 +267,10 @@ const PostComponent = () => {
               <Form.Item label="Mô tả" name="description">
                 <Input.TextArea />
               </Form.Item>
-
-              <Form.Item label="Nội dung" name="unit" rules={[{ required: true }]}>
+              <Form.Item label="Nội dung" name="description">
                 <Editor
                   init={{
-                    height: 200,
+                    height: 300,
                     plugins: [
                       'advlist autolink lists link image charmap print preview anchor',
                       'searchreplace visualblocks code fullscreen',
@@ -272,6 +316,14 @@ const PostComponent = () => {
           </div>
         </Col>
       </Row>
+      <Modal
+        className={'post-container'}
+        title="Basic Modal"
+        open={isModalOpen}
+        onCancel={handleCancel}
+      >
+        <div dangerouslySetInnerHTML={{ __html: valueContentPost }} />
+      </Modal>
     </div>
   );
 };

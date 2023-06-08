@@ -2,12 +2,13 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { openNotificationWithIcon } from '@/components/notificationComponent';
 import { postUserService } from 'api/postUser';
-
+import FormatDataPost from '../utils/formatDataPost';
 export interface PostUserState {
   postUserDetail: any;
   listPostUser: Array<any>;
   dataTag: any;
   listPost: Array<any>;
+  detailPost: any;
 }
 
 const initialState: PostUserState = {
@@ -15,12 +16,16 @@ const initialState: PostUserState = {
   postUserDetail: null,
   dataTag: null,
   listPost: [],
+  detailPost: null,
 };
 
 export const medicineSlice = createSlice({
   name: 'medicine',
   initialState,
   reducers: {
+    updateDetailPost: (state, { payload }: PayloadAction<any>) => {
+      state.detailPost = payload;
+    },
     updateListPost: (state, { payload }: PayloadAction<any>) => {
       state.listPost = payload;
     },
@@ -39,16 +44,53 @@ export const medicineSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const { updateListPost, updateListPostUser, updatePostUserDetail } = medicineSlice.actions;
 
+export function getDetailPost(id: string, slug: string): any {
+  return async (dispatch: any) => {
+    try {
+      await postUserService
+        .getDetailPost(id, slug)
+        .then((res: any) => {
+          if (res.status == 200) {
+            dispatch(medicineSlice.actions.updateDetailPost(res?.data?.data?.post));
+          }
+        })
+        .catch((err) => {
+          console.log('err', err);
+        });
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+}
+
 //MEDICINE
+export function getListPostSearch(key: any): any {
+  return async (dispatch: any) => {
+    try {
+      await postUserService
+        .searchPost(key)
+        .then((res: any) => {
+          if (res.status == 200) {
+            dispatch(medicineSlice.actions.updateListPost(res?.data?.data?.posts));
+          }
+        })
+        .catch((err) => {
+          console.log('err', err);
+        });
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+}
+
 export function getListPost(data: any): any {
   return async (dispatch: any) => {
     try {
       await postUserService
         .getListPost(data)
         .then((res: any) => {
-          console.log('res:', res);
           if (res.status == 200) {
-            dispatch(medicineSlice.actions.updateListPost(res?.data?.data?.posts));
+            dispatch(medicineSlice.actions.updateListPost(FormatDataPost(res?.data?.data?.posts)));
           }
         })
         .catch((err) => {
