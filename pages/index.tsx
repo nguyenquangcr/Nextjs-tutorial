@@ -38,10 +38,8 @@ export default function HomePage({ medicine }: HomePageProps) {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    dispatch(UpdateTotalMedicine())
-  }, [])
-
-
+    dispatch(UpdateTotalMedicine());
+  }, []);
 
   return (
     <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
@@ -68,32 +66,22 @@ export default function HomePage({ medicine }: HomePageProps) {
 //   };
 // };
 
-export const getStaticProps: GetStaticProps<HomePageProps> = async (
-  context: GetStaticPropsContext
-) => {
-  // console.log('get static props', context.params?.postId);
-  // const postId = context.params?.postId;
-  // console.log('postId:', postId);
-  // if (!postId)
-  //   return {
-  //     notFound: true,
-  //   };
+// export const getStaticProps: GetStaticProps<HomePageProps> = async (
+//   context: GetStaticPropsContext
+// ) => {
+//   let arrMedicine: any = [];
+//   await axios
+//     .get(`${domain}/medicine/getListToParams?take=8`)
+//     .then((res) => {
+//       arrMedicine = res.data;
+//     });
 
-  //server-side
-  //run when build time
-  let arrMedicine: any = [];
-  await axios
-    .get(`${domain}/medicine/getListToParams?take=8`)
-    .then((res) => {
-      arrMedicine = res.data;
-    });
-
-  return {
-    props: {
-      medicine: arrMedicine,
-    },
-  };
-};
+//   return {
+//     props: {
+//       medicine: arrMedicine,
+//     },
+//   };
+// };
 //
 //
 // export async function getServerSideProps(context: any) {

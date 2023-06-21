@@ -8,7 +8,7 @@ import { RootState } from 'store';
 import { updateOpenModalLoging } from 'slices/userSlice';
 import FormatCurrency from 'utils/FormatCurrency';
 
-export interface HeaderProps { }
+export interface HeaderProps {}
 
 const { Meta } = Card;
 
@@ -46,18 +46,20 @@ export default function ProductComponent(props: HeaderProps) {
   };
 
   const handleBtnViewPlus = () => {
-    if (arrMedicineUser.length >= 16) {
-      if (accessTokenUser == null) return dispatch(updateOpenModalLoging(true));
-      else dispatch(getListMedicineUser(arrMedicineUser.length + 8));
-    } else dispatch(getListMedicineUser(arrMedicineUser.length + 8));
+    // if (arrMedicineUser.length >= 16) {
+    //   if (accessTokenUser == null) return dispatch(updateOpenModalLoging(true));
+    //   else dispatch(getListMedicineUser(arrMedicineUser.length + 8));
+    // } else dispatch(getListMedicineUser(arrMedicineUser.length + 8));
+    dispatch(getListMedicineUser(arrMedicineUser.length + 8));
   };
 
   const renderTextBtnPlus = () => {
-    if (arrMedicineUser.length >= 16) {
-      if (accessTokenUser == null) return 'Vui lòng đăng nhập để xem tiếp';
-      else return 'Xem thêm 8 sản phẩm';
-    } else return 'Xem thêm 8 sản phẩm'
-  }
+    // if (arrMedicineUser.length >= 16) {
+    //   if (accessTokenUser == null) return 'Vui lòng đăng nhập để xem tiếp';
+    //   else return 'Xem thêm 8 sản phẩm';
+    // } else return 'Xem thêm 8 sản phẩm'
+    return 'Xem thêm 8 sản phẩm';
+  };
 
   return (
     <div>
@@ -82,7 +84,7 @@ export default function ProductComponent(props: HeaderProps) {
           {/* ROW ONE */}
           {arrMedicineUser &&
             arrMedicineUser?.map((item: any, index: any) => {
-              console.log('item:', item)
+              console.log('item:', item);
               return (
                 <Col style={styleCol} lg={6} xs={12} key={index}>
                   <Card
@@ -101,7 +103,11 @@ export default function ProductComponent(props: HeaderProps) {
                     <Typography.Title level={4} className="nameMidicine">
                       {item?.name}
                     </Typography.Title>
-                    <Typography.Title style={{ fontSize: '16px!important' }} level={5} className="class-price">
+                    <Typography.Title
+                      style={{ fontSize: '16px!important' }}
+                      level={5}
+                      className="class-price"
+                    >
                       <span>{FormatCurrency(item?.price)}</span> /{item?.unit}
                     </Typography.Title>
                     <Button
@@ -126,16 +132,18 @@ export default function ProductComponent(props: HeaderProps) {
         </Row>
 
         <div className="text-center m-4">
-          {arrMedicineUser.length < totalMedicine && <Button
-            onClick={() => handleBtnViewPlus()}
-            style={{ display: 'flex', margin: 'auto', alignItems: 'center' }}
-            shape="round"
-            icon={arrMedicineUser.length < 16 && <DownOutlined />}
-            size={'large'}
-          >
-            {/* {arrMedicineUser.length < 16 ? 'Xem thêm 8 sản phẩm' : 'Vui lòng đăng nhập để xem tiếp'} */}
-            {renderTextBtnPlus()}
-          </Button>}
+          {arrMedicineUser.length < totalMedicine && (
+            <Button
+              onClick={() => handleBtnViewPlus()}
+              style={{ display: 'flex', margin: 'auto', alignItems: 'center' }}
+              shape="round"
+              icon={arrMedicineUser.length < 16 && <DownOutlined />}
+              size={'large'}
+            >
+              {/* {arrMedicineUser.length < 16 ? 'Xem thêm 8 sản phẩm' : 'Vui lòng đăng nhập để xem tiếp'} */}
+              {renderTextBtnPlus()}
+            </Button>
+          )}
         </div>
       </div>
     </div>
