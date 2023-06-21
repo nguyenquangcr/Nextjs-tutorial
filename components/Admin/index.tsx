@@ -44,16 +44,16 @@ const sideBarAdmin = [
 ];
 
 const sideBarSuperAdmin = [
-  // {
-  //   key: '1',
-  //   icon: <MedicineBoxOutlined />,
-  //   label: 'Thuốc',
-  // },
-  // {
-  //   key: '2',
-  //   icon: <VideoCameraOutlined />,
-  //   label: 'Đơn hàng',
-  // },
+  {
+    key: '1',
+    icon: <MedicineBoxOutlined />,
+    label: 'Thuốc',
+  },
+  {
+    key: '2',
+    icon: <VideoCameraOutlined />,
+    label: 'Đơn hàng',
+  },
   {
     key: '3',
     icon: <UserOutlined />,
