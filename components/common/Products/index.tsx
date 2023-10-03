@@ -84,7 +84,6 @@ export default function ProductComponent(props: HeaderProps) {
           {/* ROW ONE */}
           {arrMedicineUser &&
             arrMedicineUser?.map((item: any, index: any) => {
-              console.log('item:', item);
               return (
                 <Col style={styleCol} lg={6} xs={12} key={index}>
                   <Card
