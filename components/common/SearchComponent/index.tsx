@@ -52,27 +52,30 @@ export default function SearchComponent(props: SearchProps) {
         Tra Cứu Thuốc, TPCN, Bệnh Lý...{' '}
       </Typography.Title>
       <Select
-        autoFocus
         mode="multiple"
         labelInValue
-        // value={valueSearch?.value}
         placeholder="Nhập tên thuốc bạn muốn tìm kiếm. Ví dụ: Thuốc ho"
         notFoundContent={valueSearch?.fetching ? <Spin size="small" /> : null}
         filterOption={false}
         onSearch={fetchUser}
         onChange={handleChange}
+        onBlur={() =>
+          setValueSearch({
+            data: [],
+            value: '',
+            fetching: false,
+          })
+        }
         style={{ width: '100%' }}
       >
         {valueSearch?.data.map((item: any) => (
           <Option key={item.id} disabled>
-            {/* {d.name} */}
-
             <div
               style={{
                 display: 'flex',
                 flexDirection: 'row',
-                // justifyContent: 'center',
                 alignItems: 'center',
+                border: 'solid 1px #e5e7eb',
               }}
             >
               <img
@@ -80,11 +83,12 @@ export default function SearchComponent(props: SearchProps) {
                 alt={item?.name}
                 src={item?.image}
               />
-              <div>{item?.description}</div>
-              <Typography.Title level={4}>{item?.name}</Typography.Title>
+              <Typography.Paragraph ellipsis style={{ marginRight: '10px', maxWidth: '300px' }}>
+                {item?.name}
+              </Typography.Paragraph>
               <Button
-                // style={{ width: '100px' }}
-                // className="class-plus-btn"
+                type="primary"
+                size="small"
                 onClick={() =>
                   addProduct({
                     key: item?.id,
@@ -96,7 +100,8 @@ export default function SearchComponent(props: SearchProps) {
                   })
                 }
               >
-                <PlusCircleOutlined /> Thêm
+                {/* <PlusCircleOutlined />  */}
+                <span>Thêm</span>
               </Button>
             </div>
           </Option>
