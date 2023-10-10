@@ -3,7 +3,7 @@ import { Input, Typography, Space, Tag, Select, Spin, Card, Button } from 'antd'
 import { DownOutlined, BulbFilled, PlusCircleOutlined } from '@ant-design/icons';
 //style
 import './index.css';
-import { domain } from 'Constant';
+import { domain, imageDefault } from 'Constant';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { addProductToShopingCart } from 'slices/medicineSlice';
@@ -81,7 +81,7 @@ export default function SearchComponent(props: SearchProps) {
               <img
                 style={{ height: '50px', width: '50px', padding: '10px' }}
                 alt={item?.name}
-                src={item?.image}
+                src={item?.image !== '' ? item?.image : imageDefault}
               />
               <Typography.Paragraph ellipsis style={{ marginRight: '10px', maxWidth: '300px' }}>
                 {item?.name}
