@@ -52,8 +52,8 @@ const styleDivContainer: React.CSSProperties = {
 };
 
 const styleSpanLabel: React.CSSProperties = {
-  minWidth: '65px',
-  marginRight: '5px',
+  minWidth: '60px',
+  marginRight: '1px'
 };
 
 const EditableContext = React.createContext(null);
@@ -146,7 +146,7 @@ export default function OrderAdminComponent(props: OrderProps) {
   //store
   const arrOrder = useSelector((state: RootState) => state.medicine.arrOrder);
   //state
-  const [pageSize, setPageSize] = useState(3);
+  const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
     dispatch(getListOrder());
@@ -162,7 +162,7 @@ export default function OrderAdminComponent(props: OrderProps) {
       dataIndex: 'order',
       render: (_: any, record: any) => {
         return (
-          <div style={{ minWidth: '200px' }}>
+          <div style={{ minWidth: '125px' }}>
             <Form name="validate_other">
               <div style={styleDivContainer}>
                 <span style={{fontWeight: 'bold', ...styleSpanLabel}}>Tổng tiền: </span>
@@ -194,7 +194,7 @@ export default function OrderAdminComponent(props: OrderProps) {
       dataIndex: '',
       render: (_: any, record: any) => {
         return (
-          <div style={{ minWidth: '150px' }}>
+          <div style={{ minWidth: '100px' }}>
             <Form name="validate_other" style={{ width: '100%' }}>
               <div style={styleDivContainer}>
                 <span style={styleSpanLabel}>Tên: </span>
@@ -288,7 +288,7 @@ export default function OrderAdminComponent(props: OrderProps) {
       pagination={{
         pageSize: pageSize,
         showSizeChanger: true,
-        pageSizeOptions: ['3', '10', '15'],
+        pageSizeOptions: ['10', '15', '20'],
         onChange: (page, pageside) => {
           setPageSize(pageside);
         },

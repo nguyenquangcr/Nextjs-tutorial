@@ -1,4 +1,7 @@
 .editable-row {
+  span {
+    font-size: 12px;
+  }
   & .ant-table-cell {
     vertical-align: text-top;
   }
