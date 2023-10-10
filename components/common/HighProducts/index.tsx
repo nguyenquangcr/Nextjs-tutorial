@@ -6,6 +6,7 @@ import './index.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProductToShopingCart } from 'slices/medicineSlice';
 import { RootState } from 'store';
+import { imageDefault } from 'Constant';
 
 const classContainer: React.CSSProperties = {
   width: ' 100%',
@@ -17,6 +18,7 @@ const classContainer: React.CSSProperties = {
 const styleCol: React.CSSProperties = {
   marginTop: '16px',
 };
+
 
 export default function HighProductComponent({ medicine }: any) {
   const dispatch = useDispatch();
@@ -70,6 +72,7 @@ export default function HighProductComponent({ medicine }: any) {
           {/* ROW ONE */}
           {medicine &&
             medicine?.map((item: any, index: any) => {
+              console.log('item:', item)
               return (
                 <Col style={styleCol} lg={6} xs={12} key={index}>
                   <Card
@@ -80,7 +83,7 @@ export default function HighProductComponent({ medicine }: any) {
                       <img
                         style={{ height: '192px', padding: '10px' }}
                         alt={item?.name}
-                        src={item?.image}
+                        src={item?.image !== '' ? item?.image : imageDefault}
                       />
                     }
                   >

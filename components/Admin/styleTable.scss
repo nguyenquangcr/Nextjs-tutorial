@@ -1,3 +1,9 @@
+.editable-row {
+  & .ant-table-cell {
+    vertical-align: text-top;
+  }
+}
+
 .container {
   background: #f0f1f5;
 

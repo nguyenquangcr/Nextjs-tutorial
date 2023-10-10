@@ -7,6 +7,7 @@ import { addProductToShopingCart, getListMedicineUser } from 'slices/medicineSli
 import { RootState } from 'store';
 import { updateOpenModalLoging } from 'slices/userSlice';
 import FormatCurrency from 'utils/FormatCurrency';
+import { imageDefault } from 'Constant';
 
 export interface HeaderProps {}
 
@@ -94,7 +95,7 @@ export default function ProductComponent(props: HeaderProps) {
                       <img
                         style={{ height: '192px', padding: '10px' }}
                         alt={item?.name}
-                        src={item?.image}
+                        src={item?.image !== '' ? item?.image : imageDefault}
                       />
                     }
                   >

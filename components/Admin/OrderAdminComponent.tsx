@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Row,
-  Col,
-  Table,
-  Form,
-  Input,
-  Popconfirm,
-  Typography,
-  Badge,
-} from 'antd';
+import { Row, Col, Table, Form, Input, Popconfirm, Typography, Badge } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteOrder, getListOrder, updateStatusOrder } from 'slices/medicineSlice';
 import { RootState } from 'store';
 import FormatCurrency from 'utils/FormatCurrency';
 import moment from 'moment';
-
-export interface OrderProps { }
+import { ColumnsType } from 'antd/es/table';
+//style
+import './styleTable.scss';
+export interface OrderProps {}
 
 //form
 const formItemLayout = {
@@ -49,7 +42,18 @@ const tailLayout = {
 };
 
 const styleFormItem: React.CSSProperties = {
-  marginBottom: '0'
+  marginBottom: '0',
+};
+
+const styleDivContainer: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'flex-start',
+  justifyContent: 'flex-start',
+};
+
+const styleSpanLabel: React.CSSProperties = {
+  minWidth: '65px',
+  marginRight: '5px',
 };
 
 const EditableContext = React.createContext(null);
@@ -149,81 +153,84 @@ export default function OrderAdminComponent(props: OrderProps) {
   }, []);
 
   const defaultColumns = [
+    // {
+    //   title: 'Mã khách hàng',
+    //   dataIndex: 'id',
+    // },
     {
-      title: 'Mã khách hàng',
-      dataIndex: 'id',
-    },
-    {
-      title: 'Ngày tạo',
-      dataIndex: 'createAt',
+      title: 'Chi tiết đơn hàng',
+      dataIndex: 'order',
       render: (_: any, record: any) => {
-        return <Typography.Title
-          level={5}
-        >
-          {moment(record.createAt, 'YYYY-MM-DD HH:mm:ss').add(7, 'hour').format('DD/MM/YYYY HH:mm:ss')}
-        </Typography.Title>
-      }
+        return (
+          <div style={{ minWidth: '200px' }}>
+            <Form name="validate_other">
+              <div style={styleDivContainer}>
+                <span style={{fontWeight: 'bold', ...styleSpanLabel}}>Tổng tiền: </span>
+                <span>{FormatCurrency(record?.price)}</span>
+              </div>
+
+              {record?.order &&
+                record?.order?.map((item: any, index: any) => {
+                  return (
+                    <div key={index}>
+                      <div style={styleDivContainer}>
+                        <span style={styleSpanLabel}>Tên thuốc: </span>
+                        <span>{item.medicine}</span>
+                      </div>
+                      <div style={styleDivContainer}>
+                        <span style={styleSpanLabel}>Số lượng: </span>
+                        <span>{item.count}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+            </Form>
+          </div>
+        );
+      },
     },
     {
       title: 'Thông tin khách hàng',
       dataIndex: '',
       render: (_: any, record: any) => {
         return (
-          <div>
-            <Form
-              name="validate_other"
-            >
-              <Form.Item style={styleFormItem} label="Tên">
+          <div style={{ minWidth: '150px' }}>
+            <Form name="validate_other" style={{ width: '100%' }}>
+              <div style={styleDivContainer}>
+                <span style={styleSpanLabel}>Tên: </span>
                 <span>{record?.name}</span>
-              </Form.Item>
-              <Form.Item style={styleFormItem} label="Email">
+              </div>
+              <div style={styleDivContainer}>
+                <span style={styleSpanLabel}>Email: </span>
                 <span>{record?.email}</span>
-              </Form.Item>
-              <Form.Item style={styleFormItem} label="Số điện thoại">
+              </div>
+              <div style={styleDivContainer}>
+                <span style={styleSpanLabel}>Số điện thoại: </span>
                 <span>{record?.phoneNumber}</span>
-              </Form.Item>
-              <Form.Item style={styleFormItem} label="Địa chỉ">
+              </div>
+              <div style={styleDivContainer}>
+                <span style={styleSpanLabel}>Địa chỉ: </span>
                 <span>{record?.address}</span>
-              </Form.Item>
-              <Form.Item style={styleFormItem} label="Ghi chú">
+              </div>
+              <div style={styleDivContainer}>
+                <span style={styleSpanLabel}>Ghi chú: </span>
                 <span>{record?.note}</span>
-              </Form.Item>
+              </div>
             </Form>
           </div>
-        )
-      }
+        );
+      },
     },
     {
-      title: 'Chi tiết đơn hàng',
-      dataIndex: 'order',
+      title: 'Ngày tạo',
+      dataIndex: 'createAt',
       render: (_: any, record: any) => {
         return (
-          <div>
-            <Form
-              name="validate_other"
-            >
-              <Form.Item style={styleFormItem} label="Tổng tiền">
-                <span>{FormatCurrency(record?.price)}</span>
-              </Form.Item>
-              {
-                record?.order &&
-                record?.order?.map((item: any, index: any) => {
-                  return (
-                    <div key={index}>
-                      <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-                        <Form.Item style={styleFormItem} label="Tên thuốc">
-                          <span>{item.medicine}</span>
-                        </Form.Item>
-                        <Form.Item style={{ marginLeft: '10px', marginBottom: '0' }} label="Số lượng">
-                          <span>{item.count}</span>
-                        </Form.Item>
-                      </div>
-                    </div>
-                  );
-                })
-              }
-            </Form>
-          </div>
+          <Typography.Title level={5} style={{ minWidth: '100px' }}>
+            {moment(record.createAt, 'YYYY-MM-DD HH:mm:ss')
+              .add(7, 'hour')
+              .format('DD/MM/YYYY HH:mm:ss')}
+          </Typography.Title>
         );
       },
     },
@@ -231,14 +238,30 @@ export default function OrderAdminComponent(props: OrderProps) {
       title: 'Trạng thái',
       dataIndex: 'status',
       render: (_: any, record: any) => {
-        return <>{record.status ? <Badge status="success" text="Đã xử lý" /> : <Badge status="processing" text="Đang xử lý" />}</>
-      }
-    }, {
+        return (
+          <div style={{ minWidth: '50px' }}>
+            {record.status ? (
+              <Badge status="success" text="Đã xử lý" />
+            ) : (
+              <Badge status="processing" text="Đang xử lý" />
+            )}
+          </div>
+        );
+      },
+    },
+    {
       title: '',
       dataIndex: '',
       render: (_: any, record: any) => (
         <>
-          {record.status == false && <div style={{ color: 'blue', cursor: 'pointer', margin: '5px' }} onClick={() => dispatch(updateStatusOrder(record.id, { status: true }))}>Hoàn thành</div>}
+          {record.status == false && (
+            <div
+              style={{ color: 'blue', cursor: 'pointer', margin: '5px' }}
+              onClick={() => dispatch(updateStatusOrder(record.id, { status: true }))}
+            >
+              Hoàn thành
+            </div>
+          )}
           <Popconfirm
             style={{ cursor: 'pointer' }}
             title="Bạn có chắc chắn xóa?"
@@ -256,22 +279,20 @@ export default function OrderAdminComponent(props: OrderProps) {
   };
 
   return (
-    <Row gutter={24}>
-      {/* ROW ONE */}
-      <Col lg={24} xs={24}>
-        <div style={{ margin: '5px' }}>
-          <Table
-            components={components}
-            rowClassName={() => 'editable-row'}
-            bordered
-            dataSource={arrOrder}
-            columns={defaultColumns}
-            pagination={{
-              pageSize: pageSize, showSizeChanger: true, pageSizeOptions: ['3', '10', '15'], onChange: (page, pageside) => { setPageSize(pageside) }
-            }}
-          />
-        </div>
-      </Col>
-    </Row>
+    <Table
+      components={components}
+      rowClassName={() => 'editable-row'}
+      bordered
+      dataSource={arrOrder}
+      columns={defaultColumns}
+      pagination={{
+        pageSize: pageSize,
+        showSizeChanger: true,
+        pageSizeOptions: ['3', '10', '15'],
+        onChange: (page, pageside) => {
+          setPageSize(pageside);
+        },
+      }}
+    />
   );
 }

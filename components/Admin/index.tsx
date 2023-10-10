@@ -28,6 +28,10 @@ const styleSiderbar: React.CSSProperties = {
   minHeight: '100vh',
 };
 
+const styleMainLayout: React.CSSProperties = {
+  width: 'auto',
+}
+
 const { Header, Sider, Content } = Layout;
 
 const sideBarAdmin = [
@@ -59,21 +63,6 @@ const sideBarSuperAdmin = [
     icon: <UserOutlined />,
     label: 'Người dùng',
   },
-  {
-    key: '4',
-    icon: <PaperClipOutlined />,
-    label: 'Bài viết người dùng',
-  },
-  {
-    key: '5',
-    icon: <TagOutlined />,
-    label: 'Nhãn dán',
-  },
-  {
-    key: '6',
-    icon: <FileZipOutlined />,
-    label: 'Bài viết',
-  },
 ];
 
 export default function PageAdminComponent(props: PageAminProps) {
@@ -81,7 +70,7 @@ export default function PageAdminComponent(props: PageAminProps) {
   const inforUser: any = useSelector((state: RootState) => state.user.inforUser);
   //state
   const [collapsed, setCollapsed] = useState(false);
-  const [keySelected, setKeySelected] = useState('3');
+  const [keySelected, setKeySelected] = useState('2');
   const [itemSidebar, setItemSidebar] = useState<any>();
 
   const {
@@ -89,7 +78,12 @@ export default function PageAdminComponent(props: PageAminProps) {
   } = theme.useToken();
 
   React.useEffect(() => {
+    //get info user
     dispatch(getUserInfo());
+
+    //measure width screen
+    if(window && window.innerWidth < 1100)setCollapsed(true)
+    
   }, []);
 
   React.useEffect(() => {
@@ -105,12 +99,6 @@ export default function PageAdminComponent(props: PageAminProps) {
         return <OrderAdminComponent />;
       case '3':
         return <UserAdminComponent />;
-      case '4':
-        return <PostUserAdminComponent />;
-      case '5':
-        return <TagComponent />;
-      case '6':
-        return <PostComponent />;
     }
   };
 
@@ -124,8 +112,8 @@ export default function PageAdminComponent(props: PageAminProps) {
     else {
       if (inforUser?.role == 'admin' || inforUser?.role == 'superadmin')
         return (
-          <Layout style={{ height: '100%' }}>
-            <Sider style={styleSiderbar} trigger={null} collapsible collapsed={collapsed}>
+          <Layout style={{ height: '100%', overflowX: 'auto' }}>
+            <Sider width={'150px'} collapsedWidth={'50px'} style={styleSiderbar} trigger={null} collapsible collapsed={collapsed}>
               <div className="logo" />
               <Menu
                 onClick={(value) => setKeySelected(value?.key)}
@@ -135,8 +123,8 @@ export default function PageAdminComponent(props: PageAminProps) {
                 items={itemSidebar}
               />
             </Sider>
-            <Layout className="site-layout">
-              <Header className="custom-mobile" style={{ background: colorBgContainer }}>
+            <Layout className="site-layout" style={styleMainLayout}>
+              <Header className="custom-mobile cls-header" style={{ background: colorBgContainer }}>
                 {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                   className: 'trigger',
                   onClick: () => setCollapsed(!collapsed),
@@ -162,7 +150,7 @@ export default function PageAdminComponent(props: PageAminProps) {
               </Header>
               <Content
                 style={{
-                  margin: '10px',
+                  margin: '10px 0',
                   minHeight: 280,
                   background: colorBgContainer,
                 }}
