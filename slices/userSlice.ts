@@ -79,6 +79,7 @@ export function funcLogin(data: any): any {
   };
 }
 
+//Đăng nhập
 export function funcLoginUser(data: any): any {
   return async (dispatch: any) => {
     dispatch(userSlice.actions.updateStateLoading(true));
@@ -103,6 +104,34 @@ export function funcLoginUser(data: any): any {
     } catch (error) {
       console.log('error', error);
       openNotificationWithIcon(500, 'Đăng nhập thất bại! Sai tài khoản hoặc mật khẩu');
+      dispatch(userSlice.actions.updateStateLoading(false));
+    }
+  };
+}
+//Đăng ký
+export function funcCreateUser(data: any, setTypeForm: any, form: any): any {
+  return async (dispatch: any) => {
+    dispatch(userSlice.actions.updateStateLoading(true));
+    try {
+      await userService
+        .createNewUser(data)
+        .then((res) => {
+          dispatch(userSlice.actions.updateStateLoading(false));
+          if (res.status == 201 && res.data) {
+            openNotificationWithIcon(200, 'Đăng ký tài khoản thành công!');
+            setTypeForm('');
+            form.resetFields();
+            dispatch(userSlice.actions.updateOpenModalLoging(false));
+          }
+        })
+        .catch((err) => {
+          console.log('err', err);
+          openNotificationWithIcon(500, 'Đăng ký tài khoản thất bại');
+          dispatch(userSlice.actions.updateStateLoading(false));
+        });
+    } catch (error) {
+      console.log('error', error);
+      openNotificationWithIcon(500, 'Đăng ký tài khoản thất bại');
       dispatch(userSlice.actions.updateStateLoading(false));
     }
   };

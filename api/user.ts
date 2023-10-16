@@ -14,6 +14,10 @@ export const userService = {
     const endpoint = `${domain}/auth/user`;
     return axios.get(endpoint);
   },
+  createNewUser: (data: { username: any; password: any; email: any; phoneNumber: any }) => {
+    const endpoint = `${domain}/user/register`;
+    return axiosUser.post(endpoint, data);
+  },
   loginUser: (data: { username: string; password: string }) => {
     const endpoint = `${domain}/auth/login`;
     return axiosUser.post(endpoint, data);
