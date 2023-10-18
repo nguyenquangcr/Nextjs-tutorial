@@ -1,6 +1,12 @@
 import React from 'react';
-import { Typography, Card, Col, Row, Button } from 'antd';
-import { DownOutlined, BulbFilled, PlusCircleOutlined } from '@ant-design/icons';
+import { Typography, Card, Col, Row, Button, Radio } from 'antd';
+import {
+  DownOutlined,
+  BulbFilled,
+  PlusCircleOutlined,
+  UnorderedListOutlined,
+  AppstoreOutlined,
+} from '@ant-design/icons';
 import './index.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProductToShopingCart, getListMedicineUser } from 'slices/medicineSlice';
@@ -8,6 +14,9 @@ import { RootState } from 'store';
 import { updateOpenModalLoging } from 'slices/userSlice';
 import FormatCurrency from 'utils/FormatCurrency';
 import { imageDefault } from 'Constant';
+
+const imageTest =
+  'https://0912350050.sieu.re/_next/image?url=https%3A%2F%2Fd3hr4eej8cfgwy.cloudfront.net%2Fv2%2F128x128%2Ffinan-prd%2F4c3eb630-4e4b-4d17-9b69-25f425328c78%2Fimage%2Fdfd5e50e-7d3c-4ad3-8dc3-2d88b18f9da3.jpg&w=828&q=75';
 
 export interface HeaderProps {}
 
@@ -36,6 +45,8 @@ export default function ProductComponent(props: HeaderProps) {
   const arrMedicineUser = useSelector((state: RootState) => state.medicine.listMedicineUser);
   const totalMedicine = useSelector((state: RootState) => state.medicine.totalMedicine);
   const accessTokenUser = useSelector((state: RootState) => state.user.accessTokenUser);
+  //state component
+  const [display, setDisplay] = React.useState('excel');
 
   React.useEffect(() => {
     dispatch(getListMedicineUser(8));
@@ -62,6 +73,10 @@ export default function ProductComponent(props: HeaderProps) {
     return 'Xem thêm 8 sản phẩm';
   };
 
+  const onChange = (e: any) => {
+    setDisplay(e.target.value);
+  };
+
   return (
     <div>
       <div className="high-product" style={classContainer}>
@@ -79,57 +94,109 @@ export default function ProductComponent(props: HeaderProps) {
           >
             Sản Phẩm Nổi Bật
           </Typography.Title>
+          <Radio.Group value={display} onChange={onChange} style={{ marginLeft: '20px' }}>
+            <Radio.Button value="excel">
+              <UnorderedListOutlined />
+            </Radio.Button>
+            <Radio.Button value="table">
+              <AppstoreOutlined />
+            </Radio.Button>
+          </Radio.Group>
         </div>
 
-        <Row gutter={8}>
-          {/* ROW ONE */}
-          {arrMedicineUser &&
-            arrMedicineUser?.map((item: any, index: any) => {
-              return (
-                <Col style={styleCol} lg={6} xs={12} key={index}>
-                  <Card
-                    className="custom-card"
-                    hoverable
-                    style={{ width: 192, boxShadow: '0 0 0 1px #d8e0e8' }}
-                    cover={
+        {display == 'table' ? (
+          <Row gutter={8}>
+            {/* ROW ONE */}
+            {arrMedicineUser &&
+              arrMedicineUser?.map((item: any, index: any) => {
+                return (
+                  <Col style={styleCol} lg={6} xs={12} key={index}>
+                    <Card
+                      className="custom-card"
+                      hoverable
+                      style={{ width: 192, boxShadow: '0 0 0 1px #d8e0e8' }}
+                      cover={
+                        <img
+                          style={{ height: '192px', padding: '10px' }}
+                          alt={item?.name}
+                          src={item?.image !== '' ? item?.image : imageDefault}
+                        />
+                      }
+                    >
+                      <div className="class-note">{item?.description}</div>
+                      <Typography.Title level={4} className="nameMidicine">
+                        {item?.name}
+                      </Typography.Title>
+                      <Typography.Title
+                        style={{ fontSize: '16px!important' }}
+                        level={5}
+                        className="class-price"
+                      >
+                        <span>{FormatCurrency(item?.price)}</span> /{item?.unit}
+                      </Typography.Title>
+                      <Button
+                        className="class-plus-btn"
+                        onClick={() =>
+                          addProduct({
+                            key: item?.id,
+                            name: item?.name,
+                            image: item.image,
+                            price: item?.price,
+                            count: 1,
+                            unit: item?.unit,
+                          })
+                        }
+                      >
+                        <PlusCircleOutlined /> Thêm
+                      </Button>
+                    </Card>
+                  </Col>
+                );
+              })}
+          </Row>
+        ) : (
+          <>
+            {arrMedicineUser &&
+              arrMedicineUser?.map((item: any, index: any) => {
+                return (
+                  <div className="label-main-product" key={index}>
+                    <div className="label-image-info">
                       <img
-                        style={{ height: '192px', padding: '10px' }}
+                        className="label-image-product"
                         alt={item?.name}
                         src={item?.image !== '' ? item?.image : imageDefault}
                       />
-                    }
-                  >
-                    <div className="class-note">{item?.description}</div>
-                    <Typography.Title level={4} className="nameMidicine">
-                      {item?.name}
-                    </Typography.Title>
-                    <Typography.Title
-                      style={{ fontSize: '16px!important' }}
-                      level={5}
-                      className="class-price"
-                    >
-                      <span>{FormatCurrency(item?.price)}</span> /{item?.unit}
-                    </Typography.Title>
-                    <Button
-                      className="class-plus-btn"
-                      onClick={() =>
-                        addProduct({
-                          key: item?.id,
-                          name: item?.name,
-                          image: item.image,
-                          price: item?.price,
-                          count: 1,
-                          unit: item?.unit,
-                        })
-                      }
-                    >
-                      <PlusCircleOutlined /> Thêm
-                    </Button>
-                  </Card>
-                </Col>
-              );
-            })}
-        </Row>
+                      <div>
+                        <Typography.Title className="nameMidicine">{item?.name}</Typography.Title>
+                        <div>{item?.unit}</div>
+                        <div className="sellingPrice">{FormatCurrency(item?.price)}</div>
+                      </div>
+                    </div>
+                    <div>
+                      <PlusCircleOutlined
+                        style={{
+                          fontSize: '25px',
+                          color: 'green',
+                          margin: '10px',
+                          cursor: 'pointer',
+                        }}
+                        onClick={() =>
+                          addProduct({
+                            key: item?.id,
+                            name: item?.name,
+                            image: item.image,
+                            price: item?.price,
+                            count: 1,
+                            unit: item?.unit,
+                          })
+                        }
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+          </>
+        )}
 
         <div className="text-center m-4">
           {arrMedicineUser.length < totalMedicine && (

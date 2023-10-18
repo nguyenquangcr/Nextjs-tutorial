@@ -40,6 +40,14 @@
     line-height: 24px !important;
 }
 
+.sellingPrice {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 20px;
+    color: #db6d2e;
+}
+
 .custom-card .ant-card-body {
     padding-bottom: 15px !important;
     padding: 5px 10px;

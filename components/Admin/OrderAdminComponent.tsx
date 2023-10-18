@@ -53,7 +53,7 @@ const styleDivContainer: React.CSSProperties = {
 
 const styleSpanLabel: React.CSSProperties = {
   minWidth: '60px',
-  marginRight: '1px'
+  marginRight: '1px',
 };
 
 const EditableContext = React.createContext(null);
@@ -153,10 +153,19 @@ export default function OrderAdminComponent(props: OrderProps) {
   }, []);
 
   const defaultColumns = [
-    // {
-    //   title: 'Mã khách hàng',
-    //   dataIndex: 'id',
-    // },
+    {
+      title: 'Ngày tạo',
+      dataIndex: 'createAt',
+      render: (_: any, record: any) => {
+        return (
+          <Typography.Title level={5} style={{ minWidth: '100px' }}>
+            {moment(record.createAt, 'YYYY-MM-DD HH:mm:ss')
+              .add(7, 'hour')
+              .format('DD/MM/YYYY HH:mm:ss')}
+          </Typography.Title>
+        );
+      },
+    },
     {
       title: 'Chi tiết đơn hàng',
       dataIndex: 'order',
@@ -165,7 +174,7 @@ export default function OrderAdminComponent(props: OrderProps) {
           <div style={{ minWidth: '125px' }}>
             <Form name="validate_other">
               <div style={styleDivContainer}>
-                <span style={{fontWeight: 'bold', ...styleSpanLabel}}>Tổng tiền: </span>
+                <span style={{ fontWeight: 'bold', ...styleSpanLabel }}>Tổng tiền: </span>
                 <span>{FormatCurrency(record?.price)}</span>
               </div>
 
@@ -218,19 +227,6 @@ export default function OrderAdminComponent(props: OrderProps) {
               </div>
             </Form>
           </div>
-        );
-      },
-    },
-    {
-      title: 'Ngày tạo',
-      dataIndex: 'createAt',
-      render: (_: any, record: any) => {
-        return (
-          <Typography.Title level={5} style={{ minWidth: '100px' }}>
-            {moment(record.createAt, 'YYYY-MM-DD HH:mm:ss')
-              .add(7, 'hour')
-              .format('DD/MM/YYYY HH:mm:ss')}
-          </Typography.Title>
         );
       },
     },
