@@ -1,26 +1,13 @@
-import React from 'react';
-import { Layout, Space } from 'antd';
-import BootstrapCarousel from '@/components/common/Carousel';
-import ProductComponent from '@/components/common/Products';
-import { useDispatch } from 'react-redux';
-import { UpdateTotalMedicine } from 'slices/medicineSlice';
-import './style.scss';
-import HeaderComponent from '@/components/common/Header';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
-export default function HomePage() {
-  const dispatch = useDispatch();
+export default function IndexPage() {
+  const router = useRouter();
 
-  React.useEffect(() => {
-    dispatch(UpdateTotalMedicine());
+  useEffect(() => {
+    // Chuyển hướng đến trang /home
+    router.push('/home');
   }, []);
 
-  return (
-    <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
-      <Layout>
-        <HeaderComponent />
-        <BootstrapCarousel />
-        <ProductComponent />
-      </Layout>
-    </Space>
-  );
+  return <div>Redirecting...</div>;
 }
