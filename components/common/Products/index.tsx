@@ -49,7 +49,7 @@ export default function ProductComponent(props: HeaderProps) {
   const [display, setDisplay] = React.useState('excel');
 
   React.useEffect(() => {
-    dispatch(getListMedicineUser(8));
+    dispatch(getListMedicineUser(15));
   }, []);
 
   const addProduct = (value: any) => {
@@ -62,7 +62,7 @@ export default function ProductComponent(props: HeaderProps) {
     //   if (accessTokenUser == null) return dispatch(updateOpenModalLoging(true));
     //   else dispatch(getListMedicineUser(arrMedicineUser.length + 8));
     // } else dispatch(getListMedicineUser(arrMedicineUser.length + 8));
-    dispatch(getListMedicineUser(arrMedicineUser.length + 8));
+    dispatch(getListMedicineUser(arrMedicineUser.length + 15));
   };
 
   const renderTextBtnPlus = () => {
@@ -70,7 +70,7 @@ export default function ProductComponent(props: HeaderProps) {
     //   if (accessTokenUser == null) return 'Vui lòng đăng nhập để xem tiếp';
     //   else return 'Xem thêm 8 sản phẩm';
     // } else return 'Xem thêm 8 sản phẩm'
-    return 'Xem thêm 8 sản phẩm';
+    return 'Xem thêm 15 sản phẩm';
   };
 
   const onChange = (e: any) => {
@@ -207,7 +207,6 @@ export default function ProductComponent(props: HeaderProps) {
               icon={arrMedicineUser.length < 16 && <DownOutlined />}
               size={'large'}
             >
-              {/* {arrMedicineUser.length < 16 ? 'Xem thêm 8 sản phẩm' : 'Vui lòng đăng nhập để xem tiếp'} */}
               {renderTextBtnPlus()}
             </Button>
           )}

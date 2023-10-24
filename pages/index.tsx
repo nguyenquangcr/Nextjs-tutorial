@@ -46,9 +46,9 @@ export default function HomePage({ medicine }: HomePageProps) {
       <Layout>
         <HeaderComponent />
         <BootstrapCarousel />
-        <SearchComponent />
+        {/* <SearchComponent /> */}
         {/* high product */}
-        <HighProductComponent medicine={medicine} />
+        {/* <HighProductComponent medicine={medicine} /> */}
         {/* product */}
         <ProductComponent />
         <Footer style={footerStyle}>Footer</Footer>
@@ -66,20 +66,20 @@ export default function HomePage({ medicine }: HomePageProps) {
 //   };
 // };
 
-export const getStaticProps: GetStaticProps<HomePageProps> = async (
-  context: GetStaticPropsContext
-) => {
-  let arrMedicine: any = [];
-  await axios.get(`${domain}/medicine/getListToParams?take=8`).then((res) => {
-    arrMedicine = res.data;
-  });
+// export const getStaticProps: GetStaticProps<HomePageProps> = async (
+//   context: GetStaticPropsContext
+// ) => {
+//   let arrMedicine: any = [];
+//   await axios.get(`${domain}/medicine/getListToParams?take=8`).then((res) => {
+//     arrMedicine = res.data;
+//   });
 
-  return {
-    props: {
-      medicine: arrMedicine,
-    },
-  };
-};
+//   return {
+//     props: {
+//       medicine: arrMedicine,
+//     },
+//   };
+// };
 
 //
 //

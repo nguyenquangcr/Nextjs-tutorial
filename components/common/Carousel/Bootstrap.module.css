@@ -1,6 +1,6 @@
 /* Start Bootstrap carousel */
 .itemP {
-  height: 25rem;
+  height: 20rem;
   background-image: url('https://res.cloudinary.com/dmttpbcgv/image/upload/v1685332512/carousel-1_bfghlk.jpg');
   background-repeat: no-repeat;
   background-size: cover;
@@ -9,7 +9,7 @@
 .itemP>img {
   width: 100%;
   object-fit: cover;
-  height: 25rem;
+  height: 20rem;
 }
 
 .caption {

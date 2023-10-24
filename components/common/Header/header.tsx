@@ -1,7 +1,7 @@
 import React from 'react';
-import { Image, Typography, Badge, Modal, Form, Input, Popover } from 'antd';
+import { Image, Typography, Badge, Modal, Form, Input, Popover, Select, Spin, Button } from 'antd';
 import { ShoppingFilled, UserOutlined } from '@ant-design/icons';
-import './index.css';
+import './index.scss';
 import Link from 'next/link';
 import { RootState } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,6 +14,9 @@ import {
   updateOpenModalLoging,
 } from 'slices/userSlice';
 import { openNotificationWithIcon } from '@/components/notificationComponent';
+import { bgImageHeader, domain, imageDefault, logo } from 'Constant';
+import { addProductToShopingCart } from 'slices/medicineSlice';
+import { SearchOutlined } from '@ant-design/icons';
 
 export interface HeaderProps {}
 
@@ -29,16 +32,24 @@ const headerImage: React.CSSProperties = {
   height: '30px',
 };
 
+const { Option } = Select;
+
 export default function HeaderComponent(props: HeaderProps) {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   //selected
   const arrShoping = useSelector((state: RootState) => state.medicine.arrShoping);
+  const arrProduct = useSelector((state: RootState) => state.medicine.arrShoping);
   const openModalLogin = useSelector((state: RootState) => state.user.openModalLogin);
   const loading = useSelector((state: RootState) => state.user.loading);
   const inforUser: any = useSelector((state: RootState) => state.user.inforUser);
   //state
   const [typeForm, setTypeForm] = React.useState('');
+  const [valueSearch, setValueSearch] = React.useState({
+    data: [],
+    value: '',
+    fetching: false,
+  });
 
   React.useEffect(() => {
     if (localStorage.getItem('accessTokenUser')) {
@@ -62,16 +73,93 @@ export default function HeaderComponent(props: HeaderProps) {
     dispatch(updateInforUser(null));
   };
 
+  const fetchUser = (value: any) => {
+    setValueSearch({ ...valueSearch, data: [], fetching: true });
+    fetch(`${domain}/medicine/search?search=${value}`)
+      .then((response) => response.json())
+      .then((body) => {
+        setValueSearch({ ...valueSearch, data: body, fetching: false });
+      });
+  };
+
+  const handleChange = (value: string) => {
+    setValueSearch({ ...valueSearch, value });
+  };
+
+  const addProduct = (value: any) => {
+    if (arrProduct.some((item) => item?.key == value?.key) == false)
+      dispatch(addProductToShopingCart(value));
+  };
+
   return (
     <div style={{ position: 'sticky', top: 0, zIndex: 1000, width: '100%' }}>
-      <div className={'classheader'}>
+      <div
+        className={'classheader'}
+        style={{
+          backgroundImage: `url(${bgImageHeader})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+        }}
+      >
         <div style={classContainer} className={'classheaderchild'}>
-          <Image
-            preview={false}
-            src={
-              'https://res.cloudinary.com/dmttpbcgv/image/upload/v1680844992/Frame_16_adjzb8.svg'
+          <Image preview={false} src={logo} />
+          <Select
+            mode="multiple"
+            labelInValue
+            placeholder="Tìm tên thuốc, thực phẩm chức năng, dụng cụ y tế..."
+            notFoundContent={valueSearch?.fetching ? <Spin size="small" /> : null}
+            suffixIcon={<SearchOutlined className="label-search-icon" />}
+            filterOption={false}
+            onSearch={fetchUser}
+            onChange={handleChange}
+            onBlur={() =>
+              setValueSearch({
+                data: [],
+                value: '',
+                fetching: false,
+              })
             }
-          />
+            className={'label-search'}
+          >
+            {valueSearch?.data.map((item: any) => (
+              <Option key={item.id} disabled>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    border: 'solid 1px #e5e7eb',
+                  }}
+                >
+                  <img
+                    style={{ height: '50px', width: '50px', padding: '10px' }}
+                    alt={item?.name}
+                    src={item?.image !== '' ? item?.image : imageDefault}
+                  />
+                  <Typography.Paragraph ellipsis style={{ marginRight: '10px', maxWidth: '300px' }}>
+                    {item?.name}
+                  </Typography.Paragraph>
+                  <Button
+                    type="primary"
+                    size="small"
+                    onClick={() =>
+                      addProduct({
+                        key: item?.id,
+                        name: item?.name,
+                        image: item.image,
+                        price: item?.price,
+                        count: 1,
+                        unit: item?.unit,
+                      })
+                    }
+                  >
+                    {/* <PlusCircleOutlined />  */}
+                    <span>Thêm</span>
+                  </Button>
+                </div>
+              </Option>
+            ))}
+          </Select>
           <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
             {inforUser == null ? (
               <div
@@ -138,7 +226,65 @@ export default function HeaderComponent(props: HeaderProps) {
             </Link>
           </div>
         </div>
+        <Select
+          mode="multiple"
+          labelInValue
+          placeholder="Tìm tên thuốc, thực phẩm chức năng, dụng cụ y tế..."
+          notFoundContent={valueSearch?.fetching ? <Spin size="small" /> : null}
+          suffixIcon={<SearchOutlined className="label-search-icon" />}
+          filterOption={false}
+          onSearch={fetchUser}
+          onChange={handleChange}
+          onBlur={() =>
+            setValueSearch({
+              data: [],
+              value: '',
+              fetching: false,
+            })
+          }
+          className={'label-search label-search-mobile'}
+        >
+          {valueSearch?.data.map((item: any) => (
+            <Option key={item.id} disabled>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  border: 'solid 1px #e5e7eb',
+                }}
+              >
+                <img
+                  style={{ height: '50px', width: '50px', padding: '10px' }}
+                  alt={item?.name}
+                  src={item?.image !== '' ? item?.image : imageDefault}
+                />
+                <Typography.Paragraph ellipsis style={{ marginRight: '10px', maxWidth: '300px' }}>
+                  {item?.name}
+                </Typography.Paragraph>
+                <Button
+                  type="primary"
+                  size="small"
+                  onClick={() =>
+                    addProduct({
+                      key: item?.id,
+                      name: item?.name,
+                      image: item.image,
+                      price: item?.price,
+                      count: 1,
+                      unit: item?.unit,
+                    })
+                  }
+                >
+                  {/* <PlusCircleOutlined />  */}
+                  <span>Thêm</span>
+                </Button>
+              </div>
+            </Option>
+          ))}
+        </Select>
       </div>
+
       <Modal
         title={typeForm == '' ? 'Đăng Nhập' : 'Đăng ký'}
         open={openModalLogin}
