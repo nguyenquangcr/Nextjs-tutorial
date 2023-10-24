@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import { Input, Typography, Space, Tag, Select, Spin, Card, Button } from 'antd';
 import { DownOutlined, BulbFilled, PlusCircleOutlined } from '@ant-design/icons';
@@ -7,6 +8,7 @@ import { domain, imageDefault } from 'Constant';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { addProductToShopingCart } from 'slices/medicineSlice';
+import FormatCurrency from 'utils/FormatCurrency';
 
 export interface SearchProps {}
 
@@ -46,6 +48,41 @@ export default function SearchComponent(props: SearchProps) {
       dispatch(addProductToShopingCart(value));
   };
 
+  //   <div
+  //   style={{
+  //     display: 'flex',
+  //     flexDirection: 'row',
+  //     alignItems: 'center',
+  //     border: 'solid 1px #e5e7eb',
+  //   }}
+  // >
+  //   <img
+  //     style={{ height: '50px', width: '50px', padding: '10px' }}
+  //     alt={item?.name}
+  //     src={item?.image !== '' ? item?.image : imageDefault}
+  //   />
+  //   <Typography.Paragraph ellipsis style={{ marginRight: '10px', maxWidth: '300px' }}>
+  //     {item?.name}
+  //   </Typography.Paragraph>
+  //   <Button
+  //     type="primary"
+  //     size="small"
+  //     onClick={() =>
+  //       addProduct({
+  //         key: item?.id,
+  //         name: item?.name,
+  //         image: item.image,
+  //         price: item?.price,
+  //         count: 1,
+  //         unit: item?.unit,
+  //       })
+  //     }
+  //   >
+  //     {/* <PlusCircleOutlined />  */}
+  //     <span>Thêm</span>
+  //   </Button>
+  // </div>
+
   return (
     <div className="box-search" style={classContainer}>
       <Typography.Title level={2} style={{ color: '#000', marginBottom: '15px' }}>
@@ -70,39 +107,39 @@ export default function SearchComponent(props: SearchProps) {
       >
         {valueSearch?.data.map((item: any) => (
           <Option key={item.id} disabled>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                border: 'solid 1px #e5e7eb',
-              }}
-            >
-              <img
-                style={{ height: '50px', width: '50px', padding: '10px' }}
-                alt={item?.name}
-                src={item?.image !== '' ? item?.image : imageDefault}
-              />
-              <Typography.Paragraph ellipsis style={{ marginRight: '10px', maxWidth: '300px' }}>
-                {item?.name}
-              </Typography.Paragraph>
-              <Button
-                type="primary"
-                size="small"
-                onClick={() =>
-                  addProduct({
-                    key: item?.id,
-                    name: item?.name,
-                    image: item.image,
-                    price: item?.price,
-                    count: 1,
-                    unit: item?.unit,
-                  })
-                }
-              >
-                {/* <PlusCircleOutlined />  */}
-                <span>Thêm</span>
-              </Button>
+            <div className="label-main-product">
+              <div className="label-image-info">
+                <img
+                  className="label-image-product"
+                  alt={item?.name}
+                  src={item?.image !== '' ? item?.image : imageDefault}
+                />
+                <div>
+                  <Typography.Title className="nameMidicine">{item?.name}</Typography.Title>
+                  <div>{item?.unit}</div>
+                  <div className="sellingPrice">{FormatCurrency(item?.price)}</div>
+                </div>
+              </div>
+              <div>
+                <PlusCircleOutlined
+                  style={{
+                    fontSize: '25px',
+                    color: 'green',
+                    margin: '10px',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() =>
+                    addProduct({
+                      key: item?.id,
+                      name: item?.name,
+                      image: item.image,
+                      price: item?.price,
+                      count: 1,
+                      unit: item?.unit,
+                    })
+                  }
+                />
+              </div>
             </div>
           </Option>
         ))}
