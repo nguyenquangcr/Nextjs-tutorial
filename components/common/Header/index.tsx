@@ -18,6 +18,7 @@ import { openNotificationWithIcon } from '@/components/notificationComponent';
 import { bgImageHeader, domain, imageDefault, logo } from 'Constant';
 import { addProductToShopingCart } from 'slices/medicineSlice';
 import { SearchOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/router';
 
 export interface HeaderProps {}
 
@@ -38,6 +39,7 @@ const { Option } = Select;
 export default function HeaderComponent(props: HeaderProps) {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
+  const router = useRouter();
   //selected
   const arrShoping = useSelector((state: RootState) => state.medicine.arrShoping);
   const arrProduct = useSelector((state: RootState) => state.medicine.arrShoping);
@@ -51,6 +53,7 @@ export default function HeaderComponent(props: HeaderProps) {
     value: '',
     fetching: false,
   });
+  const [isGioHang, setIsGioHang] = React.useState(false);
 
   React.useEffect(() => {
     if (localStorage.getItem('accessTokenUser')) {
@@ -58,6 +61,10 @@ export default function HeaderComponent(props: HeaderProps) {
       dispatch(updateAccessTokenUser(localStorage.getItem('accessTokenUser')));
     }
   }, []);
+
+  React.useEffect(() => {
+    setIsGioHang(router.pathname === '/gio-hang');
+  }, [router.pathname]);
 
   const onFinish = (value: { username: any; password: any; email: any; phoneNumber: any }) => {
     const { username, password, email, phoneNumber } = value;
@@ -104,63 +111,68 @@ export default function HeaderComponent(props: HeaderProps) {
       >
         <div style={classContainer} className={'classheaderchild'}>
           <Image preview={false} src={logo} />
-          <Select
-            mode="multiple"
-            labelInValue
-            placeholder="Tìm tên thuốc, thực phẩm chức năng, dụng cụ y tế..."
-            notFoundContent={valueSearch?.fetching ? <Spin size="small" /> : null}
-            suffixIcon={<SearchOutlined className="label-search-icon" />}
-            filterOption={false}
-            onSearch={fetchUser}
-            onChange={handleChange}
-            onBlur={() =>
-              setValueSearch({
-                data: [],
-                value: '',
-                fetching: false,
-              })
-            }
-            className={'label-search'}
-          >
-            {valueSearch?.data.map((item: any) => (
-              <Option key={item.id} disabled>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    border: 'solid 1px #e5e7eb',
-                  }}
-                >
-                  <img
-                    style={{ height: '50px', width: '50px', padding: '10px' }}
-                    alt={item?.name}
-                    src={item?.image !== '' ? item?.image : imageDefault}
-                  />
-                  <Typography.Paragraph ellipsis style={{ marginRight: '10px', maxWidth: '300px' }}>
-                    {item?.name}
-                  </Typography.Paragraph>
-                  <Button
-                    type="primary"
-                    size="small"
-                    onClick={() =>
-                      addProduct({
-                        key: item?.id,
-                        name: item?.name,
-                        image: item.image,
-                        price: item?.price,
-                        count: 1,
-                        unit: item?.unit,
-                      })
-                    }
+          {!isGioHang && (
+            <Select
+              mode="multiple"
+              labelInValue
+              placeholder="Tìm tên thuốc, thực phẩm chức năng, dụng cụ y tế..."
+              notFoundContent={valueSearch?.fetching ? <Spin size="small" /> : null}
+              suffixIcon={<SearchOutlined className="label-search-icon" />}
+              filterOption={false}
+              onSearch={fetchUser}
+              onChange={handleChange}
+              onBlur={() =>
+                setValueSearch({
+                  data: [],
+                  value: '',
+                  fetching: false,
+                })
+              }
+              className={'label-search'}
+            >
+              {valueSearch?.data.map((item: any) => (
+                <Option key={item.id} disabled>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      border: 'solid 1px #e5e7eb',
+                    }}
                   >
-                    {/* <PlusCircleOutlined />  */}
-                    <span>Thêm</span>
-                  </Button>
-                </div>
-              </Option>
-            ))}
-          </Select>
+                    <img
+                      style={{ height: '50px', width: '50px', padding: '10px' }}
+                      alt={item?.name}
+                      src={item?.image !== '' ? item?.image : imageDefault}
+                    />
+                    <Typography.Paragraph
+                      ellipsis
+                      style={{ marginRight: '10px', maxWidth: '300px' }}
+                    >
+                      {item?.name}
+                    </Typography.Paragraph>
+                    <Button
+                      type="primary"
+                      size="small"
+                      onClick={() =>
+                        addProduct({
+                          key: item?.id,
+                          name: item?.name,
+                          image: item.image,
+                          price: item?.price,
+                          count: 1,
+                          unit: item?.unit,
+                        })
+                      }
+                    >
+                      {/* <PlusCircleOutlined />  */}
+                      <span>Thêm</span>
+                    </Button>
+                  </div>
+                </Option>
+              ))}
+            </Select>
+          )}
           <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
             {inforUser == null ? (
               <div
@@ -227,63 +239,65 @@ export default function HeaderComponent(props: HeaderProps) {
             </Link>
           </div>
         </div>
-        <Select
-          mode="multiple"
-          labelInValue
-          placeholder="Tìm tên thuốc, thực phẩm chức năng, dụng cụ y tế..."
-          notFoundContent={valueSearch?.fetching ? <Spin size="small" /> : null}
-          suffixIcon={<SearchOutlined className="label-search-icon" />}
-          filterOption={false}
-          onSearch={fetchUser}
-          onChange={handleChange}
-          onBlur={() =>
-            setValueSearch({
-              data: [],
-              value: '',
-              fetching: false,
-            })
-          }
-          className={'label-search label-search-mobile'}
-        >
-          {valueSearch?.data.map((item: any) => (
-            <Option key={item.id} disabled>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  border: 'solid 1px #e5e7eb',
-                }}
-              >
-                <img
-                  style={{ height: '50px', width: '50px', padding: '10px' }}
-                  alt={item?.name}
-                  src={item?.image !== '' ? item?.image : imageDefault}
-                />
-                <Typography.Paragraph ellipsis style={{ marginRight: '10px', maxWidth: '300px' }}>
-                  {item?.name}
-                </Typography.Paragraph>
-                <Button
-                  type="primary"
-                  size="small"
-                  onClick={() =>
-                    addProduct({
-                      key: item?.id,
-                      name: item?.name,
-                      image: item.image,
-                      price: item?.price,
-                      count: 1,
-                      unit: item?.unit,
-                    })
-                  }
+        {!isGioHang && (
+          <Select
+            mode="multiple"
+            labelInValue
+            placeholder="Tìm tên thuốc, thực phẩm chức năng, dụng cụ y tế..."
+            notFoundContent={valueSearch?.fetching ? <Spin size="small" /> : null}
+            suffixIcon={<SearchOutlined className="label-search-icon" />}
+            filterOption={false}
+            onSearch={fetchUser}
+            onChange={handleChange}
+            onBlur={() =>
+              setValueSearch({
+                data: [],
+                value: '',
+                fetching: false,
+              })
+            }
+            className={'label-search label-search-mobile'}
+          >
+            {valueSearch?.data.map((item: any) => (
+              <Option key={item.id} disabled>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    border: 'solid 1px #e5e7eb',
+                  }}
                 >
-                  {/* <PlusCircleOutlined />  */}
-                  <span>Thêm</span>
-                </Button>
-              </div>
-            </Option>
-          ))}
-        </Select>
+                  <img
+                    style={{ height: '50px', width: '50px', padding: '10px' }}
+                    alt={item?.name}
+                    src={item?.image !== '' ? item?.image : imageDefault}
+                  />
+                  <Typography.Paragraph ellipsis style={{ marginRight: '10px', maxWidth: '300px' }}>
+                    {item?.name}
+                  </Typography.Paragraph>
+                  <Button
+                    type="primary"
+                    size="small"
+                    onClick={() =>
+                      addProduct({
+                        key: item?.id,
+                        name: item?.name,
+                        image: item.image,
+                        price: item?.price,
+                        count: 1,
+                        unit: item?.unit,
+                      })
+                    }
+                  >
+                    {/* <PlusCircleOutlined />  */}
+                    <span>Thêm</span>
+                  </Button>
+                </div>
+              </Option>
+            ))}
+          </Select>
+        )}
       </div>
 
       <Modal
