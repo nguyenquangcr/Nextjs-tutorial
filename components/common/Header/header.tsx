@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, Typography, Badge, Modal, Form, Input, Popover, Select, Spin, Button } from 'antd';
 import { ShoppingFilled, UserOutlined } from '@ant-design/icons';
-import './index.scss';
+import './style.scss';
 import Link from 'next/link';
 import { RootState } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
