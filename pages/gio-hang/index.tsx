@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Layout, Space, Breadcrumb, Row, Col, Table, Form, Input, Button, Typography } from 'antd';
-import HeaderComponent from '@/components/common/Header/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import Link from 'next/link';
@@ -9,6 +8,7 @@ import FormatCurrency from '../../utils/FormatCurrency';
 //style
 import './styles.scss';
 import { CreateOrder, updateArrShoping } from 'slices/medicineSlice';
+import HeaderComponent from '@/components/common/Header';
 
 const classContainer: React.CSSProperties = {
   width: ' 100%',

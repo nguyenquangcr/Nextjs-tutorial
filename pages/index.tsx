@@ -1,7 +1,6 @@
 import React from 'react';
 import { Layout, Space, Image } from 'antd';
 import notification from './notification-bar.png';
-import HeaderComponent from '@/components/common/Header/index';
 import BootstrapCarousel from '@/components/common/Carousel';
 import SearchComponent from '@/components/common/SearchComponent';
 import HighProductComponent from '@/components/common/HighProducts';
@@ -11,6 +10,7 @@ import { RootState } from 'store';
 import axios from 'axios';
 import { UpdateTotalMedicine } from 'slices/medicineSlice';
 import { domain } from 'Constant';
+import HeaderComponent from '@/components/common/Header';
 
 const { Header, Footer, Sider, Content } = Layout;
 export interface HomePageProps {
