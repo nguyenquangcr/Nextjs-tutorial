@@ -8,7 +8,7 @@ import FormatCurrency from '../../utils/FormatCurrency';
 //style
 import './styles.scss';
 import { CreateOrder, updateArrShoping } from 'slices/medicineSlice';
-import HeaderComponent from '../../components/common/Header/index';
+import HeaderComponent from '@/components/common/Header';
 
 const classContainer: React.CSSProperties = {
   width: ' 100%',

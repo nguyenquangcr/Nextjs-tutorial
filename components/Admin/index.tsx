@@ -6,9 +6,6 @@ import {
   UserOutlined,
   VideoCameraOutlined,
   MedicineBoxOutlined,
-  PaperClipOutlined,
-  TagOutlined,
-  FileZipOutlined,
 } from '@ant-design/icons';
 import MedicineAdminComponent from './MedicineAdminComponent';
 import OrderAdminComponent from './OrderAdminComponent';
@@ -18,9 +15,6 @@ import { RootState } from 'store';
 import Link from 'next/link';
 import './style.scss';
 import UserAdminComponent from './UserAdminComponent';
-import PostUserAdminComponent from './PostUserComponent';
-import TagComponent from './TagComponent';
-import PostComponent from './PostComponent';
 
 export interface PageAminProps {}
 
@@ -30,7 +24,7 @@ const styleSiderbar: React.CSSProperties = {
 
 const styleMainLayout: React.CSSProperties = {
   width: 'auto',
-}
+};
 
 const { Header, Sider, Content } = Layout;
 
@@ -82,8 +76,7 @@ export default function PageAdminComponent(props: PageAminProps) {
     dispatch(getUserInfo());
 
     //measure width screen
-    if(window && window.innerWidth < 1100)setCollapsed(true)
-    
+    if (window && window.innerWidth < 1100) setCollapsed(true);
   }, []);
 
   React.useEffect(() => {
@@ -113,7 +106,14 @@ export default function PageAdminComponent(props: PageAminProps) {
       if (inforUser?.role == 'admin' || inforUser?.role == 'superadmin')
         return (
           <Layout style={{ height: '100%', overflowX: 'auto' }}>
-            <Sider width={'150px'} collapsedWidth={'50px'} style={styleSiderbar} trigger={null} collapsible collapsed={collapsed}>
+            <Sider
+              width={'150px'}
+              collapsedWidth={'50px'}
+              style={styleSiderbar}
+              trigger={null}
+              collapsible
+              collapsed={collapsed}
+            >
               <div className="logo" />
               <Menu
                 onClick={(value) => setKeySelected(value?.key)}

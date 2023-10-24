@@ -1,4 +1,3 @@
-// import HeaderComponent from '@/components/common/header';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -53,9 +52,3 @@ export async function getStaticProps() {
     props: {}, // will be passed to the page component as props
   };
 }
-
-// export async function getServerSideProps() {
-//   return {
-//     props: {}, // will be passed to the page component as props
-//   };
-// }
