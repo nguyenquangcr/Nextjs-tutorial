@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 //if you don't want component render server side -> use dynamic and {ssr: false}
-const Header = dynamic(() => import('@/components/common/Header/header'), { ssr: false });
+const Header = dynamic(() => import('@/components/common/Header/index'), { ssr: false });
 
-export interface AboutProps { }
+export interface AboutProps {}
 
 export default function AboutPage(props: AboutProps) {
   const router = useRouter();
@@ -49,7 +49,6 @@ export default function AboutPage(props: AboutProps) {
 }
 
 export async function getStaticProps() {
-
   return {
     props: {}, // will be passed to the page component as props
   };

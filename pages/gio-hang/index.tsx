@@ -1,17 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import {
-  Layout,
-  Space,
-  Breadcrumb,
-  Row,
-  Col,
-  Table,
-  Form,
-  Input,
-  Button,
-  Typography,
-} from 'antd';
-import HeaderComponent from '@/components/common/Header/header';
+import { Layout, Space, Breadcrumb, Row, Col, Table, Form, Input, Button, Typography } from 'antd';
+import HeaderComponent from '@/components/common/Header/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import Link from 'next/link';
@@ -441,15 +430,17 @@ export default function HomePage() {
               {/* ROW ONE */}
               <Col lg={16} xs={24}>
                 <div style={{ margin: '5px' }}>
-                  {
-                    refcolumn.current > 600 ? <Table
+                  {refcolumn.current > 600 ? (
+                    <Table
                       components={components}
                       rowClassName={() => 'editable-row'}
                       bordered
                       dataSource={arrProduct}
                       columns={defaultColumns}
                       pagination={false}
-                    /> : <Table
+                    />
+                  ) : (
+                    <Table
                       components={components}
                       rowClassName={() => 'editable-row'}
                       bordered
@@ -457,8 +448,7 @@ export default function HomePage() {
                       columns={mediaColumns}
                       pagination={false}
                     />
-                  }
-
+                  )}
                 </div>
                 {activeForm && (
                   <Form
@@ -501,11 +491,17 @@ export default function HomePage() {
                     <Form.Item name="note" label="Ghi chú">
                       <Input placeholder="Thêm ghi chú (ví dụ: Hãy gọi trước khi giao)" />
                     </Form.Item>
-                    <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}
-                      help={arrProduct.length == 0 && "Vui lòng thêm sản phẩm vào giỏ hàng"}
-                      validateStatus={"error"}
+                    <Form.Item
+                      wrapperCol={{ ...layout.wrapperCol, offset: 8 }}
+                      help={arrProduct.length == 0 && 'Vui lòng thêm sản phẩm vào giỏ hàng'}
+                      validateStatus={'error'}
                     >
-                      <Button disabled={arrProduct.length == 0} loading={loading} type="primary" htmlType="submit">
+                      <Button
+                        disabled={arrProduct.length == 0}
+                        loading={loading}
+                        type="primary"
+                        htmlType="submit"
+                      >
                         Hoàn tất
                       </Button>
                     </Form.Item>

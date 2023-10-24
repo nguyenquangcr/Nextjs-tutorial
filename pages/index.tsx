@@ -1,10 +1,7 @@
-import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
-import { notFound } from 'next/navigation';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { Layout, Space, Image } from 'antd';
 import notification from './notification-bar.png';
-import HeaderComponent from '@/components/common/Header/header';
+import HeaderComponent from '@/components/common/Header/index';
 import BootstrapCarousel from '@/components/common/Carousel';
 import SearchComponent from '@/components/common/SearchComponent';
 import HighProductComponent from '@/components/common/HighProducts';

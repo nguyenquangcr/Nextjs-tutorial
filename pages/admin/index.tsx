@@ -18,7 +18,6 @@ import {
   Typography,
   Checkbox,
 } from 'antd';
-import HeaderComponent from '@/components/common/Header/header';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'store';
 import Link from 'next/link';
