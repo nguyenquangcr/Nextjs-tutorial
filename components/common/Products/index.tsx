@@ -92,7 +92,7 @@ export default function ProductComponent(props: HeaderProps) {
             level={4}
             style={{ color: '#000', marginLeft: '10px', marginBottom: 0 }}
           >
-            Sản Phẩm Nổi Bật
+            DANH MỤC THUỐC
           </Typography.Title>
           <Radio.Group value={display} onChange={onChange} style={{ marginLeft: '20px' }}>
             <Radio.Button value="excel">
