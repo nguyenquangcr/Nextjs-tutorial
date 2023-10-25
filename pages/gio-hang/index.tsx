@@ -475,7 +475,7 @@ export default function HomePage() {
                       <Input />
                     </Form.Item>
                     <Form.Item
-                      name="phone"
+                      name="phoneNumber"
                       label="Số điện thoại"
                       rules={[{ required: true, message: 'Xin hãy nhập số điện thoại!' }]}
                     >
