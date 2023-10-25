@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import { Typography, Card, Col, Row, Button, Radio } from 'antd';
 import {
@@ -44,7 +45,6 @@ export default function ProductComponent(props: HeaderProps) {
   const arrProduct = useSelector((state: RootState) => state.medicine.arrShoping);
   const arrMedicineUser = useSelector((state: RootState) => state.medicine.listMedicineUser);
   const totalMedicine = useSelector((state: RootState) => state.medicine.totalMedicine);
-  const accessTokenUser = useSelector((state: RootState) => state.user.accessTokenUser);
   //state component
   const [display, setDisplay] = React.useState('excel');
 
@@ -58,18 +58,10 @@ export default function ProductComponent(props: HeaderProps) {
   };
 
   const handleBtnViewPlus = () => {
-    // if (arrMedicineUser.length >= 16) {
-    //   if (accessTokenUser == null) return dispatch(updateOpenModalLoging(true));
-    //   else dispatch(getListMedicineUser(arrMedicineUser.length + 8));
-    // } else dispatch(getListMedicineUser(arrMedicineUser.length + 8));
     dispatch(getListMedicineUser(arrMedicineUser.length + 15));
   };
 
   const renderTextBtnPlus = () => {
-    // if (arrMedicineUser.length >= 16) {
-    //   if (accessTokenUser == null) return 'Vui lòng đăng nhập để xem tiếp';
-    //   else return 'Xem thêm 8 sản phẩm';
-    // } else return 'Xem thêm 8 sản phẩm'
     return 'Xem thêm 15 sản phẩm';
   };
 

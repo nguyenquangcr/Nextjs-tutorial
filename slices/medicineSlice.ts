@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { medicineService } from 'api/medicine';
 import { openNotificationWithIcon } from '@/components/notificationComponent';
+import { Moment } from 'moment';
 
 export interface MedicineState {
   totalMedicine: number;
@@ -153,11 +154,11 @@ export function CreateOrder(data: any, setLoadding: any, setSuccess: any): any {
   };
 }
 
-export function getListOrder(): any {
+export function getListOrder(dataFilterDay?: { startDay: string; endDay: string | Moment }): any {
   return async (dispatch: any) => {
     try {
       await medicineService
-        ._getListOrder()
+        ._getListOrder(dataFilterDay)
         .then((res) => {
           if (res) {
             dispatch(medicineSlice.actions.updateArrOrder(res?.data));

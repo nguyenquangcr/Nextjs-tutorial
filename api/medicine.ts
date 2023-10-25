@@ -9,7 +9,7 @@ export const medicineService = {
     const endpoint = `${domain}/medicine`;
     return axios.get(endpoint);
   },
-  getListMedicineUser: (take:number) => {
+  getListMedicineUser: (take: number) => {
     const endpoint = `${domain}/medicine/getListToParams?take=${take}`;
     return axios.get(endpoint);
   },
@@ -22,16 +22,19 @@ export const medicineService = {
     const endpoint = `${domain}/order`;
     return axios.post(endpoint, data);
   },
-  _getListOrder: () => {
-    const endpoint = `${domain}/order`;
+  _getListOrder: (dataFilterDay: any) => {
+    let endpoint = '';
+    if (dataFilterDay?.startDay && dataFilterDay?.endDay)
+      endpoint = `${domain}/order?startDay=${dataFilterDay?.startDay}&endDay=${dataFilterDay?.endDay}`;
+    else endpoint = `${domain}/order`;
     return axios.get(endpoint);
   },
   _deleteOrder: (id: string) => {
     const endpoint = `${domain}/order/${id}`;
     return axios.delete(endpoint);
   },
-  __updateStatusOrder: (id:string, data:any) => {
+  __updateStatusOrder: (id: string, data: any) => {
     const endpoint = `${domain}/order/${id}/updateStatus`;
     return axios.put(endpoint, data);
-  }
+  },
 };

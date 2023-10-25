@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Table, Form, Input, Popconfirm, Typography, Badge } from 'antd';
+import { Row, Col, Table, Form, Input, Popconfirm, Typography, Badge, DatePicker } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteOrder, getListOrder, updateStatusOrder } from 'slices/medicineSlice';
@@ -9,6 +9,7 @@ import moment from 'moment';
 import { ColumnsType } from 'antd/es/table';
 //style
 import './styleTable.scss';
+import type { DatePickerProps, RangePickerProps } from 'antd/es/date-picker';
 export interface OrderProps {}
 
 //form
@@ -158,10 +159,12 @@ export default function OrderAdminComponent(props: OrderProps) {
       dataIndex: 'createAt',
       render: (_: any, record: any) => {
         return (
-          <Typography.Title level={5} style={{ minWidth: '100px' }}>
-            {moment(record.createAt, 'YYYY-MM-DD HH:mm:ss')
-              .add(7, 'hour')
-              .format('DD/MM/YYYY HH:mm:ss')}
+          <Typography.Title
+            level={5}
+            style={{ minWidth: 'max-content', fontSize: '12px' }}
+            className="abc"
+          >
+            {moment(record.createAt, 'YYYY-MM-DD HH:mm:ss').add(7, 'hour').format('DD/MM/YYYY')}
           </Typography.Title>
         );
       },
@@ -274,21 +277,48 @@ export default function OrderAdminComponent(props: OrderProps) {
     dispatch(deleteOrder(value?.id));
   };
 
+  const onChange = (
+    value: DatePickerProps['value'] | RangePickerProps['value'],
+    dateString: string
+  ) => {
+    console.log('Formatted Selected Time: ', dateString);
+    dispatch(
+      getListOrder({
+        startDay: dateString,
+        endDay: moment(dateString).add(1, 'day').format('YYYY-MM-DD'),
+      })
+    );
+  };
+
   return (
-    <Table
-      components={components}
-      rowClassName={() => 'editable-row'}
-      bordered
-      dataSource={arrOrder}
-      columns={defaultColumns}
-      pagination={{
-        pageSize: pageSize,
-        showSizeChanger: true,
-        pageSizeOptions: ['10', '15', '20'],
-        onChange: (page, pageside) => {
-          setPageSize(pageside);
-        },
-      }}
-    />
+    <>
+      <Typography.Title
+        level={5}
+        style={{ minWidth: '100px', marginLeft: '10px', fontSize: '15px' }}
+      >
+        Chọn ngày để xem đơn hàng
+      </Typography.Title>
+      <DatePicker
+        placeholder="Chọn ngày"
+        style={{ margin: '0 10px' }}
+        format="YYYY-MM-DD"
+        onChange={onChange}
+      />
+      <Table
+        components={components}
+        rowClassName={() => 'editable-row'}
+        bordered
+        dataSource={arrOrder}
+        columns={defaultColumns}
+        pagination={{
+          pageSize: pageSize,
+          showSizeChanger: true,
+          pageSizeOptions: ['10', '15', '20'],
+          onChange: (page, pageside) => {
+            setPageSize(pageside);
+          },
+        }}
+      />
+    </>
   );
 }
