@@ -161,7 +161,7 @@ export default function OrderAdminComponent(props: OrderProps) {
         return (
           <Typography.Title
             level={5}
-            style={{ minWidth: 'max-content', fontSize: '12px' }}
+            style={{ width: 'max-content', fontSize: '12px' }}
             className="abc"
           >
             {moment(record.createAt, 'YYYY-MM-DD HH:mm:ss').add(7, 'hour').format('DD/MM/YYYY')}
