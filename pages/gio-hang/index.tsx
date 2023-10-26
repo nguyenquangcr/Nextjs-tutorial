@@ -391,172 +391,166 @@ export default function HomePage() {
   };
 
   return (
-    <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
-      <Layout>
-        <HeaderComponent />
-        <div style={classContainer}>
-          {success == false && (
-            <div style={{ margin: '5px' }}>
-              {activeForm == false ? (
-                <Breadcrumb
-                  items={[
-                    {
-                      title: <Link href={'/'}>Trang chủ</Link>,
-                    },
-                    {
-                      title: 'Giỏ hàng',
-                    },
-                  ]}
-                />
-              ) : (
-                <Typography.Title
-                  onClick={() => setActiveForm(false)}
-                  level={5}
-                  style={{
-                    color: '#000',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  <LeftOutlined /> Quay lại giỏ hàng
-                </Typography.Title>
-              )}
-            </div>
-          )}
+    <Space className="abc" direction="vertical" style={{ width: '100%' }}>
+      <HeaderComponent />
+      <div style={classContainer}>
+        {success == false && (
+          <div style={{ margin: '5px' }}>
+            {activeForm == false ? (
+              <Breadcrumb
+                items={[
+                  {
+                    title: <Link href={'/'}>Trang chủ</Link>,
+                  },
+                  {
+                    title: 'Giỏ hàng',
+                  },
+                ]}
+              />
+            ) : (
+              <Typography.Title
+                onClick={() => setActiveForm(false)}
+                level={5}
+                style={{
+                  color: '#000',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <LeftOutlined /> Quay lại giỏ hàng
+              </Typography.Title>
+            )}
+          </div>
+        )}
 
-          {success === false ? (
-            <Row gutter={24}>
-              {/* ROW ONE */}
-              <Col lg={16} xs={24}>
-                <div style={{ margin: '5px' }}>
-                  {refcolumn.current > 600 ? (
-                    <Table
-                      components={components}
-                      rowClassName={() => 'editable-row'}
-                      bordered
-                      dataSource={arrProduct}
-                      columns={defaultColumns}
-                      pagination={false}
-                    />
-                  ) : (
-                    <Table
-                      components={components}
-                      rowClassName={() => 'editable-row'}
-                      bordered
-                      dataSource={arrProduct}
-                      columns={mediaColumns}
-                      pagination={false}
-                    />
-                  )}
-                </div>
-                {activeForm && (
-                  <Form
-                    {...layout}
-                    disabled={loading == true ? true : false}
-                    form={form}
-                    name="nest-messages"
-                    onFinish={onFinish}
-                    style={labelFormInfoCustomer}
-                    validateMessages={validateMessages}
-                  >
-                    <Form.Item
-                      name={'name'}
-                      label="Họ và tên"
-                      rules={[{ required: true, message: 'Xin hãy nhập họ và tên!' }]}
-                    >
-                      <Input />
-                    </Form.Item>
-                    <Form.Item
-                      name={'email'}
-                      label="Email"
-                      rules={[{ type: 'email', required: true, message: 'Xin hãy nhập email!' }]}
-                    >
-                      <Input />
-                    </Form.Item>
-                    <Form.Item
-                      name="phoneNumber"
-                      label="Số điện thoại"
-                      rules={[{ required: true, message: 'Xin hãy nhập số điện thoại!' }]}
-                    >
-                      <Input type="number" />
-                    </Form.Item>
-                    <Form.Item
-                      name={'address'}
-                      label="Địa chỉ"
-                      rules={[{ required: true, message: 'Xin hãy nhập địa chỉ!' }]}
-                    >
-                      <Input />
-                    </Form.Item>
-                    <Form.Item name="note" label="Ghi chú">
-                      <Input placeholder="Thêm ghi chú (ví dụ: Hãy gọi trước khi giao)" />
-                    </Form.Item>
-                    <Form.Item
-                      wrapperCol={{ ...layout.wrapperCol, offset: 8 }}
-                      help={arrProduct.length == 0 && 'Vui lòng thêm sản phẩm vào giỏ hàng'}
-                      validateStatus={'error'}
-                    >
-                      <Button
-                        disabled={arrProduct.length == 0}
-                        loading={loading}
-                        type="primary"
-                        htmlType="submit"
-                      >
-                        Hoàn tất
-                      </Button>
-                    </Form.Item>
-                  </Form>
+        {success === false ? (
+          <Row gutter={24}>
+            {/* ROW ONE */}
+            <Col lg={16} xs={24}>
+              <div style={{ margin: '5px' }}>
+                {refcolumn.current > 600 ? (
+                  <Table
+                    components={components}
+                    rowClassName={() => 'editable-row'}
+                    bordered
+                    dataSource={arrProduct}
+                    columns={defaultColumns}
+                    pagination={false}
+                  />
+                ) : (
+                  <Table
+                    components={components}
+                    rowClassName={() => 'editable-row'}
+                    bordered
+                    dataSource={arrProduct}
+                    columns={mediaColumns}
+                    pagination={false}
+                  />
                 )}
-              </Col>
-              <Col lg={8} xs={24}>
-                <div style={containerRight}>
-                  <Form
-                    name="validate_other"
-                    {...formItemLayout}
-                    initialValues={{ 'input-number': 3, 'checkbox-group': ['A', 'B'], rate: 3.5 }}
-                    style={{ maxWidth: 600 }}
-                  >
-                    <Form.Item {...tailLayout} label="Tổng tiền">
-                      <span className="ant-form-text">{FormatCurrency(totalPrice)}</span>
-                    </Form.Item>
-                    <Form.Item {...tailLayout} label="Giảm giá trực tiếp">
-                      <span className="ant-form-text">{FormatCurrency(0)}</span>
-                    </Form.Item>
-                    <Form.Item {...tailLayout} label="Giảm giá voucher ">
-                      <span className="ant-form-text">{FormatCurrency(0)}</span>
-                    </Form.Item>
-                    <hr />
-                    <Form.Item {...tailLayout} label="Thành tiền">
-                      <span className="ant-form-text">{FormatCurrency(totalPrice)}</span>
-                    </Form.Item>
-                  </Form>
-                  {activeForm == false && (
-                    <button onClick={() => setActiveForm(true)} style={labelButton}>
-                      Đặt hàng
-                    </button>
-                  )}
-                </div>
-              </Col>
-            </Row>
-          ) : (
-            <div style={{ textAlign: 'center', margin: '20px' }}>
-              <div>
-                {' '}
-                <Typography.Title
-                  level={2}
-                  style={{ color: '#000', margin: '10px', cursor: 'pointer' }}
-                >
-                  {' '}
-                  Đơn hàng của bạn đã được đặt thành công
-                </Typography.Title>
               </div>
-              <Link href={'/'}>
-                <Button className="class-plus-btn">Quay lại trang chủ</Button>
-              </Link>
+              {activeForm && (
+                <Form
+                  {...layout}
+                  disabled={loading == true ? true : false}
+                  form={form}
+                  name="nest-messages"
+                  onFinish={onFinish}
+                  style={labelFormInfoCustomer}
+                  validateMessages={validateMessages}
+                >
+                  <Form.Item
+                    name={'name'}
+                    label="Tên cá nhân hoặc nhà thuốc *"
+                    rules={[{ required: true, message: 'Xin hãy nhập họ và tên!' }]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name={'email'} label="Email">
+                    <Input />
+                  </Form.Item>
+                  <Form.Item
+                    name="phoneNumber"
+                    label="Số điện thoại *"
+                    rules={[{ required: true, message: 'Xin hãy nhập số điện thoại!' }]}
+                  >
+                    <Input type="number" />
+                  </Form.Item>
+                  <Form.Item
+                    name={'address'}
+                    label="Địa chỉ *"
+                    rules={[{ required: true, message: 'Xin hãy nhập địa chỉ!' }]}
+                  >
+                    <Input />
+                  </Form.Item>
+                  <Form.Item name="note" label="Ghi chú">
+                    <Input placeholder="Thêm ghi chú (ví dụ: Hãy gọi trước khi giao)" />
+                  </Form.Item>
+                  <Form.Item
+                    wrapperCol={{ ...layout.wrapperCol, offset: 8 }}
+                    help={arrProduct.length == 0 && 'Vui lòng thêm sản phẩm vào giỏ hàng'}
+                    validateStatus={'error'}
+                  >
+                    <Button
+                      disabled={arrProduct.length == 0}
+                      loading={loading}
+                      type="primary"
+                      htmlType="submit"
+                    >
+                      Hoàn tất
+                    </Button>
+                  </Form.Item>
+                </Form>
+              )}
+            </Col>
+            <Col lg={8} xs={24}>
+              <div style={containerRight}>
+                <Form
+                  name="validate_other"
+                  {...formItemLayout}
+                  initialValues={{ 'input-number': 3, 'checkbox-group': ['A', 'B'], rate: 3.5 }}
+                  style={{ maxWidth: 600 }}
+                >
+                  <Form.Item {...tailLayout} label="Tổng tiền">
+                    <span className="ant-form-text">{FormatCurrency(totalPrice)}</span>
+                  </Form.Item>
+                  <Form.Item {...tailLayout} label="Giảm giá trực tiếp">
+                    <span className="ant-form-text">{FormatCurrency(0)}</span>
+                  </Form.Item>
+                  <Form.Item {...tailLayout} label="Giảm giá voucher ">
+                    <span className="ant-form-text">{FormatCurrency(0)}</span>
+                  </Form.Item>
+                  <hr />
+                  <Form.Item {...tailLayout} label="Thành tiền">
+                    <span className="ant-form-text">{FormatCurrency(totalPrice)}</span>
+                  </Form.Item>
+                </Form>
+                {activeForm == false && (
+                  <button onClick={() => setActiveForm(true)} style={labelButton}>
+                    Đặt hàng
+                  </button>
+                )}
+              </div>
+            </Col>
+          </Row>
+        ) : (
+          <div style={{ textAlign: 'center', margin: '20px' }}>
+            <div>
+              {' '}
+              <Typography.Title
+                level={2}
+                style={{ color: '#000', margin: '10px', cursor: 'pointer' }}
+              >
+                {' '}
+                Đơn hàng của bạn đã được đặt thành công
+              </Typography.Title>
             </div>
-          )}
-        </div>
-      </Layout>
+            <Link href={'/'}>
+              <Button className="class-plus-btn">Quay lại trang chủ</Button>
+            </Link>
+          </div>
+        )}
+      </div>
     </Space>
   );
 }
