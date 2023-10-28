@@ -391,7 +391,7 @@ export default function HomePage() {
   };
 
   return (
-    <Space className="abc" direction="vertical" style={{ width: '100%' }}>
+    <Space className="main-page-shoppingcart" direction="vertical">
       <HeaderComponent />
       <div style={classContainer}>
         {success == false && (
