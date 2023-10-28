@@ -51,7 +51,6 @@ export default function HomePage({ post }: HomePageProps) {
   const dispatch = useDispatch();
   //store
   const accessToken = useSelector((state: RootState) => state.user.accessToken);
-  const inforUser: any = useSelector((state: RootState) => state.user.inforUser);
   //state
 
   useEffect(() => {

@@ -36,6 +36,7 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
+    console.log('chay vao day', error);
     if (error?.response?.statusText == 'Unauthorized' && error?.response?.status == 401) {
       localStorage.removeItem('accessToken');
       window.location = domainFE;
