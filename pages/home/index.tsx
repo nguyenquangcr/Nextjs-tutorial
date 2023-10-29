@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Space } from 'antd';
+import { Button, Layout, Space } from 'antd';
 import BootstrapCarousel from '@/components/common/Carousel';
 import ProductComponent from '@/components/common/Products';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,6 +7,7 @@ import { getListMedicineUser, UpdateTotalMedicine } from 'slices/medicineSlice';
 import './styles.scss';
 import HeaderComponent from '@/components/common/Header';
 import { RootState } from 'store';
+import { CaretUpOutlined } from '@ant-design/icons';
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -14,22 +15,19 @@ export default function HomePage() {
   const mainPageRef = React.useRef<HTMLDivElement>(null);
   //state store
   const arrMedicineUser = useSelector((state: RootState) => state.medicine.listMedicineUser);
+  //state
+  const [display, setDisplay] = React.useState(false);
 
   React.useEffect(() => {
     function handleScroll() {
       const mainPageElement = mainPageRef.current; // Lấy tham chiếu đến phần tử
       const scrollTop: any = mainPageElement?.scrollTop; // Vị trí cuộn hiện tại
-      console.log('scrollTop:', scrollTop);
       const scrollHeight: any = mainPageElement?.scrollHeight; // Chiều cao của phần tử
-      console.log('scrollHeight:', scrollHeight);
       const clientHeight: any = mainPageElement?.clientHeight; // Chiều cao của phần tử hiển thị
-      console.log('clientHeight:', clientHeight);
-
-      console.log('chay vao day');
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (scrollTop + clientHeight >= scrollHeight)
         dispatch(getListMedicineUser(arrMedicineUser.length + 15));
-        // Xử lý khi cuộn tới cuối ở đây
-      }
+      if (display == true && scrollTop === 0) setDisplay(false);
+      if (display == false && scrollTop >= 300) setDisplay(true);
     }
 
     if (mainPageRef.current) {
@@ -41,13 +39,18 @@ export default function HomePage() {
         mainPageRef.current.removeEventListener('scroll', handleScroll); // Hủy bỏ sự kiện khi component unmount
       }
     };
-  }, [arrMedicineUser]);
+  }, [arrMedicineUser, display]);
+
+  const topHtml = React.useRef<HTMLDivElement>(null); // Biến tham chiếu cho phần tử có id="main-page"
+
+  const scrollTop = () => {
+    setDisplay(false);
+    mainPageRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   React.useEffect(() => {
     dispatch(UpdateTotalMedicine());
   }, []);
-
-  // console.log('mainPageRef', mainPageRef.current);
 
   return (
     <div ref={mainPageRef} style={{ width: '100%', height: '100vh', overflowY: 'auto' }}>
@@ -56,6 +59,15 @@ export default function HomePage() {
           <HeaderComponent />
           <BootstrapCarousel />
           <ProductComponent />
+          {display && (
+            <Button
+              className="btn-back-to-top"
+              type="primary"
+              shape="circle"
+              icon={<CaretUpOutlined />}
+              onClick={scrollTop}
+            />
+          )}
         </Layout>
       </Space>
     </div>
