@@ -189,20 +189,6 @@ export default function ProductComponent(props: HeaderProps) {
               })}
           </>
         )}
-
-        <div className="text-center m-4">
-          {arrMedicineUser.length < totalMedicine && (
-            <Button
-              onClick={() => handleBtnViewPlus()}
-              style={{ display: 'flex', margin: 'auto', alignItems: 'center' }}
-              shape="round"
-              icon={arrMedicineUser.length < 16 && <DownOutlined />}
-              size={'large'}
-            >
-              {renderTextBtnPlus()}
-            </Button>
-          )}
-        </div>
       </div>
     </div>
   );
