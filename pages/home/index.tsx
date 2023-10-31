@@ -24,7 +24,7 @@ export default function HomePage() {
       const scrollTop: any = mainPageElement?.scrollTop; // Vị trí cuộn hiện tại
       const scrollHeight: any = mainPageElement?.scrollHeight; // Chiều cao của phần tử
       const clientHeight: any = mainPageElement?.clientHeight; // Chiều cao của phần tử hiển thị
-      if (scrollTop + clientHeight >= scrollHeight)
+      if (scrollTop + clientHeight >= scrollHeight - 150)
         dispatch(getListMedicineUser(arrMedicineUser.length + 15));
       if (display == true && scrollTop === 0) setDisplay(false);
       if (display == false && scrollTop >= 300) setDisplay(true);
