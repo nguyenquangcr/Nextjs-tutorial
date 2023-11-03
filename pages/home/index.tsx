@@ -8,12 +8,14 @@ import './styles.scss';
 import HeaderComponent from '@/components/common/Header';
 import { RootState } from 'store';
 import { CaretUpOutlined } from '@ant-design/icons';
+import CartPanelComponent from '@/components/CartPanelComponent';
 
 export default function HomePage() {
   const dispatch = useDispatch();
   //ref
   const mainPageRef = React.useRef<HTMLDivElement>(null);
   //state store
+  const arrShoping = useSelector((state: RootState) => state.medicine.arrShoping);
   const arrMedicineUser = useSelector((state: RootState) => state.medicine.listMedicineUser);
   //state
   const [display, setDisplay] = React.useState(false);
@@ -70,6 +72,8 @@ export default function HomePage() {
           )}
         </Layout>
       </Space>
+
+      {arrShoping.length > 0 && <CartPanelComponent />}
     </div>
   );
 }

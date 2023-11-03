@@ -112,7 +112,9 @@ export default function HeaderComponent(props: HeaderProps) {
         }}
       >
         <div style={classContainer} className={'classheaderchild'}>
-          <Image preview={false} src={logo} />
+          <div className="label-image-logo">
+            <Image preview={false} src={logo} />
+          </div>
           {!isGioHang && (
             <Select
               mode="multiple"
@@ -210,6 +212,7 @@ export default function HeaderComponent(props: HeaderProps) {
               </Popover>
             )}
             <Link
+              className="label-gio-hang"
               href={arrShoping.length != 0 ? '/gio-hang' : '/'}
               onClick={() => {
                 if (arrShoping.length == 0)

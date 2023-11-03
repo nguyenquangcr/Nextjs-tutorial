@@ -40,8 +40,27 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  bottom: 5%;
+  bottom: 17%;
   right: 5%;
+}
+
+.CartFloatPanel {
+  overflow: hidden;
+  display: flex;
+  width: 95%;
+  position: absolute;
+  bottom: 4%;
+  left: 4%;
+  background-color: #1677ff;
+  box-shadow: -12px -12px 32px rgba(0, 80, 40, 0.1), 12px 12px 32px rgba(0, 80, 40, 0.1);
+  border-radius: 8px;
+  justify-content: space-between;
+  padding: 12px 15px;
+  align-items: center;
+  .infor-CartFloatPanel {
+    display: flex;
+    align-items: center;
+  }
 }
 
 @media only screen and (max-width: 600px) {
@@ -49,10 +68,11 @@
     padding-bottom: 1px;
     .classheaderchild {
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       padding: 5px 0 !important;
-      flex-direction: column;
-      align-items: center;
+      .label-image-logo {
+        width: 50%;
+      }
     }
     .label-search {
       display: none;
@@ -60,5 +80,13 @@
     .label-search-mobile {
       display: block;
     }
+  }
+
+  .label-gio-hang {
+    display: none;
+  }
+
+  .CartFloatPanel {
+    overflow: visible;
   }
 }
