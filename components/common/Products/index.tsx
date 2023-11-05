@@ -1,27 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react';
-import { Typography, Card, Col, Row, Button, Radio } from 'antd';
+import { Typography, Card, Col, Row, Button, Radio, InputNumber, Input } from 'antd';
 import {
-  DownOutlined,
   BulbFilled,
   PlusCircleOutlined,
   UnorderedListOutlined,
   AppstoreOutlined,
+  MinusCircleOutlined,
 } from '@ant-design/icons';
 import './index.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProductToShopingCart, getListMedicineUser } from 'slices/medicineSlice';
+import {
+  addProductToShopingCart,
+  getListMedicineUser,
+  updateArrShoping,
+} from 'slices/medicineSlice';
 import { RootState } from 'store';
-import { updateOpenModalLoging } from 'slices/userSlice';
 import FormatCurrency from 'utils/FormatCurrency';
 import { imageDefault } from 'Constant';
-
-const imageTest =
-  'https://0912350050.sieu.re/_next/image?url=https%3A%2F%2Fd3hr4eej8cfgwy.cloudfront.net%2Fv2%2F128x128%2Ffinan-prd%2F4c3eb630-4e4b-4d17-9b69-25f425328c78%2Fimage%2Fdfd5e50e-7d3c-4ad3-8dc3-2d88b18f9da3.jpg&w=828&q=75';
-
-export interface HeaderProps {}
-
-const { Meta } = Card;
+import classnames from 'classnames';
 
 const classContainer: React.CSSProperties = {
   width: ' 100%',
@@ -30,21 +27,15 @@ const classContainer: React.CSSProperties = {
   marginLeft: ' auto',
 };
 
-const headerImage: React.CSSProperties = {
-  width: '100vw',
-  height: '30px',
-};
-
 const styleCol: React.CSSProperties = {
   marginTop: '16px',
 };
 
-export default function ProductComponent(props: HeaderProps) {
+export default function ProductComponent() {
   const dispatch = useDispatch();
   //state store
-  const arrProduct = useSelector((state: RootState) => state.medicine.arrShoping);
+  const arrShoping = useSelector((state: RootState) => state.medicine.arrShoping);
   const arrMedicineUser = useSelector((state: RootState) => state.medicine.listMedicineUser);
-  const totalMedicine = useSelector((state: RootState) => state.medicine.totalMedicine);
   //state component
   const [display, setDisplay] = React.useState('excel');
 
@@ -52,17 +43,40 @@ export default function ProductComponent(props: HeaderProps) {
     dispatch(getListMedicineUser(15));
   }, []);
 
+  const actionChangeCountMedicine = (key: any, type: any) => {
+    let newArrProduct: any = [];
+    arrShoping?.map((item) => {
+      if (item?.key == key) {
+        if (type == 'minus' && item?.count > 0) {
+          return newArrProduct.push({
+            ...item,
+            count: item.count - 1,
+          });
+        } else if (type == 'plus')
+          return newArrProduct.push({
+            ...item,
+            count: item.count + 1,
+          });
+      } else newArrProduct.push(item);
+    });
+    dispatch(updateArrShoping(newArrProduct));
+  };
+
   const addProduct = (value: any) => {
-    if (arrProduct.some((item) => item?.key == value?.key) == false)
+    if (arrShoping.some((item) => item?.key == value?.key) == false)
       dispatch(addProductToShopingCart(value));
+    else {
+      actionChangeCountMedicine(value?.key, 'plus');
+    }
   };
 
-  const handleBtnViewPlus = () => {
-    dispatch(getListMedicineUser(arrMedicineUser.length + 15));
-  };
-
-  const renderTextBtnPlus = () => {
-    return 'Xem thêm 15 sản phẩm';
+  const removeProduct = (value: any) => {
+    if (arrShoping.find((item) => item?.key == value?.key)?.count == 1) {
+      const newArrShoping = arrShoping.filter((item) => item?.key !== value?.key);
+      dispatch(updateArrShoping(newArrShoping));
+    } else {
+      actionChangeCountMedicine(value?.key, 'minus');
+    }
   };
 
   const onChange = (e: any) => {
@@ -150,6 +164,11 @@ export default function ProductComponent(props: HeaderProps) {
           <>
             {arrMedicineUser &&
               arrMedicineUser?.map((item: any, index: any) => {
+                console.log(
+                  'arrShoping.some((pro) => pro?.key == item?.key)',
+                  arrShoping.some((pro) => pro?.key == item?.key)
+                );
+
                 return (
                   <div className="label-main-product" key={index}>
                     <div className="label-image-info">
@@ -164,14 +183,34 @@ export default function ProductComponent(props: HeaderProps) {
                         <div className="sellingPrice">{FormatCurrency(item?.price)}</div>
                       </div>
                     </div>
-                    <div>
+                    <div className="label-panel-item">
+                      <MinusCircleOutlined
+                        className={classnames(
+                          'label-panel-icon-minus',
+                          arrShoping.some((pro) => pro?.key == item?.id) ? 'cls-display' : ''
+                        )}
+                        onClick={() =>
+                          removeProduct({
+                            key: item?.id,
+                            name: item?.name,
+                            image: item.image,
+                            price: item?.price,
+                            count: 1,
+                            unit: item?.unit,
+                          })
+                        }
+                      />
+                      <Input
+                        type="number"
+                        maxLength={2}
+                        className={classnames(
+                          'label-panel-input',
+                          arrShoping.some((pro) => pro?.key == item?.id) ? 'cls-display' : ''
+                        )}
+                        value={arrShoping?.find((pro) => pro.key === item?.id)?.count}
+                      />
                       <PlusCircleOutlined
-                        style={{
-                          fontSize: '25px',
-                          color: 'green',
-                          margin: '10px',
-                          cursor: 'pointer',
-                        }}
+                        className="label-panel-icon-plus"
                         onClick={() =>
                           addProduct({
                             key: item?.id,

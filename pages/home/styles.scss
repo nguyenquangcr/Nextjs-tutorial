@@ -45,7 +45,7 @@
 }
 
 .CartFloatPanel {
-  overflow: hidden;
+  opacity: 0;
   display: flex;
   width: 95%;
   position: absolute;
@@ -87,6 +87,6 @@
   }
 
   .CartFloatPanel {
-    overflow: visible;
+    opacity: 1;
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Layout, Space, Breadcrumb, Row, Col, Table, Form, Input, Button, Typography } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';

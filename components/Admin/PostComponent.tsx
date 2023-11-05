@@ -1,5 +1,4 @@
 import { Editor } from '@tinymce/tinymce-react';
-import classname from 'classnames';
 import {
   Button,
   Col,

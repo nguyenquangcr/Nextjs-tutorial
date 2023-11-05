@@ -3,20 +3,24 @@ import { store } from '../store';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 
-import Script from 'next/script'
+import Script from 'next/script';
 
 //css
 import '../styles/globals.css';
 import 'antd/dist/reset.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { Modal } from 'antd';
+import Head from 'next/head';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
+      <Head>
+        <link rel="icon" href="/medicines.png" />
+      </Head>
       <Script async src="https://www.googletagmanager.com/gtag/js?id=G-M4PEFENN4B"></Script>
       <Script
-        id='google-analytics'
+        id="google-analytics"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `window.dataLayer = window.dataLayer || [];
@@ -30,7 +34,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ToastContainer />
       </Provider>
     </>
-
   );
 }
 
