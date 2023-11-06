@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react';
-import { Typography, Card, Col, Row, Button, Radio, InputNumber, Input } from 'antd';
+import { Typography, Card, Col, Row, Button, Radio, Input } from 'antd';
 import {
   BulbFilled,
   PlusCircleOutlined,
@@ -57,6 +57,19 @@ export default function ProductComponent() {
             ...item,
             count: item.count + 1,
           });
+      } else newArrProduct.push(item);
+    });
+    dispatch(updateArrShoping(newArrProduct));
+  };
+
+  const changeQuantityMedicine = (value: any, key: any) => {
+    let newArrProduct: any = [];
+    arrShoping?.map((item) => {
+      if (item?.key == key) {
+        return newArrProduct.push({
+          ...item,
+          count: value,
+        });
       } else newArrProduct.push(item);
     });
     dispatch(updateArrShoping(newArrProduct));
@@ -164,11 +177,6 @@ export default function ProductComponent() {
           <>
             {arrMedicineUser &&
               arrMedicineUser?.map((item: any, index: any) => {
-                console.log(
-                  'arrShoping.some((pro) => pro?.key == item?.key)',
-                  arrShoping.some((pro) => pro?.key == item?.key)
-                );
-
                 return (
                   <div className="label-main-product" key={index}>
                     <div className="label-image-info">
@@ -207,6 +215,13 @@ export default function ProductComponent() {
                           'label-panel-input',
                           arrShoping.some((pro) => pro?.key == item?.id) ? 'cls-display' : ''
                         )}
+                        onChange={(event) => {
+                          if (
+                            parseInt(event?.target?.value) <= 100 &&
+                            parseInt(event?.target?.value) >= 1
+                          )
+                            changeQuantityMedicine(event?.target?.value, item?.id);
+                        }}
                         value={arrShoping?.find((pro) => pro.key === item?.id)?.count}
                       />
                       <PlusCircleOutlined
