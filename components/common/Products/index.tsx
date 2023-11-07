@@ -217,7 +217,7 @@ export default function ProductComponent() {
                         )}
                         onChange={(event) => {
                           if (
-                            parseInt(event?.target?.value) <= 100 &&
+                            parseInt(event?.target?.value) <= 500 &&
                             parseInt(event?.target?.value) >= 1
                           )
                             changeQuantityMedicine(event?.target?.value, item?.id);
