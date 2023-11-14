@@ -2,7 +2,7 @@
 export const domain = 'https://backend-medicine-de6a28283d26.herokuapp.com';
 export const domainFE = 'https://dathangthuocsi.online/home';
 export const imageDefault =
-  'https://res.cloudinary.com/dmttpbcgv/image/upload/v1696971801/qnonmembcdf4ekmrtqne.png';
+  'https://0912350050.sieu.re/_next/image?url=%2F_next%2Fstatic%2Fimage%2Fassets%2Fno-photo.aa816b1159fb7303b0b7aa6ada69e5a0.jpeg&w=640&q=75';
 export const bgImageHeader =
   'https://res.cloudinary.com/dmttpbcgv/image/upload/v1698118721/bg-image_uip4pe.png';
 export const logo =
