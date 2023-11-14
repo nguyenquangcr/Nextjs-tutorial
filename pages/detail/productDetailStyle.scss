@@ -1,0 +1,19 @@
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-right: auto;
+  margin-left: auto;
+  .main-product {
+    background: white;
+    border: 0;
+    border-radius: 18px;
+    margin: 5px 10px;
+    padding: 32px;
+    .product-img {
+      display: flex;
+      justify-content: center;
+      height: 360px;
+      margin: auto;
+    }
+  }
+}

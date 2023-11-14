@@ -216,11 +216,11 @@ export default function ProductComponent() {
                           arrShoping.some((pro) => pro?.key == item?.id) ? 'cls-display' : ''
                         )}
                         onChange={(event) => {
-                          if (
-                            parseInt(event?.target?.value) <= 10000 &&
-                            parseInt(event?.target?.value) >= 1
-                          )
-                            changeQuantityMedicine(event?.target?.value, item?.id);
+                          // if (
+                          //   parseInt(event?.target?.value) <= 10000 &&
+                          //   parseInt(event?.target?.value) >= 1
+                          // )
+                          changeQuantityMedicine(event?.target?.value, item?.id);
                         }}
                         value={arrShoping?.find((pro) => pro.key === item?.id)?.count}
                       />

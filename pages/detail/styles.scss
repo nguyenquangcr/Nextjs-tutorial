@@ -1,0 +1,92 @@
+.classheader {
+  background-color: #072d94;
+  position: relative;
+  z-index: 1062;
+  .classheaderchild {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0;
+    align-items: center;
+  }
+}
+.label-search {
+  width: 42%;
+  .ant-select-selector {
+    border-radius: 35px;
+    padding: 0 5px;
+  }
+  input {
+    height: 35px !important;
+  }
+  .label-search-icon {
+    background-color: #c1d0f6;
+    padding: 10px;
+    margin-right: -6px;
+    color: #1250dc;
+    border-radius: 9999px;
+  }
+}
+
+.label-search-mobile {
+  display: none;
+  width: 95%;
+  margin: auto;
+  margin-bottom: 10px;
+}
+
+.btn-back-to-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 17%;
+  right: 5%;
+}
+
+.CartFloatPanel {
+  opacity: 0;
+  display: flex;
+  width: 95%;
+  position: absolute;
+  bottom: 4%;
+  left: 4%;
+  background-color: #1677ff;
+  box-shadow: -12px -12px 32px rgba(0, 80, 40, 0.1), 12px 12px 32px rgba(0, 80, 40, 0.1);
+  border-radius: 8px;
+  justify-content: space-between;
+  padding: 12px 15px;
+  align-items: center;
+  .infor-CartFloatPanel {
+    display: flex;
+    align-items: center;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .classheader {
+    padding-bottom: 1px;
+    .classheaderchild {
+      display: flex;
+      justify-content: space-around;
+      padding: 5px 0 !important;
+      .label-image-logo {
+        width: 50%;
+      }
+    }
+    .label-search {
+      display: none;
+    }
+    .label-search-mobile {
+      display: block;
+    }
+  }
+
+  .label-gio-hang {
+    display: none;
+  }
+
+  .CartFloatPanel {
+    opacity: 1;
+  }
+}
