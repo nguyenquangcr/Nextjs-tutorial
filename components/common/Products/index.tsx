@@ -55,7 +55,7 @@ export default function ProductComponent() {
         } else if (type == 'plus')
           return newArrProduct.push({
             ...item,
-            count: item.count + 1,
+            count: parseInt(item.count) + 1,
           });
       } else newArrProduct.push(item);
     });
