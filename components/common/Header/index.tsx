@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
 import { Image, Typography, Badge, Modal, Form, Input, Popover, Select, Spin, Button } from 'antd';
-import { ShoppingFilled, UserOutlined, PlusCircleOutlined } from '@ant-design/icons';
+import { ShoppingFilled, UserOutlined, PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { RootState } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -15,11 +15,14 @@ import {
 } from 'slices/userSlice';
 import { openNotificationWithIcon } from '@/components/notificationComponent';
 import { bgImageHeader, domain, imageDefault, logo } from 'Constant';
-import { addProductToShopingCart } from 'slices/medicineSlice';
+import { addProductToShopingCart, updateArrShoping } from 'slices/medicineSlice';
 import { SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import FormatCurrency from 'utils/FormatCurrency';
+import classNames from 'classnames';
+//style
+import './style.scss'
 
 export interface HeaderProps { }
 
@@ -96,9 +99,53 @@ export default function HeaderComponent(props: HeaderProps) {
     setValueSearch({ ...valueSearch, value });
   };
 
+  const actionChangeCountMedicine = (key: any, type: any) => {
+    let newArrProduct: any = [];
+    arrShoping?.map((item) => {
+      if (item?.key == key) {
+        if (type == 'minus' && item?.count > 0) {
+          return newArrProduct.push({
+            ...item,
+            count: item.count - 1,
+          });
+        } else if (type == 'plus')
+          return newArrProduct.push({
+            ...item,
+            count: parseInt(item.count) + 1,
+          });
+      } else newArrProduct.push(item);
+    });
+    dispatch(updateArrShoping(newArrProduct));
+  };
+
   const addProduct = (value: any) => {
-    if (arrProduct.some((item) => item?.key == value?.key) == false)
+    if (arrShoping.some((item) => item?.key == value?.key) == false)
       dispatch(addProductToShopingCart(value));
+    else {
+      actionChangeCountMedicine(value?.key, 'plus');
+    }
+  };
+
+  const removeProduct = (value: any) => {
+    if (arrShoping.find((item) => item?.key == value?.key)?.count == 1) {
+      const newArrShoping = arrShoping.filter((item) => item?.key !== value?.key);
+      dispatch(updateArrShoping(newArrShoping));
+    } else {
+      actionChangeCountMedicine(value?.key, 'minus');
+    }
+  };
+
+  const changeQuantityMedicine = (value: any, key: any) => {
+    let newArrProduct: any = [];
+    arrShoping?.map((item) => {
+      if (item?.key == key) {
+        return newArrProduct.push({
+          ...item,
+          count: value,
+        });
+      } else newArrProduct.push(item);
+    });
+    dispatch(updateArrShoping(newArrProduct));
   };
 
   return (
@@ -137,7 +184,7 @@ export default function HeaderComponent(props: HeaderProps) {
               {valueSearch?.data.map((item: any) => (
                 <Option key={item.id} disabled>
                   <div className="label-main-product">
-                    <div className="label-image-info">
+                    <div className="label-image-info" onClick={() => router.push(`/detail/${item.id}`)}>
                       <img
                         className="label-image-product"
                         alt={item?.name}
@@ -152,13 +199,36 @@ export default function HeaderComponent(props: HeaderProps) {
                       </div>
                     </div>
                     <div>
-                      <PlusCircleOutlined
-                        style={{
-                          fontSize: '25px',
-                          color: 'green',
-                          margin: '10px',
-                          cursor: 'pointer',
+                      <MinusCircleOutlined
+                        className={classNames(
+                          'label-panel-icon-minus',
+                          arrShoping.some((pro) => pro?.key == item?.id) ? 'cls-display' : ''
+                        )}
+                        onClick={() =>
+                          removeProduct({
+                            key: item?.id,
+                            name: item?.name,
+                            image: item.image,
+                            price: item?.price,
+                            count: 1,
+                            unit: item?.unit,
+                          })
+                        }
+                      />
+                      <Input
+                        type="number"
+                        maxLength={2}
+                        className={classNames(
+                          'label-panel-input',
+                          arrShoping.some((pro) => pro?.key == item?.id) ? 'cls-display' : ''
+                        )}
+                        onChange={(event) => {
+                          changeQuantityMedicine(event?.target?.value, item?.id);
                         }}
+                        value={arrShoping?.find((pro) => pro.key === item?.id)?.count}
+                      />
+                      <PlusCircleOutlined
+                        className="label-panel-icon-plus"
                         onClick={() =>
                           addProduct({
                             key: item?.id,
@@ -265,14 +335,14 @@ export default function HeaderComponent(props: HeaderProps) {
             {valueSearch?.data.map((item: any) => (
               <Option key={item.id} disabled>
                 <div className="label-main-product">
-                  <div className="label-image-info">
+                  <div className="label-image-info" onClick={() => router.push(`/detail/${item.id}`)}>
                     <img
                       className="label-image-product"
                       alt={item?.name}
                       src={item?.image !== '' ? item?.image : imageDefault}
                     />
                     <div>
-                      <Typography.Title className="nameMidicine">{item?.name}</Typography.Title>
+                      <Typography.Title className="nameMidicine" style={{ width: '100px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item?.name}</Typography.Title>
                       <div>{item?.unit}</div>
                       <div className="sellingPrice">
                         {FormatCurrency(item?.price)} / {item?.unit}
@@ -280,13 +350,36 @@ export default function HeaderComponent(props: HeaderProps) {
                     </div>
                   </div>
                   <div>
-                    <PlusCircleOutlined
-                      style={{
-                        fontSize: '25px',
-                        color: 'green',
-                        margin: '10px',
-                        cursor: 'pointer',
+                    <MinusCircleOutlined
+                      className={classNames(
+                        'label-panel-icon-minus',
+                        arrShoping.some((pro) => pro?.key == item?.id) ? 'cls-display' : ''
+                      )}
+                      onClick={() =>
+                        removeProduct({
+                          key: item?.id,
+                          name: item?.name,
+                          image: item.image,
+                          price: item?.price,
+                          count: 1,
+                          unit: item?.unit,
+                        })
+                      }
+                    />
+                    <Input
+                      type="number"
+                      maxLength={2}
+                      className={classNames(
+                        'label-panel-input',
+                        arrShoping.some((pro) => pro?.key == item?.id) ? 'cls-display' : ''
+                      )}
+                      onChange={(event) => {
+                        changeQuantityMedicine(event?.target?.value, item?.id);
                       }}
+                      value={arrShoping?.find((pro) => pro.key === item?.id)?.count}
+                    />
+                    <PlusCircleOutlined
+                      className="label-panel-icon-plus"
                       onClick={() =>
                         addProduct({
                           key: item?.id,

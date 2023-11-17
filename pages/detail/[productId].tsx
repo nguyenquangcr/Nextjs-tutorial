@@ -27,17 +27,16 @@ export default function AboutPage(props: AboutProps) {
   return (
     <div>
       <Header />
-
       <div className="container">
         <Breadcrumb
           style={{
-            margin: '10px 0',
-            fontSize: '15px',
+            margin: '20px 0',
+            fontSize: '18px',
             fontWeight: '500'
           }}
           items={[
             {
-              title: <Link href={'/'}>
+              title: <Link href={'/'} style={{ marginTop: '-3px' }}>
                 <HomeOutlined style={{ border: 'solid 1px', padding: '8px', borderRadius: '30px', marginRight: '10px' }} />
                 <span>Trang chủ</span></Link>,
             },
@@ -51,6 +50,7 @@ export default function AboutPage(props: AboutProps) {
             <Col xs={24} sm={10}>
               <Zoom zoomMargin={10}>
                 <img
+                  style={{ width: '-webkit-fill-available' }}
                   className="product-img"
                   src={medicine?.image !== '' ? medicine?.image : imageDefault}
                 />
@@ -66,7 +66,7 @@ export default function AboutPage(props: AboutProps) {
         <div className="detail-product">
           <Row gutter={[32, 8]}>
             <Col span={24}>
-              <Typography style={{ fontSize: '20px', color: '#212529', fontWeight: 'bold', marginBottom: '15px' }}>Chi tiết sản phẩm</Typography>
+              <Typography style={{ fontSize: '2rem', color: 'inherit', fontWeight: '400', marginBottom: '15px' }}>Chi tiết sản phẩm</Typography>
             </Col>
             <Col span={24}>
               <Typography style={{ fontSize: '15px', color: '#212529', marginBottom: '5px' }}>{medicine?.description}</Typography>

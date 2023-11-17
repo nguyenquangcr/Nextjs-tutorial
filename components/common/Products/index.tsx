@@ -181,8 +181,8 @@ export default function ProductComponent() {
             {arrMedicineUser &&
               arrMedicineUser?.map((item: any, index: any) => {
                 return (
-                  <div className="label-main-product" key={index} onClick={() => router.push(`/detail/${item.id}`)}>
-                    <div className="label-image-info">
+                  <div className="label-main-product" key={index} >
+                    <div className="label-image-info" onClick={() => router.push(`/detail/${item.id}`)}>
                       <img
                         className="label-image-product"
                         alt={item?.name}
@@ -219,10 +219,6 @@ export default function ProductComponent() {
                           arrShoping.some((pro) => pro?.key == item?.id) ? 'cls-display' : ''
                         )}
                         onChange={(event) => {
-                          // if (
-                          //   parseInt(event?.target?.value) <= 10000 &&
-                          //   parseInt(event?.target?.value) >= 1
-                          // )
                           changeQuantityMedicine(event?.target?.value, item?.id);
                         }}
                         value={arrShoping?.find((pro) => pro.key === item?.id)?.count}

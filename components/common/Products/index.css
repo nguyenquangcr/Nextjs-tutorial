@@ -53,9 +53,9 @@
 
 .label-image-product {
     padding: 0;
-    min-width: 60px;
-    width: 60px;
-    height: 60px;
+    min-width: 40px;
+    width: 40px;
+    height: 40px;
     background-size: cover;
     border: solid 1px #0000001c;
     border-radius: 5px;
@@ -95,4 +95,10 @@
 
 .cls-display {
     opacity: 1;
+}
+
+@media only screen and (max-width: 600px) {
+    .label-main-product {
+        padding: 0;
+    }
 }

@@ -10,7 +10,7 @@ import { RootState } from 'store';
 import { addProductToShopingCart } from 'slices/medicineSlice';
 import FormatCurrency from 'utils/FormatCurrency';
 
-export interface SearchProps {}
+export interface SearchProps { }
 
 const { Search } = Input;
 
@@ -114,7 +114,7 @@ export default function SearchComponent(props: SearchProps) {
                   alt={item?.name}
                   src={item?.image !== '' ? item?.image : imageDefault}
                 />
-                <div>
+                <div style={{ maxWidth: '50px' }}>
                   <Typography.Title className="nameMidicine">{item?.name}</Typography.Title>
                   <div>{item?.unit}</div>
                   <div className="sellingPrice">{FormatCurrency(item?.price)}</div>
