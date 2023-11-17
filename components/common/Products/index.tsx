@@ -19,6 +19,7 @@ import { RootState } from 'store';
 import FormatCurrency from 'utils/FormatCurrency';
 import { imageDefault } from 'Constant';
 import classnames from 'classnames';
+import { useRouter } from 'next/router';
 
 const classContainer: React.CSSProperties = {
   width: ' 100%',
@@ -33,6 +34,7 @@ const styleCol: React.CSSProperties = {
 
 export default function ProductComponent() {
   const dispatch = useDispatch();
+  const router = useRouter();
   //state store
   const arrShoping = useSelector((state: RootState) => state.medicine.arrShoping);
   const arrMedicineUser = useSelector((state: RootState) => state.medicine.listMedicineUser);
@@ -141,6 +143,7 @@ export default function ProductComponent() {
                           src={item?.image !== '' ? item?.image : imageDefault}
                         />
                       }
+                      onClick={() => router.push(`/detail/${item.id}`)}
                     >
                       <div className="class-note">{item?.description}</div>
                       <Typography.Title level={4} className="nameMidicine">
@@ -178,7 +181,7 @@ export default function ProductComponent() {
             {arrMedicineUser &&
               arrMedicineUser?.map((item: any, index: any) => {
                 return (
-                  <div className="label-main-product" key={index}>
+                  <div className="label-main-product" key={index} onClick={() => router.push(`/detail/${item.id}`)}>
                     <div className="label-image-info">
                       <img
                         className="label-image-product"

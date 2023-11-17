@@ -3,7 +3,6 @@
 import React from 'react';
 import { Image, Typography, Badge, Modal, Form, Input, Popover, Select, Spin, Button } from 'antd';
 import { ShoppingFilled, UserOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import Link from 'next/link';
 import { RootState } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -19,9 +18,10 @@ import { bgImageHeader, domain, imageDefault, logo } from 'Constant';
 import { addProductToShopingCart } from 'slices/medicineSlice';
 import { SearchOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import FormatCurrency from 'utils/FormatCurrency';
 
-export interface HeaderProps {}
+export interface HeaderProps { }
 
 const classContainer: React.CSSProperties = {
   width: ' 100%',
@@ -112,9 +112,9 @@ export default function HeaderComponent(props: HeaderProps) {
         }}
       >
         <div style={classContainer} className={'classheaderchild'}>
-          <div className="label-image-logo">
+          <Link href={'/home'} className="label-image-logo" style={{ cursor: 'pointer' }}>
             <Image preview={false} src={logo} />
-          </div>
+          </Link>
           {!isGioHang && (
             <Select
               mode="multiple"

@@ -1,11 +1,14 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
+import React from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import React from 'react';
-import { Breadcrumb, Col, Row } from 'antd';
+import { Breadcrumb, Col, Row, Typography } from 'antd';
+import { domain, imageDefault } from 'Constant';
 import Link from 'next/link';
 import Zoom from 'react-medium-image-zoom';
+import FormatCurrency from 'utils/FormatCurrency';
+import { HomeOutlined } from '@ant-design/icons';
 //style
 import './styles.scss';
 import './productDetailStyle.scss';
@@ -13,51 +16,79 @@ import 'react-medium-image-zoom/dist/styles.css';
 //if you don't want component render server side -> use dynamic and {ssr: false}
 const Header = dynamic(() => import('@/components/common/Header/index'), { ssr: false });
 
-export interface AboutProps {}
+export interface AboutProps {
+  medicine: any
+}
 
 export default function AboutPage(props: AboutProps) {
   const router = useRouter();
+  const { medicine } = props;
+  console.log('medicine', medicine);
+
   //state
 
   return (
     <div>
       <Header />
-      <Breadcrumb
-        items={[
-          {
-            title: <Link href={'/'}>Trang chủ</Link>,
-          },
-          {
-            title: 'Giỏ hàng',
-          },
-        ]}
-      />
+
       <div className="container">
+        <Breadcrumb
+          style={{
+            margin: '10px 0',
+            fontSize: '15px',
+            fontWeight: '500'
+          }}
+          items={[
+            {
+              title: <Link href={'/'}>
+                <HomeOutlined style={{ border: 'solid 1px', padding: '8px', borderRadius: '30px', marginRight: '10px' }} />
+                <span>Trang chủ</span></Link>,
+            },
+            {
+              title: <span >{medicine?.name}</span>,
+            },
+          ]}
+        />
         <div className="main-product">
           <Row gutter={[32, 8]}>
             <Col xs={24} sm={10}>
               <Zoom zoomMargin={10}>
                 <img
-                  // style={{ width: '-webkit-fill-available' }}
                   className="product-img"
-                  src={'https://thuocgiaphuc.vn/Uploads/HinhDoiTac/11-2023/zzmmcopy.jpg'}
+                  src={medicine?.image !== '' ? medicine?.image : imageDefault}
                 />
               </Zoom>
             </Col>
             <Col xs={24} sm={14}>
-              VASTEC 20MG H60V NSX: DHG Pharma Nhóm: TIM MẠCH - LỢI TIỂU- NỘI TIẾT Đăng nhập mua
-              hàng
+              <Typography style={{ fontSize: '20px', color: '#212529', fontWeight: 'bold', marginBottom: '15px' }}>{medicine?.name}</Typography>
+              <Typography style={{ fontSize: '15px', color: '#212529', marginBottom: '5px' }}>Đơn vị: {medicine?.unit}</Typography>
+              <Typography style={{ fontSize: '15px', color: '#212529', marginBottom: '15px' }}>Giá: {FormatCurrency(medicine?.price)}</Typography>
             </Col>
           </Row>
+        </div>
+        <div className="detail-product">
+          <Row gutter={[32, 8]}>
+            <Col span={24}>
+              <Typography style={{ fontSize: '20px', color: '#212529', fontWeight: 'bold', marginBottom: '15px' }}>Chi tiết sản phẩm</Typography>
+            </Col>
+            <Col span={24}>
+              <Typography style={{ fontSize: '15px', color: '#212529', marginBottom: '5px' }}>{medicine.description}</Typography>
+            </Col>
+          </Row>
+
         </div>
       </div>
     </div>
   );
 }
 
-export async function getStaticProps() {
+export async function getStaticProps({ params }: { params: { productId: string } }) {
+  const res = await fetch(`${domain}/medicine/${params.productId}`);
+  const data = await res.json();
   return {
-    props: {}, // will be passed to the page component as props
+    props: {
+      medicine: data
+    }, // will be passed to the page component as props
   };
 }
 

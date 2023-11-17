@@ -57,7 +57,7 @@ export default function HomePage() {
   return (
     <div ref={mainPageRef} style={{ width: '100%', height: '100vh', overflowY: 'auto' }}>
       <Space direction="vertical" style={{ width: '100%' }} size={[0, 48]}>
-        <Layout>
+        <Layout style={{ backgroundColor: '#f0f6fd' }}>
           <HeaderComponent />
           <BootstrapCarousel />
           <ProductComponent />

@@ -37,6 +37,12 @@
     border-bottom: 1px solid #9da5ad4d;
     justify-content: space-between;
     align-items: flex-end;
+    cursor: pointer;
+    transition: transform .2s;
+}
+
+.label-main-product:hover {
+    transform: scale(1.05);
 }
 
 .label-image-info {
@@ -73,7 +79,7 @@
     cursor: pointer;
 }
 
-.label-panel-icon-minus{
+.label-panel-icon-minus {
     opacity: 0;
     font-size: 20px;
     color: gray;
@@ -90,4 +96,3 @@
 .cls-display {
     opacity: 1;
 }
-
