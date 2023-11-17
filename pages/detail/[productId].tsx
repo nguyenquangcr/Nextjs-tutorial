@@ -2,7 +2,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
 import { Breadcrumb, Col, Row, Typography } from 'antd';
 import { domain, imageDefault } from 'Constant';
 import Link from 'next/link';
@@ -21,9 +20,7 @@ export interface AboutProps {
 }
 
 export default function AboutPage(props: AboutProps) {
-  const router = useRouter();
   const { medicine } = props;
-  console.log('medicine', medicine);
 
   //state
 
@@ -72,7 +69,7 @@ export default function AboutPage(props: AboutProps) {
               <Typography style={{ fontSize: '20px', color: '#212529', fontWeight: 'bold', marginBottom: '15px' }}>Chi tiết sản phẩm</Typography>
             </Col>
             <Col span={24}>
-              <Typography style={{ fontSize: '15px', color: '#212529', marginBottom: '5px' }}>{medicine.description}</Typography>
+              <Typography style={{ fontSize: '15px', color: '#212529', marginBottom: '5px' }}>{medicine?.description}</Typography>
             </Col>
           </Row>
 
