@@ -92,7 +92,7 @@ export async function getStaticProps({ params }: { params: { productId: string }
 export async function getStaticPaths() {
   // Lấy danh sách các productId từ nguồn dữ liệu của bạn
   const res = await fetch('https://js-post-api.herokuapp.com/api/posts?_page=1');
-  const data = await res.json();
+  const data = await res?.json();
   const productIds = data.data.map((item: { id: any }) => item.id);
 
   // Trả về danh sách các đối tượng params để Next.js tạo trước các trang tương ứng
