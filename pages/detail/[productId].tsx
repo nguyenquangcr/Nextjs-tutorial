@@ -100,5 +100,5 @@ export async function getStaticPaths() {
     params: { productId },
   }));
 
-  return { paths, fallback: false };
+  return { paths, fallback: true };
 }
