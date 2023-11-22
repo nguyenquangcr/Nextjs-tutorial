@@ -10,6 +10,7 @@ import FormatCurrency from '../../utils/FormatCurrency';
 import './styles.scss';
 import { CreateOrder, updateArrShoping } from 'slices/medicineSlice';
 import HeaderComponent from '@/components/common/Header';
+import { gifOrderSuccess } from 'Constant';
 
 const classContainer: React.CSSProperties = {
   width: ' 100%',
@@ -392,7 +393,7 @@ export default function HomePage() {
   };
 
   return (
-    <Space className="main-page-shoppingcart" direction="vertical">
+    <Space  className="main-page-shoppingcart" direction="vertical">
       <HeaderComponent />
       <div style={classContainer}>
         {success == false && (
@@ -538,6 +539,7 @@ export default function HomePage() {
           <div style={{ textAlign: 'center', margin: '20px' }}>
             <div>
               {' '}
+              <img width={'50%'} src={gifOrderSuccess} alt='Gif order success' />
               <Typography.Title
                 level={2}
                 style={{ color: '#000', margin: '10px', cursor: 'pointer' }}
@@ -547,7 +549,7 @@ export default function HomePage() {
               </Typography.Title>
             </div>
             <Link href={'/'}>
-              <Button className="class-plus-btn">Quay lại trang chủ</Button>
+              <Button style={{width: 'max-content'}} className="class-plus-btn">Quay lại trang chủ</Button>
             </Link>
           </div>
         )}
