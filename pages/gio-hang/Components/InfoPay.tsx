@@ -89,11 +89,7 @@ const InfoPay = ({ totalPrice, setSuccess }: { totalPrice: any; setSuccess: any 
       }),
       price: totalPrice,
     };
-
-    console.log('formatValue', formatValue);
-
     if (formatValue?.price) {
-      console.log('chay vao day');
       dispatch(CreateOrder(formatValue, setloading, setSuccess));
     }
   };

@@ -39,7 +39,6 @@ const OrderProgressComponent = ({
         defaultActiveKey="1"
         tabPosition="top"
         items={items}
-        indicatorSize={(origin: number) => origin - 16}
       />
     </div>
   );
