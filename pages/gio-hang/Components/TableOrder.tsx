@@ -157,9 +157,7 @@ const TableOrder = () => {
       title: 'operation',
       dataIndex: 'operation',
       render: (_: any, record: any) =>
-        arrProduct.length >= 1 ? (
-          <DeleteOutlined onClick={() => handleDelete(record.key)} rev={undefined} />
-        ) : null,
+        arrProduct.length >= 1 ? <DeleteOutlined onClick={() => handleDelete(record.key)} /> : null,
     },
   ];
 
