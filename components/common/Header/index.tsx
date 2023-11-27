@@ -446,11 +446,13 @@ export default function HeaderComponent(props: HeaderProps) {
         }}
       >
         <Form
+          layout="vertical"
+          size="middle"
           form={form}
           name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600, padding: '50px', margin: '0 auto' }}
+          // labelCol={{ span: 8 }}
+          // wrapperCol={{ span: 16 }}
+          style={{ padding: '5px', margin: '0 auto' }}
           initialValues={{ remember: true, prefix: '+84' }}
           onFinish={onFinish}
           autoComplete="off"
