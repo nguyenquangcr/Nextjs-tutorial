@@ -2,7 +2,12 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
 import { Image, Typography, Badge, Modal, Form, Input, Popover, Select, Spin, Button } from 'antd';
-import { ShoppingFilled, UserOutlined, PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import {
+  ShoppingFilled,
+  UserOutlined,
+  PlusCircleOutlined,
+  MinusCircleOutlined,
+} from '@ant-design/icons';
 import { RootState } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -22,9 +27,9 @@ import Link from 'next/link';
 import FormatCurrency from 'utils/FormatCurrency';
 import classNames from 'classnames';
 //style
-import './style.scss'
+import './style.scss';
 
-export interface HeaderProps { }
+export interface HeaderProps {}
 
 const classContainer: React.CSSProperties = {
   width: ' 100%',
@@ -71,10 +76,22 @@ export default function HeaderComponent(props: HeaderProps) {
     setIsGioHang(router.pathname === '/gio-hang');
   }, [router.pathname]);
 
-  const onFinish = (value: { username: any; password: any; email: any; phoneNumber: any }) => {
-    const { username, password, email, phoneNumber } = value;
+  const onFinish = (value: {
+    username: any;
+    password: any;
+    email: any;
+    phoneNumber: any;
+    prefix: string;
+  }) => {
+    const { username, password, email, phoneNumber, prefix } = value;
     if (typeForm == 'ADD') {
-      dispatch(funcCreateUser({ name: username, password, email, phoneNumber }, setTypeForm, form));
+      dispatch(
+        funcCreateUser(
+          { name: username, password, email, phoneNumber: `${prefix}${phoneNumber}` },
+          setTypeForm,
+          form
+        )
+      );
     } else dispatch(funcLoginUser({ username, password }));
   };
 
@@ -148,6 +165,14 @@ export default function HeaderComponent(props: HeaderProps) {
     dispatch(updateArrShoping(newArrProduct));
   };
 
+  const prefixSelector = (
+    <Form.Item name="prefix" noStyle>
+      <Select style={{ width: 70 }}>
+        <Option value="+84">+84</Option>
+      </Select>
+    </Form.Item>
+  );
+
   return (
     <div style={{ position: 'sticky', top: 0, zIndex: 1000, width: '100%' }}>
       <div
@@ -184,7 +209,10 @@ export default function HeaderComponent(props: HeaderProps) {
               {valueSearch?.data.map((item: any) => (
                 <Option key={item.id} disabled>
                   <div className="label-main-product">
-                    <div className="label-image-info" onClick={() => router.push(`/detail/${item.id}`)}>
+                    <div
+                      className="label-image-info"
+                      onClick={() => router.push(`/detail/${item.id}`)}
+                    >
                       <img
                         className="label-image-product"
                         alt={item?.name}
@@ -335,14 +363,22 @@ export default function HeaderComponent(props: HeaderProps) {
             {valueSearch?.data.map((item: any) => (
               <Option key={item.id} disabled>
                 <div className="label-main-product">
-                  <div className="label-image-info" onClick={() => router.push(`/detail/${item.id}`)}>
+                  <div
+                    className="label-image-info"
+                    onClick={() => router.push(`/detail/${item.id}`)}
+                  >
                     <img
                       className="label-image-product"
                       alt={item?.name}
                       src={item?.image !== '' ? item?.image : imageDefault}
                     />
                     <div>
-                      <Typography.Title className="nameMidicine" style={{ width: '100px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item?.name}</Typography.Title>
+                      <Typography.Title
+                        className="nameMidicine"
+                        style={{ width: '100px', overflow: 'hidden', textOverflow: 'ellipsis' }}
+                      >
+                        {item?.name}
+                      </Typography.Title>
                       <div>{item?.unit}</div>
                       <div className="sellingPrice">
                         {FormatCurrency(item?.price)} / {item?.unit}
@@ -415,7 +451,7 @@ export default function HeaderComponent(props: HeaderProps) {
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           style={{ maxWidth: 600, padding: '50px', margin: '0 auto' }}
-          initialValues={{ remember: true }}
+          initialValues={{ remember: true, prefix: '+84' }}
           onFinish={onFinish}
           autoComplete="off"
         >
@@ -458,7 +494,7 @@ export default function HeaderComponent(props: HeaderProps) {
                   },
                 ]}
               >
-                <Input />
+                <Input addonBefore={prefixSelector} />
               </Form.Item>
             </>
           )}
